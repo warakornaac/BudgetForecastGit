@@ -1,0 +1,843 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "_listDataBudgetPM";
+    var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    string setWidth = "720px";
+}
+
+<style>
+</style>
+@if (((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count() == 1)
+{
+    setWidth = "520px";
+}
+@if (((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count() == 0)
+{
+    <div class="alert alert-danger text-center" style="font-size: 14px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+}
+else
+{
+    <div class="card">
+        @*<form action="@Url.Action("SaveBudget", "BudgetInput")" method="post" onsubmit="">*@
+        <div class="card-body p-2" style="height: 700px; overflow-y: auto; max-height: @setWidth">
+            @{
+                int rowStkGroup = 0;
+                foreach (var stkGroupItem in (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
+                {
+                    rowStkGroup++;
+                    if (rowStkGroup > 1)
+                    {
+                        <hr>
+                    }
+                    <div class="card mb-12">
+                        <div class="card-header bg-info text-white font-weight-bold">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <i class="fa fa-plus-circle"></i> @stkGroupItem.CMP | STKGRP (@stkGroupItem.STKGRP/@stkGroupItem.GRPNAM)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0px 0px;">
+                            <div class="table-responsive">
+                                <table class="dataTablePage table dataTable table-striped table-bordered nowrap table-hover tableFixHead" border="1">
+                                    <thead>
+                                        <tr style="white-space: nowrap;">
+                                            <th class="" style="vertical-align: middle;">Month/Topic</th>
+                                            <th class="vcenter" style="vertical-align: middle;">Begin</th>
+                                            @{
+
+                                                foreach (var item in arrMonth)
+                                                {
+                                                    <th class="vcenter" align="center" style="font-weight: 700;"> @item </th>
+                                                    rowStkGroup++;
+                                                }
+                                            }
+
+                                            <th style="vertical-align: middle;">Sum Total</th>
+                                            <th style="vertical-align: middle;">Sale Budget</th>
+                                            <th style="vertical-align: middle;">Sale Budget Next</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @using (Html.BeginForm("IndexPost", "Home", FormMethod.Post))
+                                        {
+                                            <tr style="white-space: nowrap; background-color: #ccebedc9;">
+                                                <th style="vertical-align:middle;">Budget By PM</th>
+                                                @{
+                                                    double valBudgetByPmBegin = 0;
+                                                    valBudgetByPmBegin = stkGroupItem.ACT00_Cy == 0 ? 1 : (stkGroupItem.BUD00 - stkGroupItem.ACT00_Cy) / stkGroupItem.ACT00_Cy;
+                                                }
+                                                <td style="vertical-align: middle;">  <input class="form-control budget_by_pm_0 vright" type="text" id="budget_by_pm_0" value="@valBudgetByPmBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />  </td>
+                                                @{
+                                                    int countBudget = 0;
+                                                    string nameBudgetBypm = "";
+                                                    string idBudgetBypmSumTotal = "";
+                                                    string nameBudgetBypmSumTotal = "";
+                                                    foreach (var item in arrMonth)
+                                                    {
+
+                                                        countBudget++;
+                                                        double valBudgetByPm = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetByPm = stkGroupItem.BUD01;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetByPm = stkGroupItem.BUD02;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetByPm = stkGroupItem.BUD03;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetByPm = stkGroupItem.BUD04;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetByPm = stkGroupItem.BUD05;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetByPm = stkGroupItem.BUD06;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetByPm = stkGroupItem.BUD07;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetByPm = stkGroupItem.BUD08;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetByPm = stkGroupItem.BUD09;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetByPm = stkGroupItem.BUD10;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetByPm = stkGroupItem.BUD11;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetByPm = stkGroupItem.BUD12;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+                                                        nameBudgetBypm = "budget_by_pm_" + @stkGroupItem.STKGRP + "_" + @countBudget;
+                                                        <td class="vcenter" style="vertical-align: middle;">
+                                                            <input data-month="@countBudget" data-stkgroup="@stkGroupItem.STKGRP" type="text" class="form-control mask vright budget_by_pm_@countBudget" name="@nameBudgetBypm" id="budget_by_pm_@countBudget" value="@valBudgetByPm.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
+                                                        </td>
+
+                                                    }
+                                                    idBudgetBypmSumTotal = "budget_by_pm_" + @stkGroupItem.STKGRP + "_0";
+                                                    //sum total
+                                                    <td class="vcenter"> <input class="form-control vright budget_by_pm_sum_total" type="text" id="@idBudgetBypmSumTotal" name="@idBudgetBypmSumTotal" value="@stkGroupItem.BUD00.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                    //sale budget
+                                                    <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget" type="text" id="budget_by_pm_sale_budget" value="@stkGroupItem.BUDSLM.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                    //sale budget next
+                                                    <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget_next" type="text" id="budget_by_pm_sale_budget_next" value="@stkGroupItem.BUDSLM_Nxt.ToString("N0")" disabled /> </td>
+                                                }
+
+                                            </tr>
+                                            <tr style="background-color: #ccebedc9;">
+                                                <th style="vertical-align:middle;">GP Budget</th>
+                                                @{
+                                                    double valBudgetGpBegin = 0;
+                                                    valBudgetGpBegin = stkGroupItem.AGP00_Cy == 0 ? 1 : (stkGroupItem.GP00 - stkGroupItem.AGP00_Cy) / stkGroupItem.AGP00_Cy;
+                                                }
+                                                <td style="vertical-align: middle;">  <input class="form-control vright budget_gp_0" type="text" id="budget_gp_0" value="@valBudgetGpBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />  </td>
+
+                                                @{
+                                                    int countBudgetGp = 0;
+                                                    string nameBudgetGp = "";
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        countBudgetGp++;
+                                                        double valBudgetGp = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetGp = stkGroupItem.GP01;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetGp = stkGroupItem.GP02;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetGp = stkGroupItem.GP03;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetGp = stkGroupItem.GP04;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetGp = stkGroupItem.GP05;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetGp = stkGroupItem.GP06;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetGp = stkGroupItem.GP07;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetGp = stkGroupItem.GP08;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetGp = stkGroupItem.GP09;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetGp = stkGroupItem.GP10;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetGp = stkGroupItem.GP11;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetGp = stkGroupItem.GP12;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+                                                        nameBudgetGp = "budget_gp_" + @stkGroupItem.STKGRP + "_" + @countBudgetGp;
+                                                        <td class="vcenter" style="vertical-align: middle;">
+                                                            <input data-id="@stkGroupItem.STKGRP" type="text" class="form-control vright budget_gp_@countBudgetGp" name="@nameBudgetGp" id="budget_gp_@countBudgetGp" value="@valBudgetGp.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
+                                                        </td>
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <th style="vertical-align:middle;">GP Budget%</th>
+                                                <td>  </td>
+                                                @{
+                                                    int countBudgetGpPer = 0;
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        countBudgetGpPer++;
+                                                        double valBudgetGpPer = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetGpPer = stkGroupItem.BUD01 == 0 ? 0 : (stkGroupItem.GP01 / stkGroupItem.BUD01) * 100;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetGpPer = stkGroupItem.BUD02 == 0 ? 0 : (stkGroupItem.GP02 / stkGroupItem.BUD02) * 100;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetGpPer = stkGroupItem.BUD03 == 0 ? 0 : (stkGroupItem.GP03 / stkGroupItem.BUD03) * 100;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetGpPer = stkGroupItem.BUD04 == 0 ? 0 : (stkGroupItem.GP04 / stkGroupItem.BUD04) * 100;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetGpPer = stkGroupItem.BUD05 == 0 ? 0 : (stkGroupItem.GP05 / stkGroupItem.BUD05) * 100;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetGpPer = stkGroupItem.BUD06 == 0 ? 0 : (stkGroupItem.GP06 / stkGroupItem.BUD06) * 100;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetGpPer = stkGroupItem.BUD07 == 0 ? 0 : (stkGroupItem.GP07 / stkGroupItem.BUD07) * 100;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetGpPer = stkGroupItem.BUD08 == 0 ? 0 : (stkGroupItem.GP08 / stkGroupItem.BUD08) * 100;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetGpPer = stkGroupItem.BUD09 == 0 ? 0 : (stkGroupItem.GP09 / stkGroupItem.BUD09) * 100;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetGpPer = stkGroupItem.BUD10 == 0 ? 0 : (stkGroupItem.GP10 / stkGroupItem.BUD10) * 100;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetGpPer = stkGroupItem.BUD11 == 0 ? 0 : (stkGroupItem.GP01 / stkGroupItem.BUD11) * 100;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetGpPer = stkGroupItem.BUD12 == 0 ? 0 : (stkGroupItem.GP12 / stkGroupItem.BUD12) * 100;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+
+                                                        <td class="vright">
+                                                            @valBudgetGpPer.ToString("N0")%
+                                                        </td>
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <th style="vertical-align:middle;">No Of Customer</th>
+                                                <td>  </td>
+                                                @{
+                                                    int countBudgetCustomer = 0;
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        countBudgetCustomer++;
+                                                        double valBudgetCustomer = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetCustomer = stkGroupItem.Cus01_Cy;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetCustomer = stkGroupItem.Cus02_Cy;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetCustomer = stkGroupItem.Cus03_Cy;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetCustomer = stkGroupItem.Cus04_Cy;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetCustomer = stkGroupItem.Cus05_Cy;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetCustomer = stkGroupItem.Cus06_Cy;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetCustomer = stkGroupItem.Cus07_Cy;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetCustomer = stkGroupItem.Cus08_Cy;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetCustomer = stkGroupItem.Cus09_Cy;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetCustomer = stkGroupItem.Cus10_Cy;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetCustomer = stkGroupItem.Cus11_Cy;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetCustomer = stkGroupItem.Cus12_Cy;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+
+                                                        <td class="vright">
+                                                            @valBudgetCustomer.ToString("N0")
+                                                            <input type="hidden" class="budget_customer_@countBudgetCustomer" id="budget_customer_@countBudgetCustomer" value="@valBudgetCustomer.ToString("N0")" />
+                                                        </td>
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <th style="vertical-align:middle;">Actaul Sales</th>
+                                                <td>  </td>
+                                                @{
+                                                    int countBudgetActualSale = 0;
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        countBudgetActualSale++;
+                                                        double valBudgetActaulSale = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetActaulSale = stkGroupItem.ACT01_Cy;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetActaulSale = stkGroupItem.ACT02_Cy;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetActaulSale = stkGroupItem.ACT03_Cy;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetActaulSale = stkGroupItem.ACT04_Cy;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetActaulSale = stkGroupItem.ACT05_Cy;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetActaulSale = stkGroupItem.ACT06_Cy;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetActaulSale = stkGroupItem.ACT07_Cy;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetActaulSale = stkGroupItem.ACT08_Cy;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetActaulSale = stkGroupItem.ACT09_Cy;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetActaulSale = stkGroupItem.ACT10_Cy;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetActaulSale = stkGroupItem.ACT11_Cy;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetActaulSale = stkGroupItem.ACT12_Cy;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+
+                                                        <td class="vright">
+                                                            @valBudgetActaulSale.ToString("N0")
+                                                            <input type="hidden" class="form-control vright budget_actual_sale_@countBudgetActualSale" id="budget_actual_sale_@countBudgetActualSale" value="@valBudgetActaulSale.ToString("N0")" />
+                                                        </td>
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <th style="vertical-align:middle;">Actaul GP</th>
+                                                <td>  </td>
+                                                @{
+                                                    int countBudgetActualGp = 0;
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        countBudgetActualGp++;
+                                                        double valBudgetActaulGp = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetActaulGp = stkGroupItem.AGP01_Cy;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetActaulGp = stkGroupItem.AGP02_Cy;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetActaulGp = stkGroupItem.AGP03_Cy;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetActaulGp = stkGroupItem.AGP04_Cy;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetActaulGp = stkGroupItem.AGP05_Cy;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetActaulGp = stkGroupItem.AGP06_Cy;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetActaulGp = stkGroupItem.AGP07_Cy;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetActaulGp = stkGroupItem.AGP08_Cy;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetActaulGp = stkGroupItem.AGP09_Cy;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetActaulGp = stkGroupItem.AGP10_Cy;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetActaulGp = stkGroupItem.AGP11_Cy;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetActaulGp = stkGroupItem.AGP12_Cy;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+
+                                                        <td class="vright">
+                                                            @valBudgetActaulGp.ToString("N0")
+                                                            <input type="hidden" class="form-control vright budget_actual_gp_@countBudgetActualGp" id="budget_actual_gp_@countBudgetActualGp" value="@valBudgetActaulGp.ToString("N0")" />
+                                                        </td>
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+
+                                            <tr>
+                                                <th style="vertical-align:middle;">Actaul GP%</th>
+                                                <td>  </td>
+                                                @{
+                                                    foreach (var item in arrMonth)
+                                                    {
+                                                        double valBudgetActaulGpPer = 0;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT01_Cy == 0 ? 0 : (stkGroupItem.AGP01_Cy / stkGroupItem.ACT01_Cy) * 100;
+                                                                break;
+                                                            case "Feb":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT02_Cy == 0 ? 0 : (stkGroupItem.AGP02_Cy / stkGroupItem.ACT02_Cy) * 100;
+                                                                break;
+                                                            case "Mar":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT03_Cy == 0 ? 0 : (stkGroupItem.AGP03_Cy / stkGroupItem.ACT03_Cy) * 100;
+                                                                break;
+                                                            case "Apr":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT04_Cy == 0 ? 0 : (stkGroupItem.AGP04_Cy / stkGroupItem.ACT04_Cy) * 100;
+                                                                break;
+                                                            case "May":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT05_Cy == 0 ? 0 : (stkGroupItem.AGP05_Cy / stkGroupItem.ACT05_Cy) * 100;
+                                                                break;
+                                                            case "Jun":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT06_Cy == 0 ? 0 : (stkGroupItem.AGP06_Cy / stkGroupItem.ACT06_Cy) * 100;
+                                                                break;
+                                                            case "Jul":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT07_Cy == 0 ? 0 : (stkGroupItem.AGP07_Cy / stkGroupItem.ACT07_Cy) * 100;
+                                                                break;
+                                                            case "Aug":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT08_Cy == 0 ? 0 : (stkGroupItem.AGP08_Cy / stkGroupItem.ACT08_Cy) * 100;
+                                                                break;
+                                                            case "Sep":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT09_Cy == 0 ? 0 : (stkGroupItem.AGP10_Cy / stkGroupItem.ACT09_Cy) * 100;
+                                                                break;
+                                                            case "Oct":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT10_Cy == 0 ? 0 : (stkGroupItem.AGP01_Cy / stkGroupItem.ACT10_Cy) * 100;
+                                                                break;
+                                                            case "Nov":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT11_Cy == 0 ? 0 : (stkGroupItem.AGP11_Cy / stkGroupItem.ACT11_Cy) * 100;
+                                                                break;
+                                                            case "Dec":
+                                                                valBudgetActaulGpPer = stkGroupItem.ACT12_Cy == 0 ? 0 : (stkGroupItem.AGP12_Cy / stkGroupItem.ACT12_Cy) * 100;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+
+                                                        <td class="vright">
+
+                                                            @valBudgetActaulGpPer.ToString("N0")%
+                                                        </td>
+                                                        countBudgetGpPer++;
+                                                    }
+                                                    for (int colTd = 0; colTd < 3; colTd++)
+                                                    {
+                                                        <td> </td>
+                                                    }
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+        @*Footer*@
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: large;" onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+        @*</form>*@
+    </div>
+    //Summary
+    <div class="card mb-12" id="cardSummary" style="margin-top: 10px;">
+        <div class="card-header bg-danger text-white font-weight-bold">
+            <div class="row">
+                <div class="col-sm-6 text-left">
+                    <i class="fa fa-usd"></i> Summary
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="button" class="btn btn-info btn-sm" onclick="calculateBudgetPm();" style="margin-bottom: -2px; width: 40px;"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" style="padding: 0px 0px;">
+            <div class="table-responsive">
+                <table class="dataTablePage table table-striped table-bordered nowrap table-hover tableFixHead" border="1">
+                    <thead>
+                        <tr style="white-space: nowrap;">
+                            <th class="vleft" style="vertical-align: middle;">Month/Topic</th>
+                            <th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>
+                            @{
+                                foreach (var item in arrMonth)
+                                {
+                                    <th class="vcenter" align="center" style="font-weight: 700; min-width: 140px;"> @item </th>
+                                    rowStkGroup++;
+                                }
+                            }
+                            <th style="vertical-align: middle; min-width: 130px;">Sum Total</th>
+                            <th style="vertical-align: middle; min-width: 130px;">Sale Budget</th>
+                            <th style="vertical-align: middle; min-width: 130px;">Sale Budget Next</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="white-space: nowrap;">
+                            <th>Budget By PM</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                {
+                                    <td class="vright">
+                                        <span id="sum_budget_by_pm_@colTdSum"> </span>
+                                        <input type="hidden" id="val_sum_budget_by_pm_@colTdSum" value="" />
+                                    </td>
+                                }
+                                <td class="vright"> <span id="sum_budget_by_pm_sum_total"> </span> </td>
+                                <td class="vright"> <span id="sum_budget_by_pm_sale_budget"> </span> </td>
+                                <td class="vright"> <span id="sum_budget_by_pm_sale_budget_next"> </span> </td>
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>GP Budget</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright">
+                                        <span id="sum_budget_gp_@colTdSum"> </span>
+                                        <input type="hidden" id="val_sum_budget_gp_@colTdSum" value="" />
+                                    </td>
+                                }
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>GP Budget%</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright"> <span id="sum_budget_gp_per_@colTdSum"> </span> </td>
+                                }
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>No Of Customer</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright"> <span id="sum_budget_customer_@colTdSum"> </span> </td>
+                                }
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>Actaul Sales</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright">
+                                        <span id="sum_budget_actual_sale_@colTdSum"> </span>
+                                        <input type="hidden" id="val_sum_budget_actual_sale_@colTdSum" value="" />
+                                    </td>
+                                }
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>Actaul GP</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright">
+                                        <span id="sum_budget_actual_gp_@colTdSum"> </span>
+                                        <input type="hidden" id="val_sum_budget_actual_gp_@colTdSum" value="" />
+                                    </td>
+                                }
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap;">
+                            <th>Actaul GP%</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 16; colTdSum++)
+                                {
+                                    <td class="vright"> <span id="sum_actaul_gp_per_@colTdSum"> </span> </td>
+                                }
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<script defer>
+    //btn save
+    saveBudgetPm = async () => {
+        var request = [];
+        let stkGroup_header = document.querySelector('#stkGroup_header');
+        stkGroup_header = JSON.parse(stkGroup_header.value);
+        stkGroup_header.forEach(function (stkgrp, i) {
+            if (stkgrp != null) {
+                var details = {
+                    USER: '@Session["UserID"]',
+                    STKGRP: stkgrp,
+                    BUD00: parseInt($("input[name=budget_by_pm_" + stkgrp + "_0]").val().replace(/\,/g, '')),
+                    BUD01: parseInt($("input[name=budget_by_pm_" + stkgrp + "_1]").val().replace(/\,/g, '')),
+                    BUD02: parseInt($("input[name=budget_by_pm_" + stkgrp + "_2]").val().replace(/\,/g, '')),
+                    BUD03: parseInt($("input[name=budget_by_pm_" + stkgrp + "_3]").val().replace(/\,/g, '')),
+                    BUD04: parseInt($("input[name=budget_by_pm_" + stkgrp + "_4]").val().replace(/\,/g, '')),
+                    BUD05: parseInt($("input[name=budget_by_pm_" + stkgrp + "_5]").val().replace(/\,/g, '')),
+                    BUD06: parseInt($("input[name=budget_by_pm_" + stkgrp + "_6]").val().replace(/\,/g, '')),
+                    BUD07: parseInt($("input[name=budget_by_pm_" + stkgrp + "_7]").val().replace(/\,/g, '')),
+                    BUD08: parseInt($("input[name=budget_by_pm_" + stkgrp + "_8]").val().replace(/\,/g, '')),
+                    BUD09: parseInt($("input[name=budget_by_pm_" + stkgrp + "_9]").val().replace(/\,/g, '')),
+                    BUD10: parseInt($("input[name=budget_by_pm_" + stkgrp + "_10]").val().replace(/\,/g, '')),
+                    BUD11: parseInt($("input[name=budget_by_pm_" + stkgrp + "_11]").val().replace(/\,/g, '')),
+                    BUD12: parseInt($("input[name=budget_by_pm_" + stkgrp + "_12]").val().replace(/\,/g, '')),
+                    GP01: parseInt($("input[name=budget_gp_" + stkgrp + "_1]").val().replace(/\,/g, '')),
+                    GP02: parseInt($("input[name=budget_gp_" + stkgrp + "_2]").val().replace(/\,/g, '')),
+                    GP03: parseInt($("input[name=budget_gp_" + stkgrp + "_3]").val().replace(/\,/g, '')),
+                    GP04: parseInt($("input[name=budget_gp_" + stkgrp + "_4]").val().replace(/\,/g, '')),
+                    GP05: parseInt($("input[name=budget_gp_" + stkgrp + "_5]").val().replace(/\,/g, '')),
+                    GP06: parseInt($("input[name=budget_gp_" + stkgrp + "_6]").val().replace(/\,/g, '')),
+                    GP07: parseInt($("input[name=budget_gp_" + stkgrp + "_7]").val().replace(/\,/g, '')),
+                    GP08: parseInt($("input[name=budget_gp_" + stkgrp + "_8]").val().replace(/\,/g, '')),
+                    GP09: parseInt($("input[name=budget_gp_" + stkgrp + "_9]").val().replace(/\,/g, '')),
+                    GP10: parseInt($("input[name=budget_gp_" + stkgrp + "_10]").val().replace(/\,/g, '')),
+                    GP11: parseInt($("input[name=budget_gp_" + stkgrp + "_11]").val().replace(/\,/g, '')),
+                    GP12: parseInt($("input[name=budget_gp_" + stkgrp + "_12]").val().replace(/\,/g, '')),
+                }
+            request.push(details);
+            }
+        });
+
+        console.log(request);
+        //return false;
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            url: '@Url.Action("SaveBudget", "BudgetPm")',
+            data: JSON.stringify(request),
+            contentType: "application/json; charset=utf-8",
+            enctype: 'multipart/form-data',
+            beforeSend: function () {
+                LoadingShow();
+            },
+            success: function (result) {
+                //if (result.alertType == 'success')
+                //    SetSuccessReload(result.alertMsg, result.alertType);
+                //else {
+                //    notify(result.alertMsg, result.alertType);
+                //}
+                if (result != null) {
+                    alert('Success');
+                }
+            },
+            error: function (ex) {
+                //notify(ex, 'danger');
+            },
+            complete: function (res) {
+                LoadingHide();
+            }
+        });
+    }
+    //sum Budget By PM ID
+    const sumBudgetByPmId = async (_className, stkgrp) => {
+        let sum_budget_by_pm = 0;
+        //console.log(_className);
+        //_id = budget_by_pm_1
+        await Promise.all($('.' + _className).each(async function (i, obj) {
+            let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            budget_by_pm = await getVowels(budget_by_pm, 0);
+            sum_budget_by_pm += Number(budget_by_pm);
+            //console.log(sum_budget_by_pm);
+        }));
+        $('#sum_' + _className).text(numberWithCommas(sum_budget_by_pm));
+        $('#val_sum_' + _className).val(numberWithCommas(sum_budget_by_pm));
+        //sum total budget By pm
+        let sum_budget_by_pm_sum_total = 0;
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            await Promise.all($("input[name=budget_by_pm_" + stkgrp + "_" + numMonth + "]").each(async function (i, obj) {
+                let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+                budget_by_pm = await getVowels(budget_by_pm, 0);
+                sum_budget_by_pm_sum_total += Number(budget_by_pm);
+            }));
+        }
+        $("#budget_by_pm_" + stkgrp + "_0").val(numberWithCommas(sum_budget_by_pm_sum_total));
+        //sum ข้างล่าง
+        await sumBudgetByPmSumTotal("budget_by_pm_sum_total");
+        await sumTotalGpBudgetPer();
+    }
+    //sum gp budget
+    const sumTotalGpBudgetPer = async () => {
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            let sum_total_budget_gp_per = 0;
+            let sum_budget_gp = $("#val_sum_budget_by_pm_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            let sum_budget_by_pm = $("#val_sum_budget_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            //console.log("sum_budget_gp = " + sum_budget_gp);
+            //console.log("sum_budget_by_pm = " + sum_budget_by_pm);
+            if (sum_budget_by_pm != 0) {
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+            }
+
+            $('#sum_budget_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2)+"%");
+        }
+    }
+    //sum actual budget
+    const sumTotalActaulPer = async () => {
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            let sum_total_budget_gp_per = 0;
+            let sum_budget_gp = $("#val_sum_budget_actual_sale_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            let sum_budget_by_pm = $("#val_sum_budget_actual_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+           // console.log("sum_budget_gp = " + sum_budget_gp);
+           // console.log("sum_budget_by_pm = " + sum_budget_by_pm);
+            if (sum_budget_by_pm != 0) {
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+                $('#sum_actaul_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2)+"%");
+            }
+
+        }
+    }
+    //sum Budget By field name
+    const sumBudgetByPmField = async (inputName) => {
+        for (let numMonth = 0; numMonth <= 12; numMonth++) {
+            let sum_budget = 0;
+            await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
+                let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+                budget_by_pm = await getVowels(budget_by_pm, 0);
+                sum_budget += Number(budget_by_pm);
+                //console.log(sum_budget_by_pm);
+            }));
+            if (sum_budget != 0) {
+                if ((inputName == 'budget_by_pm' || inputName == 'budget_gp') && numMonth == 0) {
+                    $('#sum_' + inputName + '_' + numMonth).text(sum_budget.toFixed(2));
+                } else {
+                    $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_budget));
+                }
+
+                if (inputName == 'budget_by_pm' || inputName == 'budget_gp' || inputName == 'budget_actual_sale' || inputName == 'budget_actual_gp') {
+                    $('#val_sum_' + inputName + '_' + numMonth).val(numberWithCommas(sum_budget));
+                }
+            }
+        }
+    }
+    //sum budget by pm sum total, sale budget, sale budget next
+    const sumBudgetByPmSumTotal = async (inputName) => {
+        let budget_sum_total = 0;
+        await Promise.all($('.' + inputName).each(async function (i, obj) {
+            let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            budget_by_pm = await getVowels(budget_by_pm, 0);
+            budget_sum_total += Number(budget_by_pm);
+        }));
+        $('#sum_' + inputName).text(numberWithCommas(budget_sum_total));
+    }
+    //btn reload
+    async function calculateBudgetPm() {
+        $("#cardSummary").LoadingOverlay("show");
+        //Budget By PM
+        await sumBudgetByPmField("budget_by_pm");
+        //GP Budget
+        await sumBudgetByPmField("budget_gp");
+        await sumBudgetByPmField("budget_actual_sale");
+        await sumBudgetByPmField("budget_actual_gp");
+        await sumBudgetByPmField("budget_customer");
+        //Sum by pm
+        await sumBudgetByPmSumTotal("budget_by_pm_sum_total");
+        await sumBudgetByPmSumTotal("budget_by_pm_sale_budget");
+        await sumBudgetByPmSumTotal("budget_by_pm_sale_budget_next");
+
+        await sumTotalGpBudgetPer();
+        await sumTotalActaulPer();
+
+        await $("#cardSummary").LoadingOverlay("hide");
+    }
+
+    $(document).ready(function () {
+        calculateBudgetPm();
+    });
+</script>

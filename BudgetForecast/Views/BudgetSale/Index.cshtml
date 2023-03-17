@@ -1,0 +1,155 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "Budget by sale";
+    // Layout = "~/Views/Shared/.cshtml";
+    var dataSlmlis = ViewBag.SlmModel;
+    List<SelectListItem> getStkGrp = ViewBag.StkGrp;
+    List<SelectListItem> getPRODList = ViewBag.PRODList;
+    var usre = ViewBag.usre;
+}
+<input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
+<input type="hidden" name="stkGroup_header[]" id="stkGroup_header" value="@ViewBag.stkGroup" />
+@*<h2>Budget by product</h2>*@
+<title>@ViewBag.Title</title>
+<div class="card mb-12 mt-4">
+    <form action="@Url.Action("Index", "BudgetPm")" method="post" onsubmit="LoadingShow();">
+        <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <i class="fa fa-table"></i> Budget by product <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" id="headerSearch">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
+                        <span>
+                            <select class="form-control bar" id="prodMgr" name="prodMgr" style="width: 100%;">
+                                @* <option value="0">เลือก SLMCOD</option>*@
+                                @for (var i = 0; i < getPRODList.Count; i++)
+                                {
+                                    <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <span> <i class="fa fa-shopping-cart"></i><b> STOCK GROUP:</b></span>
+                        <span>
+                            <select class="form-control selectpicker" id="stkGroup" name="stkGroup" style="width: 100%; padding-top: 5px;" title="เลือก Stock Group" data-live-search="true" multiple>
+                                @*<option value="0">เลือก Stock Group</option>*@
+                                @for (var i = 0; i < getStkGrp.Count; i++)
+                                {
+                                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" id="headerSearchFooter">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="reset" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@*input*@
+<div class="pt-2">
+    @Html.Partial("_listDataBudgetPM", (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
+</div>
+
+<br>
+<br>
+
+
+<script>
+    $(document).ready(function () {
+        //GET Stkgroup
+        //console.log(JSON.parse($("#stkGroup_header").val()))
+        $('#prodMgr').val($("#prodMgr_header").val());
+        $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
+
+        $('#prodMgr').change(function () {
+            var ProdMRG = $('#prodMgr').val();
+            var ProdMRG_NAME = $("#prodMgr option:selected").text();
+
+            $.ajax({
+                url: '@Url.Action("GetSTKGRP", "PriceApproval")',
+                data: {
+                    ProdMRG: ProdMRG,
+                    ProdMRG_NAME: ProdMRG_NAME
+                },
+                type: "POST",
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    var select = $("#stkGroup");
+                    select.children().remove();
+                    select.append($("<option>").val("0").text("เลือก Stock Group"));
+                    $(data).each(function (index, item) {
+                        select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                    });
+
+                }
+            });
+        });
+    });
+    //hide header
+    function hideHeader() {
+        var x = document.getElementById("headerSearch");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        var y = document.getElementById("headerSearchFooter");
+        if (y.style.display === "none") {
+            y.style.display = "block";
+        } else {
+            y.style.display = "none";
+        }
+    }
+    //Button Search
+
+//    async function searchBudget() {
+//        let prodMgr = await $("#prodMgr").val() || '';
+//        let stkGroup = await $("#stkGroup").val() || '';
+ //       console.log('stkGroup = ' + stkGroup);
+//        if (prodMgr != "" && stkGroup != "")
+ //       {
+  //          $.ajax({
+   //             url: '/BudgetInput/GetListDataBudget',
+    //            type: 'POST',
+     //           //contentType: "application/json; charset=utf-8",
+     //           dataType: "html",
+    //            data: {
+    //                prodMgr: prodMgr,
+    //                stkGroup: JSON.stringify(stkGroup)
+    //            },
+    //            beforeSend: function () {
+    //                LoadingShow();
+    //                LoadingHide();
+    //            },
+    //            success: function (res) {
+    //                $('#listDataBudgetPM').html(res);
+//
+    //            },
+    //            complete: function () {
+        //           LoadingHide();
+       //         },
+        //    });
+       //    @*await $("#listDataBudgetPM").load('@Url.Content("/BudgetInput/GetListDataBudget")');*@
+       // }
+
+  //  }
+</script>

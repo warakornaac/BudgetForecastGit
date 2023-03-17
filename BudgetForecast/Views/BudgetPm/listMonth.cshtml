@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@ViewBag.listMonth
+<h2>Index</h2>
+
+
+<div class="box box-default">
+    <div class="box-header with-border"><i class="fa fa-search"></i></div>
+    <div class="box-body">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-sm-4 col-md-3">
+                    <?php echo $form->field($model, 'company_id')->dropDownList(Yii::$app->Utilities->getItemCompanyID(), ['id'=>'ddl-branch_code'])->label('สาขาจอง'); ?>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <?php echo $form->field($model, 'chassis_no')->label('เลขที่ตัวถัง'); ?>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <?php echo $form->field($model, 'booking_book_no')->label('เล่มจอง'); ?>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <?php echo $form->field($model, 'customer_name')->label('ชื่อ-สกุล ลูกค้า');?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-footer">
+        <div class="col-sm-6 col-md-6 text-right">
+
+        </div>
+    </div>
+</div>

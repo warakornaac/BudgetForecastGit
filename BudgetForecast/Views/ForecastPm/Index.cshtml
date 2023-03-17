@@ -1,0 +1,136 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "Forecast by product";
+    // Layout = "~/Views/Shared/.cshtml";
+    var dataSlmlis = ViewBag.SlmModel;
+    List<SelectListItem> getStkGrp = ViewBag.StkGrp;
+    List<SelectListItem> getPRODList = ViewBag.PRODList;
+    var usre = ViewBag.usre;
+}
+<input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
+<input type="hidden" id="year_header" value="@ViewBag.year" />
+<input type="hidden" name="stkGroup_header[]" id="stkGroup_header" value="@ViewBag.stkGroup" />
+@*<h2>Budget by product</h2>*@
+<title>@ViewBag.Title</title>
+@*<div class="mt-4 pt-0 border-bottom border-bottom">
+    <h3>@ViewBag.Title</h3>
+</div>*@
+<div class="card mb-12 mt-4">
+    <form action="@Url.Action("Index", "ForecastPm")" method="post" onsubmit="LoadingShow();">
+        <div class="card-header bg-warning text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" id="headerSearch">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
+                        <span>
+                            <select class="form-control bar" id="prodMgr" name="prodMgr" style="width: 100%;">
+                                @for (var i = 0; i < getPRODList.Count; i++)
+                                {
+                                    <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
+                        <span>
+                            <select class="form-control bar" id="year" name="year" style="width: 100%;">
+                                <option value="2023" selected>2023</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
+                        <span>
+                            <select class="form-control selectpicker" id="sec" name="sec" style="width: 100%; padding-top: 5px;" title="เลือก Sec" data-live-search="true" multiple>
+                                @for (var i = 0; i < getStkGrp.Count; i++)
+                                {
+                                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" id="headerSearchFooter">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="reset" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                    <button type="submit" class="btn btn-primary btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@*input*@
+<div class="pt-2">
+    @Html.Partial("_listDataForecastPM", (List<StoreSearchForecastPmModel>)ViewBag.stkGroupList)
+</div>
+
+<br>
+<br>
+
+<script defer>
+    $(document).ready(function () {
+        //GET Stkgroup
+        //console.log(JSON.parse($("#stkGroup_header").val()))
+        $('#prodMgr').val($("#prodMgr_header").val());
+        $('#year').val($("#year_header").val());
+        $('#sec').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
+
+        $('#prodMgr').change(function () {
+            var ProdMRG = $('#prodMgr').val();
+            var ProdMRG_NAME = $("#prodMgr option:selected").text();
+
+            $.ajax({
+                url: '@Url.Action("GetSTKGRP", "PriceApproval")',
+                data: {
+                    ProdMRG: ProdMRG,
+                    ProdMRG_NAME: ProdMRG_NAME
+                },
+                type: "POST",
+                dataType: "JSON",
+                success: function (data) {
+                    // console.log(data);
+                    var select = $("#stkGroup");
+                    select.children().remove();
+                    select.append($("<option>").val("0").text("เลือก Stock Group"));
+                    $(data).each(function (index, item) {
+                        select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                    });
+
+                }
+            });
+        });
+    });
+    //hide header
+    function hideHeader() {
+        var x = document.getElementById("headerSearch");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        var y = document.getElementById("headerSearchFooter");
+        if (y.style.display === "none") {
+            y.style.display = "block";
+        } else {
+            y.style.display = "none";
+        }
+    }
+
+</script>

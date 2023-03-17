@@ -1,0 +1,71 @@
+﻿body, html {
+    zoom: 95%;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgb(209 225 233), rgb(243 255 246));
+    height: -webkit-fill-available;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.tableFixHead {
+    /*overflow: auto;*/
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tableFixHead tbody tr th {
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px 16px;
+}
+
+th {
+    background: #eee;
+}
+
+.vcenter {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.vleft {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.vright {
+    text-align: right;
+    vertical-align: middle;
+}

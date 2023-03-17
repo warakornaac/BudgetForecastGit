@@ -39,4 +39,4 @@ $RECYCLE.BIN/
 .DS_Store
 
 # Config
-/ClaimWapGit/Web.config
+#/BudgetForecastGit/Web.config
