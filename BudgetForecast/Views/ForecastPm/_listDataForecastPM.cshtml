@@ -1117,73 +1117,116 @@ else
     //btn save
     saveForecastPm = async () => {
         var request = [];
-        let stkGroup_header = document.querySelector('#stkGroup_header');
-        stkGroup_header = JSON.parse(stkGroup_header.value);
-        stkGroup_header.forEach(function (sec, i) {
-            if (sec != null) {
-                var details = {
-                    USER: '@Session["UserID"]',
-                    SEC: sec,
-                    YEAR: '2023',
-                    FC00: parseInt($("input[name=pm_forecast_" + sec + "_0]").val().replace(/\,/g, '')),
-                    FC01: parseInt($("input[name=pm_forecast_" + sec + "_1]").val().replace(/\,/g, '')),
-                    FC02: parseInt($("input[name=pm_forecast_" + sec + "_2]").val().replace(/\,/g, '')),
-                    FC03: parseInt($("input[name=pm_forecast_" + sec + "_3]").val().replace(/\,/g, '')),
-                    FC04: parseInt($("input[name=pm_forecast_" + sec + "_4]").val().replace(/\,/g, '')),
-                    FC05: parseInt($("input[name=pm_forecast_" + sec + "_5]").val().replace(/\,/g, '')),
-                    FC06: parseInt($("input[name=pm_forecast_" + sec + "_6]").val().replace(/\,/g, '')),
-                    FC07: parseInt($("input[name=pm_forecast_" + sec + "_7]").val().replace(/\,/g, '')),
-                    FC08: parseInt($("input[name=pm_forecast_" + sec + "_8]").val().replace(/\,/g, '')),
-                    FC09: parseInt($("input[name=pm_forecast_" + sec + "_9]").val().replace(/\,/g, '')),
-                    FC10: parseInt($("input[name=pm_forecast_" + sec + "_10]").val().replace(/\,/g, '')),
-                    FC11: parseInt($("input[name=pm_forecast_" + sec + "_11]").val().replace(/\,/g, '')),
-                    FC12: parseInt($("input[name=pm_forecast_" + sec + "_12]").val().replace(/\,/g, '')),
+        Swal.fire({
+            title: 'ยืนยันการบันทึกข้อมูล',
+           // html: html,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00a65a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '<i class="fa fa-check"></i> ยืนยัน',
+            cancelButtonText: '<i class="fa fa-times"></i> ไม่',
+            allowOutsideClick: false,
+            focusConfirm: false,
+        }).then((result) => {
+            if (result.value) {
+                let stkGroup_header = document.querySelector('#stkGroup_header');
+                stkGroup_header = JSON.parse(stkGroup_header.value);
+                stkGroup_header.forEach(function (sec, i) {
+                    if (sec != null) {
+                        var details = {
+                            USER: '@Session["UserID"]',
+                            SEC: sec,
+                            YEAR: '2023',
+                            FC00: parseInt($("input[name=pm_forecast_" + sec + "_0]").val().replace(/\,/g, '')),
+                            FC01: parseInt($("input[name=pm_forecast_" + sec + "_1]").val().replace(/\,/g, '')),
+                            FC02: parseInt($("input[name=pm_forecast_" + sec + "_2]").val().replace(/\,/g, '')),
+                            FC03: parseInt($("input[name=pm_forecast_" + sec + "_3]").val().replace(/\,/g, '')),
+                            FC04: parseInt($("input[name=pm_forecast_" + sec + "_4]").val().replace(/\,/g, '')),
+                            FC05: parseInt($("input[name=pm_forecast_" + sec + "_5]").val().replace(/\,/g, '')),
+                            FC06: parseInt($("input[name=pm_forecast_" + sec + "_6]").val().replace(/\,/g, '')),
+                            FC07: parseInt($("input[name=pm_forecast_" + sec + "_7]").val().replace(/\,/g, '')),
+                            FC08: parseInt($("input[name=pm_forecast_" + sec + "_8]").val().replace(/\,/g, '')),
+                            FC09: parseInt($("input[name=pm_forecast_" + sec + "_9]").val().replace(/\,/g, '')),
+                            FC10: parseInt($("input[name=pm_forecast_" + sec + "_10]").val().replace(/\,/g, '')),
+                            FC11: parseInt($("input[name=pm_forecast_" + sec + "_11]").val().replace(/\,/g, '')),
+                            FC12: parseInt($("input[name=pm_forecast_" + sec + "_12]").val().replace(/\,/g, '')),
 
-                    FC_GP00: parseInt($("input[name=pm_forecast_gp_" + sec + "_0]").val().replace(/\,/g, '')),
-                    FC_GP01: parseInt($("input[name=pm_forecast_gp_" + sec + "_1]").val().replace(/\,/g, '')),
-                    FC_GP02: parseInt($("input[name=pm_forecast_gp_" + sec + "_2]").val().replace(/\,/g, '')),
-                    FC_GP03: parseInt($("input[name=pm_forecast_gp_" + sec + "_3]").val().replace(/\,/g, '')),
-                    FC_GP04: parseInt($("input[name=pm_forecast_gp_" + sec + "_4]").val().replace(/\,/g, '')),
-                    FC_GP05: parseInt($("input[name=pm_forecast_gp_" + sec + "_5]").val().replace(/\,/g, '')),
-                    FC_GP06: parseInt($("input[name=pm_forecast_gp_" + sec + "_6]").val().replace(/\,/g, '')),
-                    FC_GP07: parseInt($("input[name=pm_forecast_gp_" + sec + "_7]").val().replace(/\,/g, '')),
-                    FC_GP08: parseInt($("input[name=pm_forecast_gp_" + sec + "_8]").val().replace(/\,/g, '')),
-                    FC_GP09: parseInt($("input[name=pm_forecast_gp_" + sec + "_9]").val().replace(/\,/g, '')),
-                    FC_GP10: parseInt($("input[name=pm_forecast_gp_" + sec + "_10]").val().replace(/\,/g, '')),
-                    FC_GP11: parseInt($("input[name=pm_forecast_gp_" + sec + "_11]").val().replace(/\,/g, '')),
-                    FC_GP12: parseInt($("input[name=pm_forecast_gp_" + sec + "_12]").val().replace(/\,/g, '')),
-                }
-            request.push(details);
-            }
-        });
-
-        console.log(request);
-        return false;
-        $.ajax({
-            type: 'POST',
-            cache: false,
-            url: '@Url.Action("SaveForecast", "ForecastPm")',
-            data: JSON.stringify(request),
-            contentType: "application/json; charset=utf-8",
-            enctype: 'multipart/form-data',
-            beforeSend: function () {
-                LoadingShow();
-            },
-            success: function (result) {
-                //if (result.alertType == 'success')
-                //    SetSuccessReload(result.alertMsg, result.alertType);
-                //else {
-                //    notify(result.alertMsg, result.alertType);
-                //}
-                if (result != null) {
-                    alert('Success');
-                }
-            },
-            error: function (ex) {
-                //notify(ex, 'danger');
-            },
-            complete: function (res) {
-                LoadingHide();
+                            FC_GP00: parseInt($("input[name=pm_forecast_gp_" + sec + "_0]").val().replace(/\,/g, '')),
+                            FC_GP01: parseInt($("input[name=pm_forecast_gp_" + sec + "_1]").val().replace(/\,/g, '')),
+                            FC_GP02: parseInt($("input[name=pm_forecast_gp_" + sec + "_2]").val().replace(/\,/g, '')),
+                            FC_GP03: parseInt($("input[name=pm_forecast_gp_" + sec + "_3]").val().replace(/\,/g, '')),
+                            FC_GP04: parseInt($("input[name=pm_forecast_gp_" + sec + "_4]").val().replace(/\,/g, '')),
+                            FC_GP05: parseInt($("input[name=pm_forecast_gp_" + sec + "_5]").val().replace(/\,/g, '')),
+                            FC_GP06: parseInt($("input[name=pm_forecast_gp_" + sec + "_6]").val().replace(/\,/g, '')),
+                            FC_GP07: parseInt($("input[name=pm_forecast_gp_" + sec + "_7]").val().replace(/\,/g, '')),
+                            FC_GP08: parseInt($("input[name=pm_forecast_gp_" + sec + "_8]").val().replace(/\,/g, '')),
+                            FC_GP09: parseInt($("input[name=pm_forecast_gp_" + sec + "_9]").val().replace(/\,/g, '')),
+                            FC_GP10: parseInt($("input[name=pm_forecast_gp_" + sec + "_10]").val().replace(/\,/g, '')),
+                            FC_GP11: parseInt($("input[name=pm_forecast_gp_" + sec + "_11]").val().replace(/\,/g, '')),
+                            FC_GP12: parseInt($("input[name=pm_forecast_gp_" + sec + "_12]").val().replace(/\,/g, '')),
+                        }
+                    request.push(details);
+                    }
+                });
+                console.log(request);
+                //return false;
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    url: '@Url.Action("SaveForecast", "ForecastPm")',
+                    data: JSON.stringify(request),
+                    contentType: "application/json; charset=utf-8",
+                    enctype: 'multipart/form-data',
+                    beforeSend: function () {
+                        LoadingShow();
+                    },
+                    success: function (result) {
+                        if (result != null) {
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                html: 'บันทึกเรียบร้อย',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'ปิด',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                                timer: 6000,
+                                timerProgressBar: true,
+                                //onClose: () => {
+                                //    LoadingShow();
+                                //    location.reload();
+                                //}
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                //title: res.msg,
+                                html: 'พบข้อผิดพลาด',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'ปิด',
+                                allowOutsideClick: false,
+                                focusConfirm: false,
+                            });
+                        }
+                    },
+                    error: function (ex) {
+                        //notify(ex, 'danger');
+                    },
+                    complete: function (res) {
+                        LoadingHide();
+                    }
+                }).fail(function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ระบบทำงานผิดพลาด()',
+                        html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveExcess<br><br>',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'ปิด',
+                        allowOutsideClick: false,
+                        focusConfirm: false,
+                    });
+                });
             }
         });
     }
