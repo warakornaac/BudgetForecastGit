@@ -77,12 +77,13 @@ else
                                 <input type="checkbox" id="selectkAll" class="selectkAll" onclick="selectAll(this);" style="" />
                             </th>
                             <th class="vcenter" style="vertical-align: middle;">SL</th>
-                            <th class="vcenter" style="vertical-align: middle;">Province</th>
                             <th class="vcenter" style="vertical-align: middle;">Custype</th>
-                            <th class="vcenter" style="vertical-align: middle;">People</th>
+                            <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
                             <th class="vcenter" style="vertical-align: middle;">Cusname</th>
-                            <th class="vcenter" style="vertical-align: middle;">Stkgrp</th>
-                            <th class="vcenter" style="vertical-align: middle;">StkgrpName</th>
+                            <th class="vcenter" style="vertical-align: middle;">Province</th>
+                            <th class="vcenter" style="vertical-align: middle;">SEC</th>
+                            <th class="vcenter" style="vertical-align: middle;">StkGroup</th>
+                            <th class="vcenter" style="vertical-align: middle;">StkName</th>
                             <th class="vcenter" style="vertical-align: middle;">LastYr</th>
                             <th class="vcenter" style="vertical-align: middle;">Ytd</th>
                             <th class="vcenter" style="vertical-align: middle;">Q This Yr</th>
@@ -110,10 +111,18 @@ else
                                         }
                                     </td>
                                     <td class="vcenter" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.SLMCOD</td>
-                                    <td class="vleft" style="vertical-align: middle;"> @stkGroupItem.PRO</td>
                                     <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.CUSTYP</td>
-                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.PEOPLE</td>
+                                    <td class="vcenter" style="vertical-align: middle;">
+                                        @{ 
+                                            if(stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
+                                            {
+                                                @stkGroupItem.PEOPLE
+                                            }
+                                        }
+                                    </td>
                                     <td class="vleft" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.CUSNAM</td>
+                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.PRO</td>
+                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.SEC</td>
                                     <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.STKGRP</td>
                                     <td class="vleft" style="vertical-align: middle;"> @stkGroupItem.GRPNAM</td>
                                     <td class="vright" style="vertical-align: middle;">

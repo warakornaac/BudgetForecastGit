@@ -4,6 +4,7 @@
     var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
     string setWidth = "870px";
     var countList = ((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count();
+    string[] members = new string[100];
 }
 
 <input type="hidden" id="countList" value="@countList" />
@@ -24,6 +25,8 @@ else
                     int rowSec = 0;
                     foreach (var stkGroupItem in (List<StoreSearchForecastPmModel>)ViewBag.stkGroupList)
                     {
+                        //เก็บ sec
+                        <input type="hidden" name="stkSecList_header[]" class="stkSecList_header" value="@stkGroupItem.SEC" />
                         rowSec++;
                         if (rowSec > 1)
                         {
@@ -1134,11 +1137,10 @@ else
         </div>
     </div>
 }
-
 <script defer>
     var countList = $("#countList").val() || 0;
     if (countList > 0) {
-        $('#formForecastPm').data('serialize', $('#formForecastPm').serialize()); // On load save form current 
+        $('#formForecastPm').data('serialize', $('#formForecastPm').serialize()); // On load save form current
         $(window).bind('beforeunload', function (e) {
             if ($('#formForecastPm').serialize() != $('#formForecastPm').data('serialize')) {
                 return true;
@@ -1175,9 +1177,9 @@ else
             focusConfirm: false,
         }).then((result) => {
             if (result.value) {
-                let stkGroup_header = document.querySelector('#stkSec_header');
-                stkGroup_header = JSON.parse(stkGroup_header.value);
-                stkGroup_header.forEach(function (sec, i) {
+                $('.stkSecList_header').each(function () {
+                    var sec;
+                    sec = $(this).val();
                     if (sec != null) {
                         var details = {
                             USER: '@Session["UserID"]',
@@ -1279,16 +1281,15 @@ else
     }
     //sum forecast, forecast gp
     const sumForecast = async () => {
-        let stkGroup_header = document.querySelector('#stkSec_header');
-        //alert(stkGroup_header);
-        if (stkGroup_header != null) {
-            stkGroup_header = JSON.parse(stkGroup_header.value);
-            stkGroup_header.forEach(function (sec, i) {
-                sumPmForecastId('pm_forecast_1',sec,'forecast');
-                sumPmForecastId('pm_forecast_gp_1',sec,'forecastGp');
-                sumPmForecastId('sale_forecast_1',sec,'saleForecast');
-            });
-        }
+        $('.stkSecList_header').each(function () {
+            var sec;
+            sec = $(this).val();
+            if (sec != null) {
+                sumPmForecastId('pm_forecast_1', sec, 'forecast');
+                sumPmForecastId('pm_forecast_gp_1', sec, 'forecastgp');
+                sumPmForecastId('sale_forecast_1', sec, 'saleforecast');
+            }
+        });
     }
     //sum forecast by input
     const sumPmForecastId = async (_className, sec, flag) => {
@@ -1302,9 +1303,6 @@ else
         }));
         $('#sum_' + _className).text(numberWithCommas(sum_forecast_by_pm));
         $('#val_sum_' + _className).val(numberWithCommas(sum_forecast_by_pm));
-
-        //console.log('#val_sum_' + _className);
-
         if (flag == "forecast") {//sum total forecast
             let sum_forecast_by_pm_sum_total = 0;
             for (let numMonth = 1; numMonth <= 12; numMonth++) {
@@ -1410,15 +1408,8 @@ else
                 sum_budget += Number(budget_by_pm);
             }));
             if (sum_budget != 0) {
-                //if (inputName == 'budget_by_pm' && numMonth == 0) {
-                    //$('#sum_' + inputName + '_' + numMonth).text(sum_budget.toFixed(2));
-                //} else {
-                    $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_budget) + txtPercent);
-                //}
-
-                //if (inputName == 'budget_by_pm' || inputName == 'budget_gp' || inputName == 'budget_actual_sale' || inputName == 'budget_actual_gp') {
-                    $('#val_sum_' + inputName + '_' + numMonth).val(numberWithCommas(sum_budget));
-                //}
+                $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_budget) + txtPercent);
+                $('#val_sum_' + inputName + '_' + numMonth).val(numberWithCommas(sum_budget));
             }
         }
     }

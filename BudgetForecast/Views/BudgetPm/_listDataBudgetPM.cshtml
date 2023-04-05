@@ -24,6 +24,8 @@ else
                     int rowStkGroup = 0;
                     foreach (var stkGroupItem in (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
                     {
+                        //เก็บ sec
+                        <input type="hidden" name="stkGrpList_header[]" class="stkGrpList_header" value="@stkGroupItem.STKGRP" />
                         rowStkGroup++;
                         if (rowStkGroup > 1)
                         {
@@ -68,8 +70,8 @@ else
                                                         double valBudgetByPmBegin = 0;
                                                         valBudgetByPmBegin = stkGroupItem.ACT00_Cy == 0 ? 1 : (stkGroupItem.BUD00 - stkGroupItem.ACT00_Cy) / stkGroupItem.ACT00_Cy * 100;
                                                     }
-                                                    <td style="vertical-align: middle;">  
-                                                     @*<input class="form-control budget_by_pm_0 vright" type="text" id="budget_by_pm_0" value="@valBudgetByPmBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@  
+                                                    <td style="vertical-align: middle;">
+                                                        @*<input class="form-control budget_by_pm_0 vright" type="text" id="budget_by_pm_0" value="@valBudgetByPmBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@
                                                     </td>
                                                     @{
                                                         int countBudget = 0;
@@ -145,8 +147,8 @@ else
                                                         double valBudgetGpBegin = 0;
                                                         valBudgetGpBegin = stkGroupItem.AGP00_Cy == 0 ? 1 : (stkGroupItem.GP00 - stkGroupItem.AGP00_Cy) / stkGroupItem.AGP00_Cy * 100;
                                                     }
-                                                    <td style="vertical-align: middle;">  
-                                                        @*<input class="form-control vright budget_gp_0" type="text" id="budget_gp_0" value="@valBudgetGpBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@  
+                                                    <td style="vertical-align: middle;">
+                                                        @*<input class="form-control vright budget_gp_0" type="text" id="budget_gp_0" value="@valBudgetGpBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@
                                                     </td>
 
                                                     @{
@@ -746,9 +748,9 @@ else
             focusConfirm: false,
         }).then((result) => {
             if (result.value) {
-               let stkGroup_header = document.querySelector('#stkGroup_header');
-                stkGroup_header = JSON.parse(stkGroup_header.value);
-                stkGroup_header.forEach(function (stkgrp, i) {
+                $('.stkGrpList_header').each(function () {
+                    var stkgrp;
+                    stkgrp = $(this).val();
                     if (stkgrp != null) {
                         var details = {
                             USER: '@Session["UserID"]',
@@ -999,16 +1001,11 @@ else
         //Sum by pm
         await sumBudgetByPmSumTotal("budget_by_pm_sum_total");
         await sumBudgetByPmSumTotal("budget_gp_sum_total");
-       // await sumBudgetByPmSumTotal("budget_gp_per_sum_total");
         await sumBudgetByPmSumTotal("budget_customer_sum_total");
         await sumBudgetByPmSumTotal("budget_actual_sale_sum_total");
         await sumBudgetByPmSumTotal("budget_actual_gp_sum_total");
-       // await sumBudgetByPmSumTotal("budget_actual_gp_per_sum_total");
-
-
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget");
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget_next");
-
 
         await sumTotalGpBudgetPer();
         await sumTotalActaulPer();

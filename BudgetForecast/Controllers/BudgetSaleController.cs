@@ -61,11 +61,10 @@ namespace BudgetForecast.Controllers
                     while (dr3.Read())
                     {
                         ProdList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
-
                     }
                     ViewBag.ProdList = ProdList;
                     //เอา userId เป็น default Prod name
-                    ViewBag.prodMgr = prodMgr == null ? "PM116" : prodMgr;
+                    ViewBag.prodMgr = prodMgr == null ? "[]" : prodMgr;
                     ViewBag.stkGroup = stkGroup == null ? "[]" : "[\"" + string.Join("\",\"", stkGroup.Select(x => x.ToString()).ToArray()) + "\"]";
                     dr3.Close();
                     dr3.Dispose();
