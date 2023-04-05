@@ -3,21 +3,21 @@
     ViewBag.Title = "Forecast by product";
     // Layout = "~/Views/Shared/.cshtml";
     var dataSlmlis = ViewBag.SlmModel;
-    List<SelectListItem> getStkGrp = ViewBag.StkGrp;
     List<SelectListItem> getPRODList = ViewBag.PRODList;
+    List<SelectListItem> getStkSec = ViewBag.stkSecList;
     var usre = ViewBag.usre;
 }
 <input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
 <input type="hidden" id="year_header" value="@ViewBag.year" />
-<input type="hidden" name="stkGroup_header[]" id="stkGroup_header" value="@ViewBag.stkGroup" />
+<input type="hidden" name="stkSec_header[]" id="stkSec_header" value="@ViewBag.stkSec" />
 @*<h2>Budget by product</h2>*@
 <title>@ViewBag.Title</title>
 @*<div class="mt-4 pt-0 border-bottom border-bottom">
-    <h3>@ViewBag.Title</h3>
-</div>*@
+        <h3>@ViewBag.Title</h3>
+    </div>*@
 <div class="card mb-12 mt-4">
-    <form action="@Url.Action("Index", "ForecastPm")" method="post" onsubmit="LoadingShow();">
-        <div class="card-header bg-warning text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
+    <form action="@Url.Action("Index", "ForecastPm")" id="forecastPmForm" method="post" onsubmit="">
+        <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
                     <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
@@ -26,11 +26,11 @@
         </div>
         <div class="card-body" id="headerSearch">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
                         <span>
-                            <select class="form-control bar" id="prodMgr" name="prodMgr" style="width: 100%;">
+                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;">
                                 @for (var i = 0; i < getPRODList.Count; i++)
                                 {
                                     <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
@@ -39,25 +39,27 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3 col-md-3">
                     <div class="form-group">
                         <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
                         <span>
-                            <select class="form-control bar" id="year" name="year" style="width: 100%;">
+                            <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
                                 <option value="2023" selected>2023</option>
                                 <option value="2022">2022</option>
                             </select>
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-sm-6 col-md-6">
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="sec" name="sec" style="width: 100%; padding-top: 5px;" title="เลือก Sec" data-live-search="true" multiple>
-                                @for (var i = 0; i < getStkGrp.Count; i++)
+                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="เลือก Sec" data-live-search="true" multiple>
+                                <option value="ALL">SEC ทั้งหมด</option>
+
+                                @for (var i = 0; i < getStkSec.Count; i++)
                                 {
-                                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
+                                    <option value="@getStkSec[i].Value">@getStkSec[i].Text</option>
                                 }
                             </select>
                         </span>
@@ -68,8 +70,12 @@
         <div class="card-footer" id="headerSearchFooter">
             <div class="row">
                 <div class="col-md-12 text-right">
-                    <button type="reset" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
-                    <button type="submit" class="btn btn-primary btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                    @if (ViewBag.stkSec != "[]")
+                    {
+                        <button type="button" class="btn btn-success btn-lg" onclick="saveForecastPm();" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
+                    }
+                    <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                    <button type="button"  class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
                 </div>
             </div>
         </div>
@@ -85,34 +91,61 @@
 <br>
 
 <script defer>
+    function searchForecast() {
+        var msg = '';
+        var error = 0;
+        var stksec = $("#stkSec option:selected").val();
+        if (stksec == undefined) {
+            ++error;
+            msg += '<br>' + error + '. กรุณาเลือก SEC อย่างน้อย 1 รายการ';
+        }
+        if (error) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
+                html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        } else {
+            //LoadingShow();
+            $('form[id="forecastPmForm"]').submit();
+        }
+    }
+
+    function resetSearch() {
+        LoadingShow();
+        //$('.selectpicker').val('default').selectpicker('deselectAll');
+        //$('.selectpicker').selectpicker('refresh');
+        $("#stkSec").val('default').selectpicker("refresh");
+        LoadingHide();
+    }
     $(document).ready(function () {
         //GET Stkgroup
-        //console.log(JSON.parse($("#stkGroup_header").val()))
-        $('#prodMgr').val($("#prodMgr_header").val());
-        $('#year').val($("#year_header").val());
-        $('#sec').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
-
         $('#prodMgr').change(function () {
             var ProdMRG = $('#prodMgr').val();
             var ProdMRG_NAME = $("#prodMgr option:selected").text();
 
             $.ajax({
-                url: '@Url.Action("GetSTKGRP", "PriceApproval")',
+                url: '@Url.Action("GetSTKGRP", "ForecastPm")',
                 data: {
-                    ProdMRG: ProdMRG,
-                    ProdMRG_NAME: ProdMRG_NAME
+                    ProdMRG: ProdMRG
                 },
                 type: "POST",
                 dataType: "JSON",
                 success: function (data) {
                     // console.log(data);
-                    var select = $("#stkGroup");
+                    var select = $("#stkSec");
                     select.children().remove();
-                    select.append($("<option>").val("0").text("เลือก Stock Group"));
+                    select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
                     $(data).each(function (index, item) {
-                        select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                        select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                     });
-
+                    $('#stkSec').selectpicker('refresh');
+                    $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
                 }
             });
         });
@@ -133,4 +166,50 @@
         }
     }
 
+     function getCustomerBySlmCode(_slmCode) {
+        //alert(_slmCode);
+        let slmCode = "";
+        if (_slmCode == "") {
+            slmCode = $("#prodMgr option:selected").val();
+        } else {
+            slmCode = _slmCode;
+        }
+        //alert(slmCode);
+        $.ajax({
+            url: '@Url.Action("Getdatabyslm", "BudgetSale")',
+            data: {
+                slmCode: slmCode,
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                //console.log(data);
+                var select = $("#cusCode");
+                select.children().remove();
+                select.append($("<option>").val("ALL").text("ลูกค้าทั้งหมด"));
+                $.each(data, function (key, value) {
+                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + "----ที่อยู่ " + value.ADDR_01 + " " + value.PRO + '</option>');
+                });
+                if ($("#cusCode option:selected").val() == "") {
+                    $("#cusCode").val($("#cusCode option:first").val());
+                }
+                $('#cusCode').selectpicker('refresh');
+                //customer selected
+                $('#cusCode').selectpicker('val', JSON.parse($("#cusCode_header").val()));
+            }
+        });
+    }
+
+    document.onreadystatechange = function () {
+        if (document.readyState === 'interactive') {
+            LoadingShow();
+        }
+        if (document.readyState === "complete") {
+            LoadingHide();
+            $('#prodMgr').val($("#prodMgr_header").val());
+            $('#year').val($("#year_header").val());
+            $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
+            console.log(JSON.parse($("#stkSec_header").val()));
+        }
+    }
 </script>

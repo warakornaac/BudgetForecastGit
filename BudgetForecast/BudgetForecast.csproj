@@ -46,8 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MyLib">
-      <HintPath>..\..\ClaimWapGit\packages\MyLib.dll</HintPath>
+    <Reference Include="MyLib, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MyLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -128,6 +129,7 @@
     <Compile Include="Controllers\BudgetPmController.cs" />
     <Compile Include="Controllers\BudgetSaleController.cs" />
     <Compile Include="Controllers\ForecastPmController.cs" />
+    <Compile Include="Controllers\ForecastSaleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

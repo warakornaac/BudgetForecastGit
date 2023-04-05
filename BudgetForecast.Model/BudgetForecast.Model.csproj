@@ -44,11 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBudgetPmRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoreSearchBudgetPmModel.cs" />
+    <Compile Include="StoreSearchBudgetSaleModel.cs" />
     <Compile Include="StoreSearchForecastPmModel.cs" />
     <Compile Include="StoreUpdateBudgetPmModel.cs" />
+    <Compile Include="StoreUpdateBudgetSaleModel.cs" />
     <Compile Include="StoreUpdateForecastPmModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

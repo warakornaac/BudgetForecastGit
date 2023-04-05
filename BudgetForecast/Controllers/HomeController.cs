@@ -44,8 +44,6 @@ namespace BudgetForecast.Controllers
             //{
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
             SqlConnection Connection = new SqlConnection(connectionString);
-            //Connection.Open();
-            //GenericIdentity identity = null;
             Connection.Open();
             try
             {
@@ -55,9 +53,12 @@ namespace BudgetForecast.Controllers
                 this.Session["UsrGrpspecial"] = 0;
                 this.Session["DatetoExpire"] = "..";
                 this.Session["UsrClmStaff"] = "0";
+                this.Session["SLMCOD"] = "";
                 string UserType = string.Empty;
                 string sessionId = Request["http_cookie"];
-                SqlCommand cmdcus = new SqlCommand("select * From UsrTbl_Budget where UsrID =N'" + User + "'and [dbo].F_decrypt([Password])='" + Password + "'", Connection);
+                string txtSql = "";
+                txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD  FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID WHERE UsrID =N'" + User + "'and [dbo].F_decrypt([Password])='" + Password + "'";
+                SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                 SqlDataReader revcus = cmdcus.ExecuteReader();
                 while (revcus.Read())
                 {
@@ -69,6 +70,7 @@ namespace BudgetForecast.Controllers
 
                     sessionId = sessionId.Substring(sessionId.Length - 24);
                     this.Session["ID"] = sessionId;
+                    this.Session["SLMCOD"] = revcus["SLMCOD"].ToString();
                 }
                 revcus.Close();
                 revcus.Dispose();
@@ -112,6 +114,7 @@ namespace BudgetForecast.Controllers
                             this.Session["UserType"] = rev["UsrTyp"].ToString();
                             this.Session["CUSCOD"] = "";
                             this.Session["Department"] = "";// rev["Department"].ToString();
+                            this.Session["SLMCOD"] = rev["SLMCOD"].ToString();
                         }
                         rev.Close();
                         rev.Dispose();
@@ -129,12 +132,9 @@ namespace BudgetForecast.Controllers
                         }
                         else
                         {
-
                             this.Session["DatetoExpire"] = "..";
                         }
-
                         FormsAuthentication.SetAuthCookie(User, false);
-
                         //return RedirectToAction("Index", "SeleScrCustomer");
                         UserType = Session["UserType"].ToString();
                         if (UserType == "5")
@@ -185,6 +185,7 @@ namespace BudgetForecast.Controllers
                             this.Session["UserType"] = rev["UsrTyp"].ToString();
                             this.Session["CUSCOD"] = "";
                             this.Session["Department"] = "";// rev["Department"].ToString();
+                            this.Session["SLMCOD"] = rev["SLMCOD"].ToString();
                         }
                         rev.Close();
                         rev.Dispose();
@@ -225,7 +226,7 @@ namespace BudgetForecast.Controllers
                 else if (UserType == "1" || UserType == "2")//sale, salesco
                 {
                     //return RedirectToAction("dashboard", "SeleScrCustomer");
-                    return RedirectToAction("Index", "BudgetPm");
+                    return RedirectToAction("Index", "BudgetSale");
 
                 }
                 else if (UserType == "5")//pm

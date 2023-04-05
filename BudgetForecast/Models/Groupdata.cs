@@ -12,6 +12,11 @@ namespace BudgetForecast.Models
         public string STKGRP { get; set; }
         public string GRPNAM { get; set; }
     }
+    public class SECList
+    {
+        public string SEC { get; set; }
+        public string SECNAM { get; set; }
+    }
     public class LoginUserViewModel
     {
         [Required]

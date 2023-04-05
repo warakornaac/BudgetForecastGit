@@ -12,7 +12,7 @@
 @*<h2>Budget by product</h2>*@
 <title>@ViewBag.Title</title>
 <div class="card mb-12 mt-4">
-    <form action="@Url.Action("Index", "BudgetPm")" method="post" onsubmit="LoadingShow();">
+    <form action="@Url.Action("Index", "BudgetPm")" method="post" id="budgetPmForm" onsubmit="">
         <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
@@ -26,7 +26,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
                         <span>
-                            <select class="form-control bar" id="prodMgr" name="prodMgr" style="width: 100%;">
+                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;" data-live-search="true">
                                 @* <option value="0">เลือก SLMCOD</option>*@
                                 @for (var i = 0; i < getPRODList.Count; i++)
                                 {
@@ -41,7 +41,7 @@
                         <span> <i class="fa fa-shopping-cart"></i><b> STOCK GROUP:</b></span>
                         <span>
                             <select class="form-control selectpicker" id="stkGroup" name="stkGroup" style="width: 100%; padding-top: 5px;" title="เลือก Stock Group" data-live-search="true" multiple>
-                                @*<option value="0">เลือก Stock Group</option>*@
+                                @*<option value="ALL">STOCK GROUP ทั้งหมด</option>*@
                                 @for (var i = 0; i < getStkGrp.Count; i++)
                                 {
                                     <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
@@ -54,9 +54,14 @@
         </div>
         <div class="card-footer" id="headerSearchFooter">
             <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="reset" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
-                    <button type="submit" class="btn btn-primary btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                <div class="col-xs-12 col-md-12 text-right">
+                    @if (ViewBag.stkGroup != "[]")
+                    {
+                        <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: medium; float: left; position: relative; " onclick="saveForecastPm();"><i class="fa fa-save"></i> Save</button>
+                    }
+
+                    <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                    <button type="button" class="btn btn-primary btn-lg" onclick="searchBudget();" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
                 </div>
             </div>
         </div>
@@ -71,23 +76,48 @@
 <br>
 <br>
 
-
 <script>
+    function searchBudget() {
+        var msg = '';
+        var error = 0;
+        var stkGroup = $("#stkGroup option:selected").val();
+        if (stkGroup == undefined) {
+            ++error;
+            msg += '<br>' + error + '. กรุณาเลือก STOCK GROUP อย่างน้อย 1 รายการ';
+        }
+        if (error) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
+                html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        } else {
+            //LoadingShow(); 
+            $('form[id="budgetPmForm"]').submit();
+        }
+    }
+
+    function resetSearch() {
+        LoadingShow();
+        //$('.selectpicker').val('default').selectpicker('deselectAll');
+        //$('.selectpicker').selectpicker('refresh');
+        $("#stkGroup").val('default').selectpicker("refresh");
+        LoadingHide();
+    }
     $(document).ready(function () {
         //GET Stkgroup
         //console.log(JSON.parse($("#stkGroup_header").val()))
-        $('#prodMgr').val($("#prodMgr_header").val());
-        $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
-
         $('#prodMgr').change(function () {
-            var ProdMRG = $('#prodMgr').val();
-            var ProdMRG_NAME = $("#prodMgr option:selected").text();
-
+            var prodCode = $('#prodMgr').val();
             $.ajax({
-                url: '@Url.Action("GetSTKGRP", "PriceApproval")',
+                url: '@Url.Action("getStkgrp", "BudgetPm")',
                 data: {
-                    ProdMRG: ProdMRG,
-                    ProdMRG_NAME: ProdMRG_NAME
+                    prodCode: prodCode
                 },
                 type: "POST",
                 dataType: "JSON",
@@ -95,15 +125,48 @@
                     // console.log(data);
                     var select = $("#stkGroup");
                     select.children().remove();
-                    select.append($("<option>").val("0").text("เลือก Stock Group"));
+                    select.append($("<option>").val("ALL").text("STOCK GROUP ทั้งหมด"));
                     $(data).each(function (index, item) {
                         select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
                     });
-
+                    $('#stkGroup').selectpicker('refresh');
+                    $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
                 }
             });
         });
     });
+
+    //ดึง stkgrp จาก pm
+    function getStkgrpByProd(_prodCode) {
+        //alert(_slmCode);
+        let prod = "";
+        if (_prodCode == "") {
+            prodCode = $("#prodMgr option:selected").val();
+        } else {
+            prodCode = _prodCode;
+        }
+        //alert(slmCode);
+        $.ajax({
+            url: '@Url.Action("getStkgrp", "BudgetPm")',
+            data: {
+                prodCode: prodCode,
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                //console.log(data);
+                var select = $("#stkGroup");
+                select.children().remove();
+                select.append($("<option>").val("ALL").text("STOCK GROUP ทั้งหมด"));
+                $(data).each(function (index, item) {
+                    select.append($("<option>").val(item.STKGRP).text(item.STKGRP + "/" + item.GRPNAM));
+                });
+                $('#stkGroup').selectpicker('refresh');
+                $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
+            }
+        });
+    }
+
     //hide header
     function hideHeader() {
         var x = document.getElementById("headerSearch");
@@ -119,37 +182,17 @@
             y.style.display = "none";
         }
     }
-    //Button Search
 
-//    async function searchBudget() {
-//        let prodMgr = await $("#prodMgr").val() || '';
-//        let stkGroup = await $("#stkGroup").val() || '';
- //       console.log('stkGroup = ' + stkGroup);
-//        if (prodMgr != "" && stkGroup != "")
- //       {
-  //          $.ajax({
-   //             url: '/BudgetInput/GetListDataBudget',
-    //            type: 'POST',
-     //           //contentType: "application/json; charset=utf-8",
-     //           dataType: "html",
-    //            data: {
-    //                prodMgr: prodMgr,
-    //                stkGroup: JSON.stringify(stkGroup)
-    //            },
-    //            beforeSend: function () {
-    //                LoadingShow();
-    //                LoadingHide();
-    //            },
-    //            success: function (res) {
-    //                $('#listDataBudgetPM').html(res);
-//
-    //            },
-    //            complete: function () {
-        //           LoadingHide();
-       //         },
-        //    });
-       //    @*await $("#listDataBudgetPM").load('@Url.Content("/BudgetInput/GetListDataBudget")');*@
-       // }
+    document.onreadystatechange = function () {
+        if (document.readyState === 'interactive') {
+            LoadingShow();
+        }
+        if (document.readyState === "complete") {
+            $('#prodMgr').val($("#prodMgr_header").val());
+            $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
 
-  //  }
+            getStkgrpByProd($("#prodMgr option:selected").val());
+            LoadingHide()
+        }
+    }
 </script>

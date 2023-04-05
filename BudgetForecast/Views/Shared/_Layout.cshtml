@@ -35,12 +35,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("Index", "BudgetPm")">Budget</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "ForecastPm")">Forecast</a>
-                </li>
+                @*PM*@
+                @if (this.Session["UserType"].ToString() == "5")
+                {
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("Index", "BudgetPm")">Budget PM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ForecastPm")">Forecast PM</a>
+                    </li>
+                }
+                @*SALEMAN*@
+                @if (this.Session["UserType"].ToString() == "2")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ForesaleSale")">Forecast SALE</a>
+                    </li>
+                }
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

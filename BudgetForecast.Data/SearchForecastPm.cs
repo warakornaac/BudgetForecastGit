@@ -17,6 +17,10 @@ namespace BudgetForecast.Data
         }
         public List<StoreSearchForecastPmModel> GetStoreSearchForecastPm(string User, string Year, string[] Sec)
         {
+            if (Sec == null)
+            {
+                Sec = new string[] { "ALL" };
+            }
             var p = new SqlParameters();
             p.AddParams("@User", User.ToTrim());
             p.AddParams("@Year", Year.ToTrim());

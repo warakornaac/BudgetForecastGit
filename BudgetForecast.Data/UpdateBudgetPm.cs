@@ -49,8 +49,8 @@ namespace BudgetForecast.Data
             p.AddParams("@GP12", GP12.ToString().Replace(",", ""));
             p.AddParams("@outGenstatus", 'Y');
 
-            var table = GetData(CmdStore("Update_Budget_PM", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetPmModel>(GetData(CmdStore("Update_Budget_PM", p)));
+            var table = GetData(CmdStore("P_Update_Budget_PM", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetPmModel>(GetData(CmdStore("P_Update_Budget_PM", p)));
         }
     }
 }

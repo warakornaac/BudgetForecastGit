@@ -33,7 +33,8 @@ namespace BudgetForecast.Controllers
                 }
                 else
                 {
-                    string usre = Session["UserID"].ToString();
+                    string user = Session["UserID"].ToString();
+                    string slmCodeDefault = Session["SLMCOD"].ToString();
                     List<SLM> SlmList = new List<SLM>();
                     List<SelectListItem> GroupStkGrp = new List<SelectListItem>();
                     List<SelectListItem> PRODList = new List<SelectListItem>();
@@ -43,7 +44,7 @@ namespace BudgetForecast.Controllers
 
                         var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", usre);
+                        command.Parameters.AddWithValue("@inUsrID", user);
                         command.Parameters.AddWithValue("@inType", "STKGRP");
                         //command.ExecuteNonQuery();
                         SqlDataReader dr2 = command.ExecuteReader();
@@ -53,7 +54,6 @@ namespace BudgetForecast.Controllers
 
                         }
                         ViewBag.StkGrp = GroupStkGrp;
-                        //dr2.Dispose();
                         //S20161016
                         dr2.Close();
                         dr2.Dispose();
@@ -62,7 +62,7 @@ namespace BudgetForecast.Controllers
 
                         command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", usre);
+                        command.Parameters.AddWithValue("@inUsrID", user);
                         command.Parameters.AddWithValue("@inType", "PRDNAME");
                         //command.ExecuteNonQuery();
                         SqlDataReader dr3 = command.ExecuteReader();
@@ -73,7 +73,7 @@ namespace BudgetForecast.Controllers
                         }
                         ViewBag.PRODList = PRODList;
                         //เอา userId เป็น default Prod name
-                        ViewBag.prodMgr = prodMgr == null ? usre : prodMgr;
+                        ViewBag.prodMgr = prodMgr == null ? slmCodeDefault : prodMgr;
                         ViewBag.stkGroup = stkGroup == null ? "[]" : "[\"" + string.Join("\",\"", stkGroup.Select(x => x.ToString()).ToArray()) + "\"]";
                         //dr3.Dispose();
                         //S20161016
@@ -116,16 +116,18 @@ namespace BudgetForecast.Controllers
             }
             return Json("success", JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetSTKGRP(string ProdMRG, string ProdMRG_NAME)
+        public JsonResult getStkgrp(string prodCode)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
-            SqlConnection Connection = new SqlConnection(connectionString);
-            Connection.Open();
             List<STKGRPList> STKGRPList = new List<STKGRPList>();
+            SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
+            Connection.Open();
+            var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@inUsrID", prodCode);
+            command.Parameters.AddWithValue("@inType", "STKGRP");
+            command.Parameters.AddWithValue("@inSearch", "PROD");
 
-            SqlCommand cmd = new SqlCommand("P_Price_Approve_Data  @inType=5,@inProd =N'" + ProdMRG + "'", Connection);
-
-            SqlDataReader rev_CUSPROV = cmd.ExecuteReader();
+            SqlDataReader rev_CUSPROV = command.ExecuteReader();
             while (rev_CUSPROV.Read())
             {
                 STKGRPList.Add(new STKGRPList()
@@ -138,12 +140,11 @@ namespace BudgetForecast.Controllers
             //S20161016
             rev_CUSPROV.Close();
             rev_CUSPROV.Dispose();
-            cmd.Dispose();
+            command.Dispose();
             //E20161016
             Connection.Close();
             return Json(STKGRPList, JsonRequestBehavior.AllowGet);
 
         }
-        //string prodMgr, string stkGroup
     }
 }

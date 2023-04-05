@@ -19,9 +19,8 @@ namespace BudgetForecast.Controllers
     public class ForecastPmController : Controller
     {
         // GET: ForecastPm
-        public ActionResult Index(string prodMgr, string year, string[] sec)
+        public ActionResult Index(string prodMgr, string year, string[] stkSec)
         {
-
             //Check login
             if (this.Session["UserType"] == null)
             {
@@ -36,8 +35,9 @@ namespace BudgetForecast.Controllers
                 else
                 {
                     string usre = Session["UserID"].ToString();
+                    string slmCodeDefault = Session["SLMCOD"].ToString();
                     List<SLM> SlmList = new List<SLM>();
-                    List<SelectListItem> GroupStkGrp = new List<SelectListItem>();
+                    List<SelectListItem> stkSecList = new List<SelectListItem>();
                     List<SelectListItem> PRODList = new List<SelectListItem>();
                     using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
                     {
@@ -45,16 +45,16 @@ namespace BudgetForecast.Controllers
                         //list stkGrp
                         var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", usre);
+                        command.Parameters.AddWithValue("@inUsrID", slmCodeDefault);
                         command.Parameters.AddWithValue("@inType", "SEC");
                         //command.ExecuteNonQuery();
                         SqlDataReader dr2 = command.ExecuteReader();
                         while (dr2.Read())
                         {
-                            GroupStkGrp.Add(new SelectListItem() { Value = dr2["SEC"].ToString(), Text = dr2["SEC"].ToString() + "/" + dr2["SECNAM"].ToString() });
+                            stkSecList.Add(new SelectListItem() { Value = dr2["SEC"].ToString(), Text = dr2["SEC"].ToString() + "/" + dr2["SECNAM"].ToString() });
 
                         }
-                        ViewBag.StkGrp = GroupStkGrp;
+                        ViewBag.stkSecList = stkSecList;
                         dr2.Close();
                         dr2.Dispose();
                         command.Dispose();
@@ -72,8 +72,8 @@ namespace BudgetForecast.Controllers
                         }
                         ViewBag.PRODList = PRODList;
                         //เอา userId เป็น default Prod name
-                        ViewBag.prodMgr = prodMgr == null ? usre : prodMgr;
-                        ViewBag.stkGroup = sec == null ? "[]" : "[\"" + string.Join("\",\"", sec.Select(x => x.ToString()).ToArray()) + "\"]";
+                        ViewBag.prodMgr = prodMgr == null ? slmCodeDefault : prodMgr;
+                        ViewBag.stkSec = stkSec == null ? "[]" : "[\"" + string.Join("\",\"", stkSec.Select(x => x.ToString()).ToArray()) + "\"]";
                         ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
                         dr3.Close();
                         dr3.Dispose();
@@ -91,14 +91,43 @@ namespace BudgetForecast.Controllers
 
             ViewBag.stkGroupList = SearchForecastPm;
             //stkGroup null
-            if (sec != null)
+            if (stkSec != null)
             {
-                SearchForecastPm = new SearchForecastPm().GetStoreSearchForecastPm(prodMgr, year, sec);
+                SearchForecastPm = new SearchForecastPm().GetStoreSearchForecastPm(prodMgr, year, stkSec);
                 ViewBag.stkGroupList = SearchForecastPm;
             }
             ViewBag.monthList = arrMonth;
 
             return View();
+        }
+        public JsonResult GetSTKGRP(string ProdMRG)
+        {
+            List<SECList> STKGRPList = new List<SECList>();
+            SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
+            Connection.Open();
+            var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@inUsrID", ProdMRG);
+            command.Parameters.AddWithValue("@inType", "SEC");
+
+            SqlDataReader rev_CUSPROV = command.ExecuteReader();
+            while (rev_CUSPROV.Read())
+            {
+                STKGRPList.Add(new SECList()
+                {
+                    SEC = rev_CUSPROV["SEC"].ToString(),
+                    SECNAM = rev_CUSPROV["SECNAM"].ToString()
+                });
+            }
+            //rev_CUSPROV.Dispose();
+            //S20161016
+            rev_CUSPROV.Close();
+            rev_CUSPROV.Dispose();
+            command.Dispose();
+            //E20161016
+            Connection.Close();
+            return Json(STKGRPList, JsonRequestBehavior.AllowGet);
+
         }
         [HttpPost]
         public ActionResult SaveForecast(List<StoreUpdateForecastPmModel> request)
