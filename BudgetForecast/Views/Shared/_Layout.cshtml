@@ -105,13 +105,13 @@
             return convertString;
         }
 
-        $('input[type=text]').bind('paste', function () {
-            setTimeout(function () {
-                var value = $('input[type=text]').val();
-                var updated = value.replace(/[^A-Za-z0-9&. ]/g, '');
-                $('input[type=text]').val(updated);
-            });
-        })
+        //$('input[type=text]').bind('paste', function () {
+        //    setTimeout(function () {
+        //        var value = $('input[type=text]').val();
+        //        var updated = value.replace(/[^A-Za-z0-9&. ]/g, '');
+        //        $('input[type=text]').val(updated);
+        //    });
+        //})
     });
 
     function validateFloatKeyPress(el, evt) {

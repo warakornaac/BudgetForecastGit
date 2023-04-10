@@ -112,8 +112,8 @@ body, html {
     /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
     padding: 0px;
     font-weight: 700;
-    font-size: 14px;
-    height: 36px;
+    font-size: 16px;
+    height: 45px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
@@ -134,8 +134,8 @@ body, html {
     color: rgb(104, 145, 162);
 }
 
-    .forgot-password:hover,
-    .forgot-password:active,
-    .forgot-password:focus {
-        color: rgb(12, 97, 33);
-    }
+.forgot-password:hover,
+.forgot-password:active,
+.forgot-password:focus {
+    color: rgb(12, 97, 33);
+}

@@ -84,13 +84,18 @@
 
 @*input*@
 <div class="pt-2">
-    @Html.Partial("_listDataForecastPM", (List<StoreSearchForecastPmModel>)ViewBag.stkGroupList)
+    @Html.Partial("_listDataForecastPM", new { ViewBag.stkGroupList, ViewBag.monthList })
+
 </div>
 
 <br>
 <br>
 
 <script defer>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
     function searchForecast() {
         var msg = '';
         var error = 0;
@@ -120,15 +125,42 @@
         LoadingShow();
         //$('.selectpicker').val('default').selectpicker('deselectAll');
         //$('.selectpicker').selectpicker('refresh');
-        $("#stkSec").val('default').selectpicker("refresh");
+        //$("#stkSec").val('default').selectpicker("refresh");
+        location.reload();
         LoadingHide();
     }
+
     $(document).ready(function () {
+        //selectpicker stkgrp
+        function toggleSelectAll(control) {
+            var allOptionIsSelected = (control.val() || []).indexOf("ALL") > -1;
+            function valuesOf(elements) {
+                return $.map(elements, function (element) {
+                    return element.value;
+                });
+            }
+
+            if (control.data('allOptionIsSelected') != allOptionIsSelected) {
+                if (allOptionIsSelected) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                } else {
+                    control.selectpicker('val', []);
+                }
+            } else {
+                if (allOptionIsSelected && control.val().length != control.find('option').length) {
+                    control.selectpicker('val', valuesOf(control.find('option:selected[value!=ALL]')));
+                    allOptionIsSelected = false;
+                } else if (!allOptionIsSelected && control.val().length == control.find('option').length - 1) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                    allOptionIsSelected = true;
+                }
+            }
+            control.data('allOptionIsSelected', allOptionIsSelected);
+        }
+        $('#stkSec').selectpicker().change(function () { toggleSelectAll($(this)); }).trigger('change');
         //GET Stkgroup
         $('#prodMgr').change(function () {
             var ProdMRG = $('#prodMgr').val();
-            var ProdMRG_NAME = $("#prodMgr option:selected").text();
-
             $.ajax({
                 url: '@Url.Action("GetSTKGRP", "ForecastPm")',
                 data: {
@@ -200,6 +232,37 @@
         });
     }
 
+       //ดึง stkgrp จาก pm
+    function getStkgrpByProd(_prodCode) {
+        //alert(_slmCode);
+        let prod = "";
+        if (_prodCode == "") {
+            prodCode = $("#prodMgr option:selected").val();
+        } else {
+            prodCode = _prodCode;
+        }
+        //alert(slmCode);
+        $.ajax({
+            url: '@Url.Action("GetSTKGRP", "ForecastPm")',
+            data: {
+                ProdMRG: prodCode
+            },
+            type: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                // console.log(data);
+                var select = $("#stkSec");
+                select.children().remove();
+                select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
+                $(data).each(function (index, item) {
+                    select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
+                });
+                $('#stkSec').selectpicker('refresh');
+                $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
+            }
+        });
+    }
+
     document.onreadystatechange = function () {
         if (document.readyState === 'interactive') {
             LoadingShow();
@@ -209,7 +272,9 @@
             $('#prodMgr').val($("#prodMgr_header").val());
             $('#year').val($("#year_header").val());
             $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
-            console.log(JSON.parse($("#stkSec_header").val()));
+
+            getStkgrpByProd($("#prodMgr option:selected").val());
+            LoadingHide()
         }
     }
 </script>

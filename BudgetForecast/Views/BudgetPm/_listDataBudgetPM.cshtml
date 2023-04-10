@@ -2,14 +2,14 @@
 @{
     ViewBag.Title = "_listDataBudgetPM";
     var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    string setWidth = "720px";
+    string setWidth = "740px";
     var countList = ((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count();
 }
 <input type="hidden" id="countList" value="@countList" />
 
 @if (countList == 1)
 {
-    setWidth = "520px";
+    setWidth = "540px";
 }
 @if (countList == 0)
 {
@@ -19,7 +19,7 @@ else
 {
     <div class="card">
         <form method="post" id="formBudgetPm">
-            <div class="card-body p-2" style="height: 700px; overflow-y: auto; max-height: @setWidth">
+            <div class="card-body p-2" style="height: 720px; overflow-y: auto; max-height: @setWidth">
                 @{
                     int rowStkGroup = 0;
                     foreach (var stkGroupItem in (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
@@ -258,7 +258,7 @@ else
                                                                     valBudgetGpPer = stkGroupItem.BUD10 == 0 ? 0 : (stkGroupItem.GP10 / stkGroupItem.BUD10) * 100;
                                                                     break;
                                                                 case "Nov":
-                                                                    valBudgetGpPer = stkGroupItem.BUD11 == 0 ? 0 : (stkGroupItem.GP01 / stkGroupItem.BUD11) * 100;
+                                                                    valBudgetGpPer = stkGroupItem.BUD11 == 0 ? 0 : (stkGroupItem.GP11 / stkGroupItem.BUD11) * 100;
                                                                     break;
                                                                 case "Dec":
                                                                     valBudgetGpPer = stkGroupItem.BUD12 == 0 ? 0 : (stkGroupItem.GP12 / stkGroupItem.BUD12) * 100;
@@ -269,7 +269,10 @@ else
                                                             }
 
                                                             <td class="vright" style="vertical-align: middle;">
-                                                                @valBudgetGpPer.ToString("N0")%
+                                                                @if (valBudgetGpPer != 0)
+                                                                {
+                                                                    @valBudgetGpPer.ToString("N2").Insert(5, "%");
+                                                                }
                                                             </td>
                                                         }
                                                         idBudgetGpPerSumTotal = "budget_gp_per_" + @stkGroupItem.STKGRP + "_0";
@@ -289,6 +292,7 @@ else
                                                     @{
                                                         int countBudgetCustomer = 0;
                                                         string idBudgetCustomerSumTotal = "";
+                                                        string nameBudgetCustomer = "";
                                                         foreach (var item in arrMonth)
                                                         {
                                                             countBudgetCustomer++;
@@ -335,14 +339,17 @@ else
                                                                     // code block
                                                                     break;
                                                             }
-
-                                                            <td class="vright">
-                                                                @valBudgetCustomer.ToString("N0")
-                                                                <input type="hidden" class="budget_customer_@countBudgetCustomer" id="budget_customer_@countBudgetCustomer" value="@valBudgetCustomer.ToString("N0")" />
+                                                            nameBudgetCustomer = "budget_customer_" + @stkGroupItem.STKGRP + "_" + countBudgetCustomer;
+                                                            <td class="vright" style="vertical-align: middle;">
+                                                                @if (valBudgetCustomer != 0)
+                                                                {
+                                                                    @valBudgetCustomer.ToString("N0")
+                                                                }
+                                                                <input type="hidden" class="budget_customer_@countBudgetCustomer" name="@nameBudgetCustomer" id="@nameBudgetCustomer" value="@valBudgetCustomer.ToString("N0")" />
                                                             </td>
                                                         }
-                                                        idBudgetCustomerSumTotal = "budget_customer_" + @stkGroupItem.Cus00_Cy + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetGpSumTotal" name="@idBudgetGpSumTotal" value="@stkGroupItem.Cus00_Cy.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        idBudgetCustomerSumTotal = "budget_customer_" + @stkGroupItem.STKGRP + "_0";
+                                                        <td class="vcenter"> <input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetCustomerSumTotal" name="@idBudgetCustomerSumTotal" value="" style="width: 110px;" disabled /> </td>
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -402,8 +409,11 @@ else
                                                                     break;
                                                             }
 
-                                                            <td class="vright">
-                                                                @valBudgetActaulSale.ToString("N0")
+                                                            <td class="vright" style="vertical-align: middle;">
+                                                                @if (valBudgetActaulSale != 0)
+                                                                {
+                                                                    @valBudgetActaulSale.ToString("N0")
+                                                                }
                                                                 <input type="hidden" class="form-control vright budget_actual_sale_@countBudgetActualSale" id="budget_actual_sale_@countBudgetActualSale" value="@valBudgetActaulSale.ToString("N0")" />
                                                             </td>
                                                         }
@@ -469,14 +479,16 @@ else
                                                                     break;
                                                             }
 
-                                                            <td class="vright">
-                                                                @valBudgetActaulGp.ToString("N0")
+                                                            <td class="vright" style="vertical-align: middle;">
+                                                                @if (@valBudgetActaulGp != 0)
+                                                                {
+                                                                    @valBudgetActaulGp.ToString("N0")
+                                                                }
                                                                 <input type="hidden" class="form-control vright budget_actual_gp_@countBudgetActualGp" id="budget_actual_gp_@countBudgetActualGp" value="@valBudgetActaulGp.ToString("N0")" />
                                                             </td>
                                                         }
                                                         idBudgetActualGpSumTotal = "budget_actual_gp_" + @stkGroupItem.AGP00_Cy + "_0";
                                                         <td class="vcenter"> <input class="form-control vright budget_actual_gp_sum_total" type="text" id="@idBudgetActualGpSumTotal" name="@idBudgetActualGpSumTotal" value="@stkGroupItem.AGP00_Cy.ToString("N0")" style="width: 110px;" disabled /> </td>
-
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -520,10 +532,10 @@ else
                                                                     valBudgetActaulGpPer = stkGroupItem.ACT08_Cy == 0 ? 0 : (stkGroupItem.AGP08_Cy / stkGroupItem.ACT08_Cy) * 100;
                                                                     break;
                                                                 case "Sep":
-                                                                    valBudgetActaulGpPer = stkGroupItem.ACT09_Cy == 0 ? 0 : (stkGroupItem.AGP10_Cy / stkGroupItem.ACT09_Cy) * 100;
+                                                                    valBudgetActaulGpPer = stkGroupItem.ACT09_Cy == 0 ? 0 : (stkGroupItem.AGP09_Cy / stkGroupItem.ACT09_Cy) * 100;
                                                                     break;
                                                                 case "Oct":
-                                                                    valBudgetActaulGpPer = stkGroupItem.ACT10_Cy == 0 ? 0 : (stkGroupItem.AGP01_Cy / stkGroupItem.ACT10_Cy) * 100;
+                                                                    valBudgetActaulGpPer = stkGroupItem.ACT10_Cy == 0 ? 0 : (stkGroupItem.AGP10_Cy / stkGroupItem.ACT10_Cy) * 100;
                                                                     break;
                                                                 case "Nov":
                                                                     valBudgetActaulGpPer = stkGroupItem.ACT11_Cy == 0 ? 0 : (stkGroupItem.AGP11_Cy / stkGroupItem.ACT11_Cy) * 100;
@@ -535,9 +547,11 @@ else
                                                                     // code block
                                                                     break;
                                                             }
-
                                                             <td class="vright" style="vertical-align: middle;">
-                                                                @valBudgetActaulGpPer.ToString("N0")%
+                                                                @if (valBudgetActaulGpPer != 0)
+                                                                {
+                                                                    @valBudgetActaulGpPer.ToString("N2").Insert(5, "%");
+                                                                }
                                                             </td>
                                                             countBudgetGpPer++;
                                                         }
@@ -712,7 +726,6 @@ else
     var countList = $("#countList").val() || 0;
     if (countList > 0) {
         $('#formBudgetPm').data('serialize', $('#formBudgetPm').serialize()); // On load save form current state
-
         $(window).bind('beforeunload', function (e) {
             if ($('#formBudgetPm').serialize() != $('#formBudgetPm').data('serialize')) {
                 return true;
@@ -812,8 +825,8 @@ else
                                 timer: 6000,
                                 timerProgressBar: true,
                                 onClose: () => {
-                                    LoadingShow();
-                                    location.reload();
+                                    LoadingHide();
+                                    //location.reload();
                                 }
                             });
                         } else {
@@ -848,7 +861,32 @@ else
             }
         });
     }
+    //sum customer
+    const sumCustomer = async () => {
+        $('.stkGrpList_header').each(function () {
+            var stkgrp;
+            stkgrp = $(this).val();
+            if (stkgrp != null) {
+                sumCustomerByInput(stkgrp);
+            }
+        });
+    }
+    //sum customer
+    const sumCustomerByInput = async (stkgrp) => {
+        let customer_sum_total = 0;
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            await Promise.all($("input[name=budget_customer_" + stkgrp + "_" + numMonth + "]").each(async function (i, obj) {
+                let budget_customer = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+                //console.log("budget_customer_" + stkgrp + '_' + numMonth +' = ' + budget_by_pm);
+                budget_customer = await getVowels(budget_customer, 0);
+                customer_sum_total += Number(budget_customer);
 
+            }));
+        }
+        $("#budget_customer_" + stkgrp + "_0").val(numberWithCommas(customer_sum_total));
+        //sum ข้างล่าง
+        await sumBudgetByPmSumTotal("budget_customer_sum_total");
+    }
     //sum Budget By PM ID
     const sumBudgetByPmId = async (_className, stkgrp) => {
         let sum_budget_by_pm = 0;
@@ -892,12 +930,12 @@ else
     const sumTotalGpBudgetPer = async () => {
         for (let numMonth = 0; numMonth <= 12; numMonth++) {
             let sum_total_budget_gp_per = 0;
-            let sum_budget_gp = $("#val_sum_budget_by_pm_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
-            let sum_budget_by_pm = $("#val_sum_budget_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
+            let sum_budget_gp = $("#val_sum_budget_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
+            let sum_budget_by_pm = $("#val_sum_budget_by_pm_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
             //console.log("sum_budget_gp = " + sum_budget_gp);
             //console.log("sum_budget_by_pm = " + sum_budget_by_pm);
             if (sum_budget_by_pm != 0) {
-                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
             }
             if (sum_total_budget_gp_per != 0) {
                 $('#sum_budget_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2)+"%");
@@ -910,7 +948,7 @@ else
         //console.log("sum_total_budget_by_pm = " + sum_total_budget_by_pm);
         //console.log("sum_total_budget_gp = " + sum_total_budget_gp);
         if (sum_total_budget_gp != 0) {
-             sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp);
+             sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp) * 100;
         }
         $('#sum_budget_gp_per_sum_total').text(sum_total_all_budget_gp_per.toFixed(2) + "%");
     }
@@ -918,12 +956,12 @@ else
     const sumTotalActaulPer = async () => {
         for (let numMonth = 1; numMonth <= 12; numMonth++) {
             let sum_total_budget_gp_per = 0;
-            let sum_budget_gp = $("#val_sum_budget_actual_sale_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
-            let sum_budget_by_pm = $("#val_sum_budget_actual_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            let sum_budget_gp = $("#val_sum_budget_actual_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+            let sum_budget_by_pm = $("#val_sum_budget_actual_sale_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
            // console.log("sum_budget_gp = " + sum_budget_gp);
            // console.log("sum_budget_by_pm = " + sum_budget_by_pm);
             if (sum_budget_by_pm != 0) {
-                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
                 $('#sum_budget_actaul_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2)+"%");
             }
         }
@@ -934,7 +972,7 @@ else
         //console.log("sum_total_budget_by_pm = " + sum_total_budget_by_pm);
         //console.log("sum_total_budget_gp = " + sum_total_budget_gp);
         if (sum_total_budget_gp != 0) {
-            sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp);
+            sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp) * 100;
         }
         $('#sum_budget_actual_gp_per_sum_total').text(sum_total_all_budget_gp_per.toFixed(2) + "%");
     }
@@ -1007,6 +1045,7 @@ else
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget");
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget_next");
 
+        await sumCustomer();
         await sumTotalGpBudgetPer();
         await sumTotalActaulPer();
 

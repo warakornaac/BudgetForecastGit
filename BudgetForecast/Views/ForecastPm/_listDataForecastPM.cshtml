@@ -1,16 +1,15 @@
 ﻿@using BudgetForecast.Model;
 @{
     ViewBag.Title = "_listDataForcastPM";
-    var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    string setWidth = "870px";
+    var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan Nxt", "Feb Nxt" };
+    string setWidth = "890px";
     var countList = ((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count();
-    string[] members = new string[100];
 }
 
 <input type="hidden" id="countList" value="@countList" />
 @if (((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() == 1)
 {
-    setWidth = "770px";
+    setWidth = "790px";
 }
 @if (((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() == 0)
 {
@@ -20,7 +19,7 @@ else
 {
     <div class="card">
         <form method="post" id="formForecastPm">
-            <div class="card-body p-2" style="height: 770px; overflow-y: auto; max-height: @setWidth">
+            <div class="card-body p-2" style="height: 790px; overflow-y: auto; max-height: @setWidth">
                 @{
                     int rowSec = 0;
                     foreach (var stkGroupItem in (List<StoreSearchForecastPmModel>)ViewBag.stkGroupList)
@@ -120,7 +119,10 @@ else
                                                         }
                                                         nameBudget = "budget_" + @stkGroupItem.SEC + "_" + @countBudget;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valBudget.ToString("N0")
+                                                            @if (valBudget != 0)
+                                                            {
+                                                                @valBudget.ToString("N0")
+                                                            }
                                                             <input data-month="@countBudget" data-stkgroup="@stkGroupItem.SEC" type="hidden" class="form-control mask vright budget_@countBudget" name="@nameBudget" id="budget_@countBudget" value="@valBudget.ToString("N0")" onkeyup="return sumForecastPmId(this.id, '@stkGroupItem.SEC');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
                                                         </td>
 
@@ -195,7 +197,10 @@ else
                                                         }
                                                         nameAccBudget = "acc_budget_" + @stkGroupItem.SEC + "_" + @countAccBudget;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valAccBudget.ToString("N0")
+                                                            @if (valAccBudget != 0)
+                                                            {
+                                                                @valAccBudget.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright acc_budget_@countAccBudget" name="@nameAccBudget" id="acc_budget_@countAccBudget" value="@valAccBudget.ToString("N0")" />
                                                         </td>
                                                     }
@@ -262,7 +267,10 @@ else
                                                         }
                                                         nameAct = "act_" + @stkGroupItem.SEC + "_" + countAct;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valAct.ToString("N0")
+                                                            @if (valAct != 0)
+                                                            {
+                                                                @valAct.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="act_@countAct" name="@nameAct" id="act_@countAct" value="@valAct.ToString("N0")" />
                                                         </td>
                                                     }
@@ -326,13 +334,87 @@ else
                                                         }
                                                         nameAccAct = "act_" + @stkGroupItem.SEC + "_" + countAccAct;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valAccAct.ToString("N0")
+                                                            @if (valAccAct != 0)
+                                                            {
+                                                                @valAccAct.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright acc_act_@countAccAct" name="@nameAccAct" id="acc_act_@countAccAct" value="@valAccAct.ToString("N0")" />
                                                         </td>
                                                     }
                                                     idAccActSumTotal = "acc_act_sum_total_" + @stkGroupItem.SEC + "_0";
                                                     //sum total acc actual
                                                     <td class="vcenter">  <input class="form-control vright acc_act_sum_total" type="text" id="@idAccActSumTotal" value="@stkGroupItem.ACM_ACT12.ToString("N0")" style="width: 110px;" disabled />  </td>
+                                                }
+                                            </tr>
+                                            <tr style="background-color: #ccebedc9;">
+                                                <th style="vertical-align:middle;">Target</th>
+                                                <td>  </td>
+                                                @{
+                                                    double valTarget = 0;
+                                                    int countTarget = 0;
+                                                    string nameTarget = "";
+                                                    string idTargetSumTotal = "";
+                                                    foreach (var item in arrMonth)
+                                                    {
+
+                                                        countTarget++;
+                                                        switch (item)
+                                                        {
+                                                            case "Jan":
+                                                                valTarget = stkGroupItem.TG_INV01;
+                                                                break;
+                                                            case "Feb":
+                                                                valTarget = stkGroupItem.TG_INV02;
+                                                                break;
+                                                            case "Mar":
+                                                                valTarget = stkGroupItem.TG_INV03;
+                                                                break;
+                                                            case "Apr":
+                                                                valTarget = stkGroupItem.TG_INV04;
+                                                                break;
+                                                            case "May":
+                                                                valTarget = stkGroupItem.TG_INV05;
+                                                                break;
+                                                            case "Jun":
+                                                                valTarget = stkGroupItem.TG_INV06;
+                                                                break;
+                                                            case "Jul":
+                                                                valTarget = stkGroupItem.TG_INV07;
+                                                                break;
+                                                            case "Aug":
+                                                                valTarget = stkGroupItem.TG_INV08;
+                                                                break;
+                                                            case "Sep":
+                                                                valTarget = stkGroupItem.TG_INV09;
+                                                                break;
+                                                            case "Oct":
+                                                                valTarget = stkGroupItem.TG_INV10;
+                                                                break;
+                                                            case "Nov":
+                                                                valTarget = stkGroupItem.TG_INV11;
+                                                                break;
+                                                            case "Dec":
+                                                                valTarget = stkGroupItem.TG_INV12;
+                                                                break;
+                                                            case "Jan Nxt":
+                                                                valTarget = stkGroupItem.TG_INV13;
+                                                                break;
+                                                            case "Feb Nxt":
+                                                                valTarget = stkGroupItem.TG_INV14;
+                                                                break;
+                                                            default:
+                                                                // code block
+                                                                break;
+                                                        }
+                                                        nameTarget = "target_" + @stkGroupItem.SEC + "_" + countTarget;
+                                                        <td class="vcenter" style="vertical-align: middle;">
+                                                            <input data-month="@countTarget" data-stkgroup="@stkGroupItem.SEC" type="text" class="form-control mask vright target_@countTarget" name="@nameTarget" id="target_@countTarget" value="@valTarget.ToString("N0")" onkeyup="return sumPmForecastId(this.id, '@stkGroupItem.SEC', 'target');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
+                                                        </td>
+
+                                                    }
+                                                    idTargetSumTotal = "target_" + @stkGroupItem.SEC + "_0";
+                                                    //budget sum total
+                                                    <td class="vcenter"> <input class="form-control vright target_sum_total" type="text" id="@idTargetSumTotal" name="@idTargetSumTotal" value="@stkGroupItem.TG_INV00.ToString("N0")" style="width: 110px;" disabled /> </td>
                                                 }
                                             </tr>
                                             <tr style="background-color: #ccebedc9;">
@@ -347,7 +429,6 @@ else
                                                     {
 
                                                         countPmForecast++;
-                                                        double valBudget = 0;
                                                         switch (item)
                                                         {
                                                             case "Jan":
@@ -386,6 +467,12 @@ else
                                                             case "Dec":
                                                                 valPmForecast = stkGroupItem.FC12;
                                                                 break;
+                                                            case "Jan Nxt":
+                                                                valPmForecast = stkGroupItem.FC13;
+                                                                break;
+                                                            case "Feb Nxt":
+                                                                valPmForecast = stkGroupItem.FC14;
+                                                                break;
                                                             default:
                                                                 // code block
                                                                 break;
@@ -401,6 +488,7 @@ else
                                                     <td class="vcenter"> <input class="form-control vright pm_forecast_sum_total" type="text" id="@idPmForecastSumTotal" name="@idPmForecastSumTotal" value="@stkGroupItem.FC00.ToString("N0")" style="width: 110px;" disabled /> </td>
                                                 }
                                             </tr>
+
                                             <tr style="background-color: #ccebedc9;">
                                                 <th style="vertical-align:middle;">Forecast GP</th>
                                                 <td>  </td>
@@ -521,7 +609,10 @@ else
                                                         }
                                                         nameSaleForecast = "sale_forecast_" + @stkGroupItem.SEC + "_" + countPmForecast;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valSaleForecast.ToString("N0")
+                                                            @if (valSaleForecast != 0)
+                                                            {
+                                                                @valSaleForecast.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright sale_forecast_@countSaleForcast" name="@nameSaleForecast" id="sale_forecast_@countSaleForcast" value="@valSaleForecast.ToString("N0")" />
                                                         </td>
                                                     }
@@ -532,9 +623,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Budget GP</th>
-                                                <td class="vright">
-                                                    @*<input class="form-control vright budget_gp_0" type="hidden" id="budget_gp_0" value="@stkGroupItem.GP_BUD00.ToString("N0")" />*@
-                                                </td>
+                                                <td class="vright"> </td>
                                                 @{
                                                     int countBudgetGp = 0;
                                                     string idBudgetGpSumTotal = "";
@@ -587,7 +676,10 @@ else
                                                         }
                                                         namebudgetGp = "budget_gp_" + @stkGroupItem.SEC + "_" + countBudgetGp;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valBudgetGp.ToString("N0")
+                                                            @if (valBudgetGp != 0)
+                                                            {
+                                                                @valBudgetGp.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright budget_gp_@countBudgetGp" name="@namebudgetGp" id="budget_gp_@countBudgetGp" value="@valBudgetGp.ToString("N0")" />
                                                         </td>
                                                     }
@@ -603,9 +695,11 @@ else
                                                 @{
                                                     double valBeginBudgetGpPer = 0;
                                                     valBeginBudgetGpPer = (stkGroupItem.GP_BUD00 / stkGroupItem.BUD00) * 100;
-                                                    if (!Double.IsNaN(valBeginBudgetGpPer))
+                                                    if (!Double.IsNaN(valBeginBudgetGpPer) && valBeginBudgetGpPer != 0)
                                                     {
-                                                        // @valBeginBudgetGpPer.ToString("N0");
+                                                        valBeginBudgetGpPer = valBeginBudgetGpPer;
+                                                    } else {
+                                                        valBeginBudgetGpPer = 0;
                                                     }
 
                                                 }
@@ -662,14 +756,17 @@ else
                                                         }
                                                         nameBudgetGpPer = "budget_gp_per_" + @stkGroupItem.SEC + "_" + countBudgetGpPer;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valBudgetGpPer.ToString("N0")%
+                                                            @if (valBudgetGpPer != 0 && !Double.IsNaN(valBudgetGpPer))
+                                                            {
+                                                                @valBudgetGpPer.ToString("N0").Insert(2, "%");
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright budget_gp_per_@countBudgetGpPer" name="@nameBudgetGpPer" id="budget_gp_per_@countBudgetGpPer" value="@valBudgetGpPer.ToString("N0")" />
                                                         </td>
                                                     }
                                                     idBudgetGpPerSumTotal = "budget_gp_per_sum_total_" + @stkGroupItem.SEC + "_0";
                                                     //sum total budget gp per
                                                     <td class="vcenter">
-                                                        <input class="form-control vright budget_gp_per_sum_total" type="text" id="@idBudgetGpPerSumTotal" value="@valBeginBudgetGpPer.ToString("N0")%" style="width: 110px;" disabled />
+                                                        <input class="form-control vright budget_gp_per_sum_total" type="text" id="@idBudgetGpPerSumTotal" value="@valBeginBudgetGpPer.ToString("N2")%" style="width: 110px;" disabled />
                                                     </td>
                                                 }
                                             </tr>
@@ -728,7 +825,10 @@ else
                                                         }
                                                         nameAccBudgetGp = "acc_budget_gp_" + @stkGroupItem.SEC + "_" + countBudgetGp;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valAccBudgetGp.ToString("N0")
+                                                            @if (valAccBudgetGp != 0)
+                                                            {
+                                                                @valAccBudgetGp.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="acc_budget_gp_@countAccBudgetGp" name="@nameAccBudgetGp" id="acc_budget_gp_@countAccBudgetGp" value="@valAccBudgetGp.ToString("N0")" />
                                                         </td>
                                                     }
@@ -792,7 +892,10 @@ else
                                                         }
                                                         nameActGp = "act_gp_" + @stkGroupItem.SEC + "_" + countActGp;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valActGp.ToString("N0")
+                                                            @if (valActGp != 0)
+                                                            {
+                                                                @valActGp.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="act_gp_@countActGp" name="@nameActGp" id="act_gp_@countActGp" value="@valActGp.ToString("N0")" />
                                                         </td>
                                                     }
@@ -809,7 +912,6 @@ else
                                                 <td class="vright">  </td>
                                                 @{
                                                     int countActGpPer = 0;
-                                                    string idActGpPerSumTotal = "";
                                                     string nameActGpPer = "";
                                                     foreach (var item in arrMonth)
                                                     {
@@ -854,22 +956,16 @@ else
                                                                 valActGpPer = (stkGroupItem.GP_ACT12 / stkGroupItem.ACT12) * 100;
                                                                 break;
                                                             default:
-                                                                // code block
+                                                                valActGpPer = 0;
                                                                 break;
                                                         }
                                                         nameActGpPer = "act_gp_" + @stkGroupItem.SEC + "_" + countActGp;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @{
-                                                                if (!Double.IsNaN(valActGpPer))
-                                                                {
-                                                                    @valActGpPer.ToString("N2");
-                                                                }
-                                                                else
-                                                                {
-                                                                    valActGpPer = 0;
-                                                                    @valActGpPer;
-                                                                }
-                                                            }%
+                                                            @if (!Double.IsNaN(valActGpPer) && valActGpPer != 0)
+                                                            {
+                                                                @valActGpPer.ToString("N2").Insert(5, "%");
+                                                            }
+
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="act_gp_per_@countActGpPer" name="@nameActGpPer" id="act_gp_per_@countActGpPer" value="@valActGpPer.ToString("N0")%" />
                                                         </td>
                                                     }
@@ -878,7 +974,13 @@ else
                                                     double valSumActGpPer = 0;
                                                     valSumActGpPer = (stkGroupItem.GP_ACT00 / stkGroupItem.ACT00) * 100;
                                                     <td class="vcenter">
-                                                        <input class="form-control vright act_gp_per_sum_total" type="text" id="@idAccBudgetGpSumTotal" value="@valSumActGpPer.ToString("N0")%" style="width: 110px;" disabled />
+                                                        @if (!Double.IsNaN(valSumActGpPer) && valSumActGpPer != 0)
+                                                        {
+                                                            valSumActGpPer = valSumActGpPer;
+                                                        } else {
+                                                            valSumActGpPer = 0;
+                                                        }
+                                                        <input class="form-control vright act_gp_per_sum_total" type="text" id="@idAccBudgetGpSumTotal" value="@valSumActGpPer.ToString("N2")%" style="width: 110px;" disabled />
                                                     </td>
                                                 }
                                             </tr>
@@ -937,7 +1039,10 @@ else
                                                         }
                                                         nameAccActGp = "act_gp_" + @stkGroupItem.SEC + "_" + countAccActGp;
                                                         <td class="vright" style="vertical-align: middle;">
-                                                            @valAccActGp.ToString("N0")
+                                                            @if (valAccActGp != 0)
+                                                            {
+                                                                @valAccActGp.ToString("N0")
+                                                            }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="acc_act_gp_@countAccActGp" name="@nameAccActGp" id="acc_act_gp_@countAccActGp" value="@valAccActGp.ToString("N0")%" />
                                                         </td>
                                                     }
@@ -993,6 +1098,8 @@ else
                                         <span id="sum_budget_@colTdSum"> </span>
                                     </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_budget_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1003,6 +1110,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_acc_budget_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_acc_budget_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1016,6 +1125,8 @@ else
                                         <input type="hidden" id="val_sum_act_@colTdSum" value="" />
                                     </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_act_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1026,13 +1137,28 @@ else
                                 {
                                     <td class="vright"> <span id="sum_acc_act_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_acc_act_sum_total"> </span> </td>
+                            }
+                        </tr>
+                        <tr style="white-space: nowrap; background-color: #ccebedc9;">
+                            <th>Target</th>
+                            @{
+                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
+                                {
+                                    <td class="vright">
+                                        <span id="sum_target_@colTdSum"> </span>
+                                        <input type="hidden" id="val_sum_target_@colTdSum" value="" />
+                                    </td>
+                                }
+                                <td class="vright"> <span id="sum_target_sum_total"> </span> </td>
                             }
                         </tr>
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Forecast</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_pm_forecast_@colTdSum"> </span>
@@ -1045,13 +1171,14 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Forecast GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_pm_forecast_gp_@colTdSum"> </span>
                                         <input type="hidden" id="val_sum_pm_forecast_gp_@colTdSum" value="" />
                                     </td>
                                 }
+
                                 <td class="vright"> <span id="sum_pm_forecast_gp_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1062,6 +1189,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_sale_forecast_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_sale_forecast_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1075,6 +1204,8 @@ else
                                         <input type="hidden" id="val_sum_budget_gp_@colTdSum" value="" />
                                     </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_budget_gp_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1085,6 +1216,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_budget_gp_per_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_budget_gp_per_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1095,6 +1228,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_acc_budget_gp_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_acc_budget_gp_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1108,6 +1243,8 @@ else
                                         <input type="hidden" id="val_sum_act_gp_@colTdSum" value="" />
                                     </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_act_gp_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1118,6 +1255,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_act_gp_per_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_act_gp_per_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1128,6 +1267,8 @@ else
                                 {
                                     <td class="vright"> <span id="sum_acc_act_gp_@colTdSum"> </span> </td>
                                 }
+                                <td> </td>
+                                <td> </td>
                                 <td class="vright"> <span id="sum_acc_act_gp_sum_total"> </span> </td>
                             }
                         </tr>
@@ -1198,6 +1339,9 @@ else
                             FC10: parseInt($("input[name=pm_forecast_" + sec + "_10]").val().replace(/\,/g, '')),
                             FC11: parseInt($("input[name=pm_forecast_" + sec + "_11]").val().replace(/\,/g, '')),
                             FC12: parseInt($("input[name=pm_forecast_" + sec + "_12]").val().replace(/\,/g, '')),
+                            FC12: parseInt($("input[name=pm_forecast_" + sec + "_12]").val().replace(/\,/g, '')),
+                            FC13: parseInt($("input[name=pm_forecast_" + sec + "_13]").val().replace(/\,/g, '')),
+                            FC14: parseInt($("input[name=pm_forecast_" + sec + "_14]").val().replace(/\,/g, '')),
 
                             FC_GP00: parseInt($("input[name=pm_forecast_gp_" + sec + "_0]").val().replace(/\,/g, '')),
                             FC_GP01: parseInt($("input[name=pm_forecast_gp_" + sec + "_1]").val().replace(/\,/g, '')),
@@ -1212,6 +1356,25 @@ else
                             FC_GP10: parseInt($("input[name=pm_forecast_gp_" + sec + "_10]").val().replace(/\,/g, '')),
                             FC_GP11: parseInt($("input[name=pm_forecast_gp_" + sec + "_11]").val().replace(/\,/g, '')),
                             FC_GP12: parseInt($("input[name=pm_forecast_gp_" + sec + "_12]").val().replace(/\,/g, '')),
+                            FC_GP13: parseInt($("input[name=pm_forecast_gp_" + sec + "_13]").val().replace(/\,/g, '')),
+                            FC_GP14: parseInt($("input[name=pm_forecast_gp_" + sec + "_14]").val().replace(/\,/g, '')),
+
+                            TG_INV00: parseInt($("input[name=target_" + sec + "_0]").val().replace(/\,/g, '')),
+                            TG_INV01: parseInt($("input[name=target_" + sec + "_1]").val().replace(/\,/g, '')),
+                            TG_INV02: parseInt($("input[name=target_" + sec + "_2]").val().replace(/\,/g, '')),
+                            TG_INV03: parseInt($("input[name=target_" + sec + "_3]").val().replace(/\,/g, '')),
+                            TG_INV04: parseInt($("input[name=target_" + sec + "_4]").val().replace(/\,/g, '')),
+                            TG_INV05: parseInt($("input[name=target_" + sec + "_5]").val().replace(/\,/g, '')),
+                            TG_INV06: parseInt($("input[name=target_" + sec + "_6]").val().replace(/\,/g, '')),
+                            TG_INV07: parseInt($("input[name=target_" + sec + "_7]").val().replace(/\,/g, '')),
+                            TG_INV08: parseInt($("input[name=target_" + sec + "_8]").val().replace(/\,/g, '')),
+                            TG_INV09: parseInt($("input[name=target_" + sec + "_9]").val().replace(/\,/g, '')),
+                            TG_INV10: parseInt($("input[name=target_" + sec + "_10]").val().replace(/\,/g, '')),
+                            TG_INV11: parseInt($("input[name=target_" + sec + "_11]").val().replace(/\,/g, '')),
+                            TG_INV12: parseInt($("input[name=target_" + sec + "_12]").val().replace(/\,/g, '')),
+                            TG_INV13: parseInt($("input[name=target_" + sec + "_13]").val().replace(/\,/g, '')),
+                            TG_INV14: parseInt($("input[name=target_" + sec + "_14]").val().replace(/\,/g, '')),
+
                         }
                         request.push(details);
                     }
@@ -1243,8 +1406,8 @@ else
                                 timer: 6000,
                                 timerProgressBar: true,
                                 onClose: () => {
-                                    LoadingShow();
-                                    location.reload();
+                                    LoadingHide();
+                                    //location.reload();
                                 }
                             });
                         } else {
@@ -1288,6 +1451,7 @@ else
                 sumPmForecastId('pm_forecast_1', sec, 'forecast');
                 sumPmForecastId('pm_forecast_gp_1', sec, 'forecastgp');
                 sumPmForecastId('sale_forecast_1', sec, 'saleforecast');
+                sumPmForecastId('target_1', sec, 'target');
             }
         });
     }
@@ -1305,7 +1469,7 @@ else
         $('#val_sum_' + _className).val(numberWithCommas(sum_forecast_by_pm));
         if (flag == "forecast") {//sum total forecast
             let sum_forecast_by_pm_sum_total = 0;
-            for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            for (let numMonth = 1; numMonth <= 14; numMonth++) {
                 await Promise.all($("input[name=pm_forecast_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
                     let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
                     budget_by_pm = await getVowels(budget_by_pm, 0);
@@ -1319,22 +1483,21 @@ else
             //sum ข้างล่าง
             await sumPmForecastSumTotal("pm_forecast_sum_total");
         } else if (flag == "forecastGp") {//sum total forecast gp
-            //alert("forecastGp");
-            let sum_forecast_by_pm_sum_total = 0;
-            for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            let sum_forecast_gp_sum_total = 0;
+            for (let numMonth = 1; numMonth <= 14; numMonth++) {
                 await Promise.all($("input[name=pm_forecast_gp_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
-                    let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
-                    budget_by_pm = await getVowels(budget_by_pm, 0);
-                    sum_forecast_by_pm_sum_total += Number(budget_by_pm);
+                    let forecast_gp = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+                    forecast_gp = await getVowels(forecast_gp, 0);
+                    sum_forecast_gp_sum_total += Number(forecast_gp);
                 }));
             }
-            $("#pm_forecast_gp_" + sec + "_0").val(numberWithCommas(sum_forecast_by_pm_sum_total));
+            $("#pm_forecast_gp_" + sec + "_0").val(numberWithCommas(sum_forecast_gp_sum_total));
             //sum ข้างล่าง
             await sumPmForecastSumTotal("pm_forecast_gp_sum_total");
         } else if (flag == "saleForecast") {//sum total sale forecast
             //alert("forecastGp");
             let sum_forecast_by_pm_sum_total = 0;
-            for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            for (let numMonth = 1; numMonth <= 14; numMonth++) {
                 await Promise.all($("input[name=sale_forecast_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
                     let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
                     budget_by_pm = await getVowels(budget_by_pm, 0);
@@ -1344,6 +1507,19 @@ else
             $("#sale_forecast_sum_total_" + sec + "_0").val(numberWithCommas(sum_forecast_by_pm_sum_total));
             //sum ข้างล่าง
             await sumPmForecastSumTotal("sale_forecast_sum_total");
+        } else if (flag == "target") {//sum total target
+            //alert("forecastGp");
+            let sum_forecast_by_pm_sum_total = 0;
+            for (let numMonth = 1; numMonth <= 14; numMonth++) {
+                await Promise.all($("input[name=target_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
+                    let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
+                    budget_by_pm = await getVowels(budget_by_pm, 0);
+                    sum_forecast_by_pm_sum_total += Number(budget_by_pm);
+                }));
+            }
+            $("#target_" + sec + "_0").val(numberWithCommas(sum_forecast_by_pm_sum_total));
+            //sum ข้างล่าง
+            await sumPmForecastSumTotal("target_sum_total");
         }
     }
 
@@ -1353,21 +1529,20 @@ else
             let sum_total_budget_gp_per = 0;
             let sum_budget_gp = $("#sum_budget_gp_" + numMonth).text().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
             let sum_budget_by_pm = $("#sum_budget_" + numMonth).text().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
-            //console.log("sum_budget_gp = " + sum_budget_gp);
-            //console.log("sum_budget_gp = " + sum_budget_gp);
-            //console.log("sum_budget_by_pm = " + sum_budget_by_pm);
             if (sum_budget_by_pm != 0) {
-                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
             }
-            $('#sum_budget_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2)+"%");
+            if (sum_total_budget_gp_per != 0) {
+                $('#sum_budget_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(0) + "%");
+            }
         }
         let sum_all_total_budget_gp_per = 0;
         let sum_all_budget_gp = $("#sum_budget_gp_sum_total").text().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
         let sum_all_budget_by_pm = $("#sum_budget_sum_total").text().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
         if (sum_all_budget_by_pm != 0) {
-            sum_all_total_budget_gp_per = (sum_all_budget_gp / sum_all_budget_by_pm);
+            sum_all_total_budget_gp_per = (sum_all_budget_gp / sum_all_budget_by_pm) * 100;
         }
-        $('#sum_budget_gp_per_sum_total').text(sum_all_total_budget_gp_per.toFixed(2) + "%");
+        $('#sum_budget_gp_per_sum_total').text(sum_all_total_budget_gp_per.toFixed(0) + "%");
     }
     //sum actual budget
     const sumTotalActaulPer = async () => {
@@ -1375,10 +1550,8 @@ else
             let sum_total_budget_gp_per = 0;
             let sum_budget_gp = $("#val_sum_act_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
             let sum_budget_by_pm = $("#val_sum_act_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '');
-            // console.log("sum_budget_gp = " + sum_budget_gp);
-            // console.log("sum_budget_by_pm = " + sum_budget_by_pm);
             if (sum_budget_by_pm != 0) {
-                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm);
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
                 $('#sum_act_gp_per_' + numMonth).text(sum_total_budget_gp_per.toFixed(2) + "%");
             }
         }
@@ -1389,7 +1562,7 @@ else
         //console.log("sum_total_budget_by_pm = " + sum_total_budget_by_pm);
         //console.log("sum_total_budget_gp = " + sum_total_budget_gp);
         if (sum_total_budget_gp != 0) {
-            sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp);
+            sum_total_all_budget_gp_per = (sum_total_budget_by_pm / sum_total_budget_gp) * 100;
         }
         $('#sum_act_gp_per_sum_total').text(sum_total_all_budget_gp_per.toFixed(2) + "%");
     }
@@ -1399,7 +1572,7 @@ else
         if (inputName == "budget_gp_per" || inputName == "act_gp_per") {
             txtPercent = "%";
         }
-        for (let numMonth = 0; numMonth <= 12; numMonth++) {
+        for (let numMonth = 0; numMonth <= 14; numMonth++) {
             let sum_budget = 0;
             await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
                 let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
@@ -1407,7 +1580,7 @@ else
                 budget_by_pm = await getVowels(budget_by_pm, 0);
                 sum_budget += Number(budget_by_pm);
             }));
-            if (sum_budget != 0) {
+            if (sum_budget != 0 && sum_budget != null) {
                 $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_budget) + txtPercent);
                 $('#val_sum_' + inputName + '_' + numMonth).val(numberWithCommas(sum_budget));
             }
@@ -1437,12 +1610,10 @@ else
         await sumBudgetField("acc_act");
         await sumBudgetField("sale_forecast");
         await sumBudgetField("budget_gp");
-        //await sumBudgetField("budget_gp_per");
         await sumBudgetField("acc_budget_gp");
-
         await sumBudgetField("act_gp");
-       //await sumBudgetField("act_gp_per");
         await sumBudgetField("acc_act_gp");
+        await sumBudgetField("target");
 
         //Pm forecast
         await sumPmForecastSumTotal("budget_sum_total");
@@ -1453,10 +1624,10 @@ else
         await sumPmForecastSumTotal("act_sum_total");
         await sumPmForecastSumTotal("pm_forecast_sum_total");
         await sumPmForecastSumTotal("pm_forecast_gp_sum_total");
-        //await sumPmForecastSumTotal("act_gp_per_sum_total");
         await sumPmForecastSumTotal("acc_budget_gp_sum_total");
         await sumPmForecastSumTotal("act_gp_sum_total");
         await sumPmForecastSumTotal("acc_act_gp_sum_total");
+        await sumPmForecastSumTotal("target_sum_total");
 
         await sumForecast();
         await sumTotalGpBudgetPer();
@@ -1467,6 +1638,6 @@ else
 
     $(document).ready(function () {
         calculateForecastPm();
-        $('span id').text();
+        //$('span id').text();
     });
 </script>

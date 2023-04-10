@@ -76,7 +76,11 @@
 <br>
 <br>
 
-<script>
+<script defer>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
     function searchBudget() {
         var msg = '';
         var error = 0;
@@ -97,7 +101,7 @@
             });
             return false;
         } else {
-            //LoadingShow(); 
+            //LoadingShow();
             $('form[id="budgetPmForm"]').submit();
         }
     }
@@ -106,10 +110,39 @@
         LoadingShow();
         //$('.selectpicker').val('default').selectpicker('deselectAll');
         //$('.selectpicker').selectpicker('refresh');
-        $("#stkGroup").val('default').selectpicker("refresh");
+        //$("#stkGroup").val('default').selectpicker("refresh");
+        location.reload();
         LoadingHide();
     }
+
     $(document).ready(function () {
+        //selectpicker stkgrp
+        function toggleSelectAll(control) {
+            var allOptionIsSelected = (control.val() || []).indexOf("ALL") > -1;
+            function valuesOf(elements) {
+                return $.map(elements, function (element) {
+                    return element.value;
+                });
+            }
+
+            if (control.data('allOptionIsSelected') != allOptionIsSelected) {
+                if (allOptionIsSelected) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                } else {
+                    control.selectpicker('val', []);
+                }
+            } else {
+                if (allOptionIsSelected && control.val().length != control.find('option').length) {
+                    control.selectpicker('val', valuesOf(control.find('option:selected[value!=ALL]')));
+                    allOptionIsSelected = false;
+                } else if (!allOptionIsSelected && control.val().length == control.find('option').length - 1) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                    allOptionIsSelected = true;
+                }
+            }
+            control.data('allOptionIsSelected', allOptionIsSelected);
+        }
+        $('#stkGroup').selectpicker().change(function () { toggleSelectAll($(this)); }).trigger('change');
         //GET Stkgroup
         //console.log(JSON.parse($("#stkGroup_header").val()))
         $('#prodMgr').change(function () {

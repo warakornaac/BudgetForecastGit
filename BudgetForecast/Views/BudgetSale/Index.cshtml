@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> SLMCODE:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="slmCode" name="slmCode" style="width: 100%;" data-live-search="true" multiple>
+                            <select class="form-control selectpicker" id="slmCode" name="slmCode" style="width: 100%;" data-live-search="true">
                                 @for (var i = 0; i < getSlmCode.Count; i++)
                                 {
                                     <option value="@getSlmCode[i].Value">@getSlmCode[i].Text</option>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="display: none;">
                 <div class="col-sm-4 col-lg-2">
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
@@ -74,7 +74,11 @@
         </div>
         <div class="card-footer" id="headerSearchFooter">
             <div class="row">
-                <div class="col-md-12 text-right">
+                <div class="col-xs-12 col-md-12 text-right">
+                    @if (ViewBag.cusCode != "[]")
+                    {
+                        <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetSale();"><i class="fa fa-save"></i> Save</button>
+                    }
                     <button type="button" onclick="resetSearch();" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
                     <button type="submit" class="btn btn-primary btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
                 </div>
@@ -91,9 +95,38 @@
 <br>
 
 <script defer>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
     $(document).ready(function () {
-        //set default PROD MGR
-       // $('#prodMgr').selectpicker('val', 'เลือก PROD MGR');
+        //selectpicker stkgrp
+        function toggleSelectAll(control) {
+            var allOptionIsSelected = (control.val() || []).indexOf("ALL") > -1;
+            function valuesOf(elements) {
+                return $.map(elements, function (element) {
+                    return element.value;
+                });
+            }
+
+            if (control.data('allOptionIsSelected') != allOptionIsSelected) {
+                if (allOptionIsSelected) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                } else {
+                    control.selectpicker('val', []);
+                }
+            } else {
+                if (allOptionIsSelected && control.val().length != control.find('option').length) {
+                    control.selectpicker('val', valuesOf(control.find('option:selected[value!=ALL]')));
+                    allOptionIsSelected = false;
+                } else if (!allOptionIsSelected && control.val().length == control.find('option').length - 1) {
+                    control.selectpicker('val', valuesOf(control.find('option')));
+                    allOptionIsSelected = true;
+                }
+            }
+            control.data('allOptionIsSelected', allOptionIsSelected);
+        }
+        $('#cusCode').selectpicker().change(function () { toggleSelectAll($(this)); }).trigger('change');
         //GET Stkgroup
         $('#prodMgr').change(function () {
             var ProdMRG = $('#prodMgr').val();
@@ -174,8 +207,12 @@
     }
 
     function resetSearch() {
-        $('.selectpicker').val('default').selectpicker('deselectAll');
-        $('.selectpicker').selectpicker('refresh');
+        LoadingShow();
+        //$('.selectpicker').val('default').selectpicker('deselectAll');
+        //$('.selectpicker').selectpicker('refresh');
+        //$("#stkGroup").val('default').selectpicker("refresh");
+        location.reload();
+        LoadingHide();
     }
 
     $('#slmCode').change(function () {
@@ -212,7 +249,7 @@
             $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
 
              //get list customer
-            getCustomerBySlmCode($('#cusCode option:selected').val());
+            getCustomerBySlmCode($('#slmCode option:selected').val());
         }
     }
 </script>

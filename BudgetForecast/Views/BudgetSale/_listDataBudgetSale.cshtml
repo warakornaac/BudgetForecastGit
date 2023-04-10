@@ -187,13 +187,13 @@ else
                 </div>
             </div>
         </div>
-        <div class="card-footer" id="divSummaryAll">
+        <div @*class="card-footer" id="divSummaryAll">
             <div class="row">
                 <div class="col-md-12 text-right">
                     <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: large;" onclick="saveBudgetSale();"><i class="fa fa-save"></i> Save</button>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
     //Summary
     <div class="card mb-12" id="cardSummary" style="margin-top: 10px; display: none;">
@@ -323,8 +323,8 @@ else
                                     timer: 6000,
                                     timerProgressBar: true,
                                     onClose: () => {
-                                        LoadingShow();
-                                        location.reload();
+                                        LoadingHide();
+                                        //location.reload();
                                     }
                                 });
                             } else {

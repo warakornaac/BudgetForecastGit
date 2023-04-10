@@ -46,7 +46,6 @@ namespace BudgetForecast.Controllers
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@inUsrID", user);
                         command.Parameters.AddWithValue("@inType", "STKGRP");
-                        //command.ExecuteNonQuery();
                         SqlDataReader dr2 = command.ExecuteReader();
                         while (dr2.Read())
                         {
@@ -86,23 +85,17 @@ namespace BudgetForecast.Controllers
                 }
             }
 
-            String[] arrData = new String[] { };
+
             var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-            var countMonth = arrMonth.Count();
-
-            ViewBag.monthList = arrMonth;
             var SearchBudgetPm = new List<StoreSearchBudgetPmModel>();
-
-            ViewBag.stkGroupList = SearchBudgetPm;
             //stkGroup null
             if (stkGroup != null)
             {
                 SearchBudgetPm = new SearchBudgetPm().GetStoreSearchBudgetPm(prodMgr, stkGroup);
-
-                ViewBag.stkGroupList = SearchBudgetPm;
             }
+
+            ViewBag.stkGroupList = SearchBudgetPm;
             ViewBag.monthList = arrMonth;
-            ViewBag.arrList = arrData;
 
             return View();
         }

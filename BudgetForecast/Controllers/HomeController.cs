@@ -57,7 +57,7 @@ namespace BudgetForecast.Controllers
                 string UserType = string.Empty;
                 string sessionId = Request["http_cookie"];
                 string txtSql = "";
-                txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD  FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID WHERE UsrID =N'" + User + "'and [dbo].F_decrypt([Password])='" + Password + "'";
+                txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID WHERE UsrID =N'" + User + "'and [dbo].F_decrypt([Password])='" + Password + "'";
                 SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                 SqlDataReader revcus = cmdcus.ExecuteReader();
                 while (revcus.Read())
