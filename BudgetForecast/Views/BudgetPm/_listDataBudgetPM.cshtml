@@ -46,7 +46,7 @@ else
                                         <thead>
                                             <tr style="white-space: nowrap;">
                                                 <th class="" style="vertical-align: middle;">Month/Topic</th>
-                                                <th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>
+                                                @*<th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>*@
                                                 @{
 
                                                     foreach (var item in arrMonth)
@@ -70,9 +70,9 @@ else
                                                         double valBudgetByPmBegin = 0;
                                                         valBudgetByPmBegin = stkGroupItem.ACT00_Cy == 0 ? 1 : (stkGroupItem.BUD00 - stkGroupItem.ACT00_Cy) / stkGroupItem.ACT00_Cy * 100;
                                                     }
-                                                    <td style="vertical-align: middle;">
-                                                        @*<input class="form-control budget_by_pm_0 vright" type="text" id="budget_by_pm_0" value="@valBudgetByPmBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@
-                                                    </td>
+                                                    @*<td style="vertical-align: middle;">
+                                                            <input class="form-control budget_by_pm_0 vright" type="text" id="budget_by_pm_0" value="@valBudgetByPmBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />
+                                                        </td>*@
                                                     @{
                                                         int countBudget = 0;
                                                         string nameBudgetBypm = "";
@@ -147,9 +147,9 @@ else
                                                         double valBudgetGpBegin = 0;
                                                         valBudgetGpBegin = stkGroupItem.AGP00_Cy == 0 ? 1 : (stkGroupItem.GP00 - stkGroupItem.AGP00_Cy) / stkGroupItem.AGP00_Cy * 100;
                                                     }
-                                                    <td style="vertical-align: middle;">
-                                                        @*<input class="form-control vright budget_gp_0" type="text" id="budget_gp_0" value="@valBudgetGpBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />*@
-                                                    </td>
+                                                    @*<td style="vertical-align: middle;">
+                                                        <input class="form-control vright budget_gp_0" type="text" id="budget_gp_0" value="@valBudgetGpBegin.ToString("N2")%" onkeypress="return validateFloatKeyPress(this,event);" style="width: 100px;" disabled />
+                                                    </td>*@
 
                                                     @{
                                                         int countBudgetGp = 0;
@@ -216,12 +216,14 @@ else
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align:middle;">GP Budget%</th>
-                                                    <td>  </td>
+                                                    @*<td>  </td>*@
                                                     @{
                                                         int countBudgetGpPer = 0;
                                                         int sizeValBudgetGpPer;
                                                         double valBudgetGpPerSum = 0;
+                                                        string idBudgetGpPerTotal = "";
                                                         string idBudgetGpPerSumTotal = "";
+                                                        string nameBudgetGpPer = "";
                                                         foreach (var item in arrMonth)
                                                         {
                                                             countBudgetGpPer++;
@@ -268,13 +270,16 @@ else
                                                                     // code block
                                                                     break;
                                                             }
-
+                                                            nameBudgetGpPer = "budget_gp_per_" + @stkGroupItem.STKGRP + "_" + countBudgetGpPer;
+                                                            idBudgetGpPerTotal = "budget_gp_per_" + @stkGroupItem.STKGRP + "_" + countBudgetGpPer;
                                                             <td class="vright" style="vertical-align: middle;">
-                                                                @if (valBudgetGpPer != 0)
+                                                                @if (!Double.IsNaN(valBudgetGpPer) && valBudgetGpPer != 0)
                                                                 {
-                                                                    sizeValBudgetGpPer = valBudgetGpPer.ToString("N2").Length;
-                                                                    @valBudgetGpPer.ToString("N2").Insert(sizeValBudgetGpPer, "%");
+                                                                    @*sizeValBudgetGpPer = valBudgetGpPer.ToString("N2").Length;
+                                                                        @valBudgetGpPer.ToString("N2").Insert(sizeValBudgetGpPer, "%");*@
                                                                 }
+                                                                <span id="@idBudgetGpPerTotal"></span>
+                                                                @*<input type="hidden" class="budget_gp_per_@countBudgetGpPer" name="@nameBudgetGpPer" id="@nameBudgetGpPer" value="@valBudgetGpPer.ToString("N0")" />*@
                                                             </td>
                                                         }
                                                         idBudgetGpPerSumTotal = "budget_gp_per_" + @stkGroupItem.STKGRP + "_0";
@@ -290,7 +295,7 @@ else
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align:middle;">No Of Customer</th>
-                                                    <td>  </td>
+                                                    @*<td>  </td>*@
                                                     @{
                                                         int countBudgetCustomer = 0;
                                                         string idBudgetCustomerSumTotal = "";
@@ -360,7 +365,7 @@ else
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align:middle;">Actaul Sales</th>
-                                                    <td>  </td>
+                                                    @*<td>  </td>*@
                                                     @{
                                                         int countBudgetActualSale = 0;
                                                         string idBudgetActualSaleSumTotal = "";
@@ -430,7 +435,7 @@ else
                                                 </tr>
                                                 <tr>
                                                     <th style="vertical-align:middle;">Actaul GP</th>
-                                                    <td>  </td>
+                                                    @*<td>  </td>*@
                                                     @{
                                                         int countBudgetActualGp = 0;
                                                         string idBudgetActualGpSumTotal = "";
@@ -500,7 +505,7 @@ else
 
                                                 <tr>
                                                     <th style="vertical-align:middle;">Actaul GP%</th>
-                                                    <td>  </td>
+                                                    @*<td>  </td>*@
                                                     @{
                                                         string idBudgetActualGpPerSumTotal = "";
                                                         double valBudgetActualGpPerSum = 0;
@@ -610,7 +615,7 @@ else
                     <thead>
                         <tr style="white-space: nowrap;">
                             <th class="vleft" style="vertical-align: middle;">Month/Topic</th>
-                            <th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>
+                            @*<th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>*@
                             @{
                                 foreach (var item in arrMonth)
                                 {
@@ -627,7 +632,7 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Budget By PM</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_by_pm_@colTdSum"> </span>
@@ -642,7 +647,7 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>GP Budget</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_gp_@colTdSum"> </span>
@@ -657,7 +662,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>GP Budget%</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_budget_gp_per_@colTdSum"> </span> </td>
                                 }
@@ -669,7 +674,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>No Of Customer</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_budget_customer_@colTdSum"> </span> </td>
                                 }
@@ -681,7 +686,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Actaul Sales</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_actual_sale_@colTdSum"> </span>
@@ -696,7 +701,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Actaul GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_actual_gp_@colTdSum"> </span>
@@ -711,7 +716,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Actaul GP%</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_budget_actaul_gp_per_@colTdSum"> </span> </td>
                                 }
@@ -785,6 +790,7 @@ else
                             BUD10: parseInt($("input[name=budget_by_pm_" + stkgrp + "_10]").val().replace(/\,/g, '')),
                             BUD11: parseInt($("input[name=budget_by_pm_" + stkgrp + "_11]").val().replace(/\,/g, '')),
                             BUD12: parseInt($("input[name=budget_by_pm_" + stkgrp + "_12]").val().replace(/\,/g, '')),
+                            GP00: parseInt($("input[name=budget_gp_" + stkgrp + "_0]").val().replace(/\,/g, '')),
                             GP01: parseInt($("input[name=budget_gp_" + stkgrp + "_1]").val().replace(/\,/g, '')),
                             GP02: parseInt($("input[name=budget_gp_" + stkgrp + "_2]").val().replace(/\,/g, '')),
                             GP03: parseInt($("input[name=budget_gp_" + stkgrp + "_3]").val().replace(/\,/g, '')),
@@ -802,7 +808,7 @@ else
                     }
                 });
 
-                console.log(request);
+                //console.log(request);
                 //return false;
                 $.ajax({
                     type: 'POST',
@@ -829,7 +835,9 @@ else
                                 timer: 6000,
                                 timerProgressBar: true,
                                 onClose: () => {
+                                    $(window).unbind('beforeunload');
                                     LoadingHide();
+                                    $('form[id="budgetPmForm"]').submit();
                                     //location.reload();
                                 }
                             });
@@ -866,12 +874,13 @@ else
         });
     }
     //sum customer
-    const sumCustomer = async () => {
+    const sumByMonth = async () => {
         $('.stkGrpList_header').each(function () {
             var stkgrp;
             stkgrp = $(this).val();
             if (stkgrp != null) {
                 sumCustomerByInput(stkgrp);
+                sumGpBudgetPerByStk(stkgrp);
             }
         });
     }
@@ -884,7 +893,6 @@ else
                 //console.log("budget_customer_" + stkgrp + '_' + numMonth +' = ' + budget_by_pm);
                 budget_customer = await getVowels(budget_customer, 0);
                 customer_sum_total += Number(budget_customer);
-
             }));
         }
         $("#budget_customer_" + stkgrp + "_0").val(numberWithCommas(customer_sum_total));
@@ -931,15 +939,31 @@ else
         await sumBudgetByPmSumTotal("budget_by_pm_sum_total");
         await sumBudgetByPmSumTotal("budget_gp_sum_total");
         await sumTotalGpBudgetPer();
+        await sumGpBudgetPerByStk(stkgrp);
     }
-    //sum gp budget
-    const sumTotalGpBudgetPer = async () => {
+    //sum gp budget by stk
+    const sumGpBudgetPerByStk = async (stkgrp) => {
         for (let numMonth = 0; numMonth <= 12; numMonth++) {
+            let sum_total_budget_gp_per = 0;
+            let sum_budget_gp = $("input[name=budget_gp_" + stkgrp + "_" + numMonth + "]").val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
+            let sum_budget_by_pm = $("input[name=budget_by_pm_" + stkgrp + "_" + numMonth + "]").val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
+            //if (sum_budget_by_pm != 0) {
+                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
+            //}
+            if (!isNaN(sum_total_budget_gp_per)) {
+                if (numMonth == 0) {
+                    $("#budget_gp_per_" + stkgrp + "_" + numMonth).val(sum_total_budget_gp_per.toFixed(2) + "%");
+                }
+                $("#budget_gp_per_" + stkgrp + "_" + numMonth).text(sum_total_budget_gp_per.toFixed(2) + "%");
+            }
+        }
+    }
+    //sum gp budget per
+    const sumTotalGpBudgetPer = async () => {
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
             let sum_total_budget_gp_per = 0;
             let sum_budget_gp = $("#val_sum_budget_gp_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
             let sum_budget_by_pm = $("#val_sum_budget_by_pm_" + numMonth).val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
-            //console.log("sum_budget_gp = " + sum_budget_gp);
-            //console.log("sum_budget_by_pm = " + sum_budget_by_pm);
             if (sum_budget_by_pm != 0) {
                 sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
             }
@@ -1017,7 +1041,7 @@ else
             }
             if (inputName == "budget_actual_gp_per_sum_total") {
                 let budget_by_pm = obj.value.toString().replace(txt_spa, '');
-                console.log(budget_by_pm);
+                //console.log(budget_by_pm);
             }
 
             let budget_by_pm = obj.value.toString().replace(txt_spa, '');
@@ -1051,7 +1075,7 @@ else
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget");
         await sumBudgetByPmSumTotal("budget_by_pm_sale_budget_next");
 
-        await sumCustomer();
+        await sumByMonth();
         await sumTotalGpBudgetPer();
         await sumTotalActaulPer();
 

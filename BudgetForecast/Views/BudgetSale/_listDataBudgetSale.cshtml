@@ -2,23 +2,25 @@
 @{
     ViewBag.Title = "_listDataBudgetSale";
     string setWidth = "840px";
-    int countList = 0;
+    int countList = ((List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList).Count();
 }
-
+<input type="hidden" id="countList" value="@countList" />
 <style>
     .fixTableHead {
         overflow-y: auto;
         height: 840px;
     }
 
-    .fixTableHead thead th {
-        position: sticky;
-        top: 0;
-    }
+        .fixTableHead thead th {
+            position: sticky;
+            top: 0;
+        }
+
     table {
         border-collapse: collapse;
         width: 100%;
     }
+
     th,
     td {
         padding: 8px 15px;
@@ -44,156 +46,157 @@
         cursor: pointer;
     }
 </style>
-@if (((List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList).Count() == 1)
+@if (countList == 1)
 {
     setWidth = "750px";
 }
-@if (((List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList).Count() == 0)
+@if (countList == 0)
 {
     <div class="alert alert-danger text-center" style="font-size: 14px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
 }
 else
 {
-    countList = ((List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList).Count();
     <div class="card">
-        <div class="card-header bg-info text-white font-weight-bold">
-            <div class="row">
-                <div class="col-xs-8 col-sm-8 col-md-8 text-left">
-                    <i class="fa fa-list"></i> @ViewBag.slmCode
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-4 text-right">
+        <form method="post" id="formBudgetSale">
+            <div class="card-header bg-info text-white font-weight-bold">
+                <div class="row">
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                        <i class="fa fa-list"></i> @ViewBag.slmCode
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 text-right">
 
-                    @countList.ToString("N0") รายการ
+                        @countList.ToString("N0") รายการ
 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive fixTableHead">
-                <table class="table dataTable table-striped table-bordered nowrap table-hover" border="1">
-                    <thead>
-                        <tr style="white-space: nowrap;">
-                            <th class="vcenter" style="vertical-align: middle;">
-                                <input type="checkbox" id="selectkAll" class="selectkAll" onclick="selectAll(this);" style="" />
-                            </th>
-                            <th class="vcenter" style="vertical-align: middle;">SL</th>
-                            <th class="vcenter" style="vertical-align: middle;">Custype</th>
-                            <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
-                            <th class="vcenter" style="vertical-align: middle;">Cusname</th>
-                            <th class="vcenter" style="vertical-align: middle;">Province</th>
-                            <th class="vcenter" style="vertical-align: middle;">SEC</th>
-                            <th class="vcenter" style="vertical-align: middle;">StkGroup</th>
-                            <th class="vcenter" style="vertical-align: middle;">StkName</th>
-                            <th class="vcenter" style="vertical-align: middle;">LastYr</th>
-                            <th class="vcenter" style="vertical-align: middle;">Ytd</th>
-                            <th class="vcenter" style="vertical-align: middle;">Q This Yr</th>
-                            <th class="vcenter" style="vertical-align: middle;">Next Slm</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: 14px;">
-                        @{
-                            int rowStkGroup = 0;
-                            string nameLastYear = "";
-                            string nameSelectList = "";
-                            string nameYtd = "";
-                            string nameQuota = "";
-                            string nameQuotaNext = "";
-                            string nameFslm = "";
-                            string nameFprod = "";
-                            foreach (var stkGroupItem in (List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList)
-                            {
-                                ++rowStkGroup;
-                                <tr>
-                                    <td class="vcenter" style="vertical-align: middle; cursor: pointer;">
-                                        @{
-                                            nameSelectList = @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                            <input type="checkbox" style="" class="selectList" id="@nameSelectList" value="@nameSelectList" data-cuscode="@stkGroupItem.PEOPLE" data-stkgrp="@stkGroupItem.STKGRP" />
-                                        }
-                                    </td>
-                                    <td class="vcenter" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.SLMCOD</td>
-                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.CUSTYP</td>
-                                    <td class="vcenter" style="vertical-align: middle;">
-                                        @{ 
-                                            if(stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
-                                            {
-                                                @stkGroupItem.PEOPLE
+            <div class="card-body p-0">
+                <div class="table-responsive fixTableHead">
+                    <table class="table dataTable table-striped table-bordered nowrap table-hover" border="1">
+                        <thead>
+                            <tr style="white-space: nowrap;">
+                                <th class="vcenter" style="vertical-align: middle;">
+                                    <input type="checkbox" id="selectkAll" class="selectkAll" onclick="selectAll(this);" style="" />
+                                </th>
+                                <th class="vcenter" style="vertical-align: middle;">Custype</th>
+                                <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
+                                <th class="vcenter" style="vertical-align: middle;">Cusname</th>
+                                <th class="vcenter" style="vertical-align: middle;">Province</th>
+                                <th class="vcenter" style="vertical-align: middle;">Slmcod</th>
+                                <th class="vcenter" style="vertical-align: middle;">Sec</th>
+                                <th class="vcenter" style="vertical-align: middle;">StkGroup</th>
+                                <th class="vcenter" style="vertical-align: middle;">StkName</th>
+                                <th class="vcenter" style="vertical-align: middle;">LastYr</th>
+                                <th class="vcenter" style="vertical-align: middle;">Ytd</th>
+                                <th class="vcenter" style="vertical-align: middle;">Q This Yr</th>
+                                <th class="vcenter" style="vertical-align: middle;">Budget Next</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 14px;">
+                            @{
+                                int rowStkGroup = 0;
+                                string nameLastYear = "";
+                                string nameSelectList = "";
+                                string nameYtd = "";
+                                string nameQuota = "";
+                                string nameQuotaNext = "";
+                                string nameFslm = "";
+                                string nameFprod = "";
+                                foreach (var stkGroupItem in (List<StoreSearchBudgetSaleModel>)ViewBag.stkGroupList)
+                                {
+                                    ++rowStkGroup;
+                                    <tr>
+                                        <td class="vcenter" style="vertical-align: middle; cursor: pointer;">
+                                            @{
+                                                nameSelectList = @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                <input type="checkbox" style="" class="selectList" id="@nameSelectList" value="@nameSelectList" data-cuscode="@stkGroupItem.PEOPLE" data-stkgrp="@stkGroupItem.STKGRP" />
                                             }
-                                        }
-                                    </td>
-                                    <td class="vleft" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.CUSNAM</td>
-                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.PRO</td>
-                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.SEC</td>
-                                    <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.STKGRP</td>
-                                    <td class="vleft" style="vertical-align: middle;"> @stkGroupItem.GRPNAM</td>
-                                    <td class="vright" style="vertical-align: middle;">
-                                        @{
-                                            nameLastYear = "last_year_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                            <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright last_year" name="@nameLastYear" id="@nameLastYear" value="@stkGroupItem.LastYr.ToString("N0")" onkeyup="return sumBudgetSale('last_year');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
-                                            @stkGroupItem.LastYr.ToString("N0")
-                                        }
-                                    </td>
-                                    <td class="vright" style="vertical-align: middle;">
-                                        @{
-                                            nameYtd = "ytd_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                            <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright ytd" name="@nameYtd" id="@nameYtd" value="@stkGroupItem.Ytd.ToString("N0")" onkeyup="return sumBudgetSale('ytd');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
-                                            @stkGroupItem.Ytd.ToString("N0")
-                                        }
-                                    </td>
-                                    <td class="vright" style="vertical-align: middle;">
-                                        @{
-                                            nameQuota = "quota_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                            <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright quota" name="@nameQuota" id="@nameQuota" value="@stkGroupItem.Quota.ToString("N0")" onkeyup="return sumBudgetSale('quota');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
-                                            @stkGroupItem.Quota.ToString("N0")
-                                        }
-                                    </td>
-                                    <td class="vcenter" style="vertical-align: middle; text-align: -webkit-center;">
-                                        @{
-                                            nameFslm = "f_slm_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                            <input data-stkgrp="@stkGroupItem.STKGRP" type="text" class="form-control mask vright f_slm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" disabled />
-                                        }
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.CUSTYP</td>
+                                        <td class="vcenter" style="vertical-align: middle;">
+                                            @{
+                                                if (stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
+                                                {
+                                                    @stkGroupItem.PEOPLE
+                                                }
+                                            }
+                                        </td>
+                                        <td class="vleft" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.CUSNAM</td>
+                                        <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.PRO</td>
+                                        <td class="vcenter" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.SLMCOD</td>
+                                        <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.SEC</td>
+                                        <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.STKGRP</td>
+                                        <td class="vleft" style="vertical-align: middle;"> @stkGroupItem.GRPNAM</td>
+                                        <td class="vright" style="vertical-align: middle;">
+                                            @{
+                                                nameLastYear = "last_year_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright last_year" name="@nameLastYear" id="@nameLastYear" value="@stkGroupItem.LastYr.ToString("N0")" onkeyup="return sumBudgetSale('last_year');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
+                                                @stkGroupItem.LastYr.ToString("N0")
+                                            }
+                                        </td>
+                                        <td class="vright" style="vertical-align: middle;">
+                                            @{
+                                                nameYtd = "ytd_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright ytd" name="@nameYtd" id="@nameYtd" value="@stkGroupItem.Ytd.ToString("N0")" onkeyup="return sumBudgetSale('ytd');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
+                                                @stkGroupItem.Ytd.ToString("N0")
+                                            }
+                                        </td>
+                                        <td class="vright" style="vertical-align: middle;">
+                                            @{
+                                                nameQuota = "quota_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright quota" name="@nameQuota" id="@nameQuota" value="@stkGroupItem.Quota.ToString("N0")" onkeyup="return sumBudgetSale('quota');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
+                                                @stkGroupItem.Quota.ToString("N0")
+                                            }
+                                        </td>
+                                        <td class="vcenter" style="vertical-align: middle; text-align: -webkit-center;">
+                                            @{
+                                                nameFslm = "f_slm_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" type="text" class="form-control mask vright f_slm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" disabled />
+                                            }
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        @*Footer*@
-        <div class="card-footer" id="divShowSum">
-            <div class="row">
-                <div class="col-lg-4 text-right"> </div>
-                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_last_year">
-                    <button type="button" class="btn btn-info" style="width: 100%; padding: 10px;">
-                        <span> <b>LastYr</b> </span>
-                        <span class="badge badge-light" id="sum_last_year" style="font-size: 16px;"></span>
-                    </button>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_ytd">
-                    <button type="button" class="btn btn-secondary" style="width: 100%; padding: 10px; ">
-                        <b>Ytd</b> <span class="badge badge-light" id="sum_ytd" style="font-size: 16px;"></span>
-                    </button>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_quota">
-                    <button type="button" class="btn btn-warning" style="width: 100%; padding: 10px; ">
-                        <span><b>Q This Yr</b></span>
-                        <span class="badge badge-light" id="sum_quota" style="font-size: 16px;"></span>
-                    </button>
-                </div>
-                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_f_slm">
-                    <button type="button" class="btn btn-danger" style="width: 100%; padding: 10px; ">
-                        <span><b>Next Slm</b></span> <span class="badge badge-light" id="sum_f_slm" style="font-size: 16px;"></span>
-                    </button>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        <div @*class="card-footer" id="divSummaryAll">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: large;" onclick="saveBudgetSale();"><i class="fa fa-save"></i> Save</button>
+            @*Footer*@
+            <div class="card-footer" id="divShowSum">
+                <div class="row">
+                    <div class="col-lg-4 text-right"> </div>
+                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_last_year">
+                        <button type="button" class="btn btn-info" style="width: 100%; padding: 10px;">
+                            <span> <b>LastYr</b> </span>
+                            <span class="badge badge-light" id="sum_last_year" style="font-size: 16px;"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_ytd">
+                        <button type="button" class="btn btn-secondary" style="width: 100%; padding: 10px; ">
+                            <b>Ytd</b> <span class="badge badge-light" id="sum_ytd" style="font-size: 16px;"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_quota">
+                        <button type="button" class="btn btn-warning" style="width: 100%; padding: 10px; ">
+                            <span><b>Q This Yr</b></span>
+                            <span class="badge badge-light" id="sum_quota" style="font-size: 16px;"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_f_slm">
+                        <button type="button" class="btn btn-danger" style="width: 100%; padding: 10px; ">
+                            <span><b>Next Slm</b></span> <span class="badge badge-light" id="sum_f_slm" style="font-size: 16px;"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>*@
+            @*<div class="card-footer" id="divSummaryAll">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: large;" onclick="saveBudgetSale();"><i class="fa fa-save"></i> Save</button>
+                        </div>
+                    </div>
+                </div>*@
+        </form>
     </div>
     //Summary
     <div class="card mb-12" id="cardSummary" style="margin-top: 10px; display: none;">
@@ -246,6 +249,17 @@ else
     </div>
 }
 <script defer>
+    var countList = $("#countList").val() || 0;
+    if (countList > 0) {
+        $('#formBudgetSale').data('serialize', $('#formBudgetSale').serialize()); // On load save form current state
+        $(window).bind('beforeunload', function (e) {
+            if ($('#formBudgetSale').serialize() != $('#formBudgetSale').data('serialize')) {
+                return true;
+            } else {
+                e = null;
+            }
+        });
+    }
     //btn save
     saveBudgetSale = async () => {
         var msg = '';
@@ -312,6 +326,7 @@ else
                         },
                         success: function (result) {
                             if (result != null) {
+                                $(window).unbind('beforeunload');
                                 Swal.fire({
                                     title: 'สำเร็จ',
                                     html: 'บันทึกเรียบร้อย',
@@ -323,8 +338,10 @@ else
                                     timer: 6000,
                                     timerProgressBar: true,
                                     onClose: () => {
+                                        $(window).unbind('beforeunload');
                                         LoadingHide();
-                                        //location.reload();
+                                        $('form[id="BudgetSale"]').submit();
+                                        //location.reload(true);
                                     }
                                 });
                             } else {

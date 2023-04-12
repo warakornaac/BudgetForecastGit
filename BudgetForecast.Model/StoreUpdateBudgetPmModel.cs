@@ -23,6 +23,7 @@ namespace BudgetForecast.Model
         public double BUD10 { get; set; }
         public double BUD11 { get; set; }
         public double BUD12 { get; set; }
+        public double GP00 { get; set; }
         public double GP01 { get; set; }
         public double GP02 { get; set; }
         public double GP03 { get; set; }

@@ -46,7 +46,7 @@ else
                                         <thead>
                                             <tr style="white-space: nowrap;">
                                                 <th class="" style="vertical-align: middle;">Month/Topic</th>
-                                                <th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>
+                                                @*<th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>*@
                                                 @{
 
                                                     foreach (var item in arrMonth)
@@ -65,7 +65,7 @@ else
                                                     double valBudgetBegin = 0;
                                                     valBudgetBegin = stkGroupItem.BUD00;
                                                 }
-                                                <td class="vright" style="vertical-align: middle;"> </td>
+                                                @*<td class="vright" style="vertical-align: middle;"> </td>*@
                                                 @{
                                                     int countBudget = 0;
                                                     string nameBudget = "";
@@ -140,10 +140,10 @@ else
                                                     double valAccBudgetBegin = 0;
                                                     valAccBudgetBegin = stkGroupItem.ACM_BUD12;
                                                 }
-                                                <td class="vright" style="vertical-align: middle;">
-                                                    @*@valAccBudgetBegin.ToString("N0")
-                                                        <input class="form-control vright acc_budget_0" type="hidden" id="acc_budget_0" value="@valAccBudgetBegin.ToString("N0")" />*@
-                                                </td>
+                                                @*<td class="vright" style="vertical-align: middle;">
+                                                    @valAccBudgetBegin.ToString("N0")
+                                                        <input class="form-control vright acc_budget_0" type="hidden" id="acc_budget_0" value="@valAccBudgetBegin.ToString("N0")" />
+                                                </td>*@
 
                                                 @{
                                                     int countAccBudget = 0;
@@ -214,7 +214,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Actual</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     int countAct = 0;
                                                     string idActSumTotal = "";
@@ -281,7 +281,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Accum Actual</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     int countAccAct = 0;
                                                     string idAccActSumTotal = "";
@@ -348,7 +348,7 @@ else
                                             </tr>
                                             <tr style="background-color: #ccebedc9;">
                                                 <th style="vertical-align:middle;">Target</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     double valTarget = 0;
                                                     int countTarget = 0;
@@ -419,7 +419,7 @@ else
                                             </tr>
                                             <tr style="background-color: #ccebedc9;">
                                                 <th style="vertical-align:middle;">Forecast</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     double valPmForecast = 0;
                                                     int countPmForecast = 0;
@@ -491,7 +491,7 @@ else
 
                                             <tr style="background-color: #ccebedc9;">
                                                 <th style="vertical-align:middle;">Forecast GP</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     double valPmForecastGp = 0;
                                                     int countPmForecastGp = 0;
@@ -556,7 +556,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th>Sale Forecast</th>
-                                                <td>  </td>
+                                                @*<td>  </td>*@
                                                 @{
                                                     int countSaleForcast = 0;
                                                     string idSaleForecastSumTotal = "";
@@ -623,7 +623,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Budget GP</th>
-                                                <td class="vright"> </td>
+                                                @*<td class="vright"> </td>*@
                                                 @{
                                                     int countBudgetGp = 0;
                                                     string idBudgetGpSumTotal = "";
@@ -698,12 +698,14 @@ else
                                                     if (!Double.IsNaN(valBeginBudgetGpPer) && valBeginBudgetGpPer != 0)
                                                     {
                                                         valBeginBudgetGpPer = valBeginBudgetGpPer;
-                                                    } else {
+                                                    }
+                                                    else
+                                                    {
                                                         valBeginBudgetGpPer = 0;
                                                     }
 
                                                 }
-                                                <td class="vright"> </td>
+                                                @*<td class="vright"> </td>*@
                                                 @{
                                                     int countBudgetGpPer = 0;
                                                     int sizeBudgetValGpPer;
@@ -774,7 +776,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Accum Bdg GP</th>
-                                                <td class="vright"> </td>
+                                                @*<td class="vright"> </td>*@
                                                 @{
                                                     int countAccBudgetGp = 0;
                                                     string idAccBudgetGpSumTotal = "";
@@ -841,7 +843,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Actual GP</th>
-                                                <td class="vright">  </td>
+                                                @*<td class="vright">  </td>*@
                                                 @{
                                                     int countActGp = 0;
                                                     string idActGpSumTotal = "";
@@ -911,7 +913,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">%Actual GP</th>
-                                                <td class="vright">  </td>
+                                                @*<td class="vright">  </td>*@
                                                 @{
                                                     int countActGpPer = 0;
                                                     int sizeActValGpPer;
@@ -981,7 +983,9 @@ else
                                                         @if (!Double.IsNaN(valSumActGpPer) && valSumActGpPer != 0)
                                                         {
                                                             valSumActGpPer = valSumActGpPer;
-                                                        } else {
+                                                        }
+                                                        else
+                                                        {
                                                             valSumActGpPer = 0;
                                                         }
                                                         <input class="form-control vright act_gp_per_sum_total" type="text" id="@idAccBudgetGpSumTotal" value="@valSumActGpPer.ToString("N2")%" style="width: 110px;" disabled />
@@ -990,7 +994,7 @@ else
                                             </tr>
                                             <tr>
                                                 <th style="vertical-align:middle;">Accum Act GP</th>
-                                                <td class="vright">  </td>
+                                                @*<td class="vright">  </td>*@
                                                 @{
                                                     int countAccActGp = 0;
                                                     string idAccActGpSumTotal = "";
@@ -1082,7 +1086,7 @@ else
                     <thead>
                         <tr style="white-space: nowrap;">
                             <th class="vleft" style="vertical-align: middle;">Month/Topic</th>
-                            <th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>
+                            @*<th class="vcenter" style="vertical-align: middle; min-width: 130px;">Begin</th>*@
                             @{
                                 foreach (var item in arrMonth)
                                 {
@@ -1096,7 +1100,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Budget</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_@colTdSum"> </span>
@@ -1110,7 +1114,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Accum Budget</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_acc_budget_@colTdSum"> </span> </td>
                                 }
@@ -1122,7 +1126,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Actual</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_act_@colTdSum"> </span>
@@ -1137,7 +1141,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Accum Actual</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_acc_act_@colTdSum"> </span> </td>
                                 }
@@ -1149,7 +1153,7 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Target</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 15; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_target_@colTdSum"> </span>
@@ -1162,7 +1166,7 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Forecast</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 15; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_pm_forecast_@colTdSum"> </span>
@@ -1175,7 +1179,7 @@ else
                         <tr style="white-space: nowrap; background-color: #ccebedc9;">
                             <th>Forecast GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 15; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 15; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_pm_forecast_gp_@colTdSum"> </span>
@@ -1189,7 +1193,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Sale Forecast</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_sale_forecast_@colTdSum"> </span> </td>
                                 }
@@ -1201,7 +1205,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Budget GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_budget_gp_@colTdSum"> </span>
@@ -1216,7 +1220,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>%Budget GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_budget_gp_per_@colTdSum"> </span> </td>
                                 }
@@ -1228,7 +1232,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Accum Bdg GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_acc_budget_gp_@colTdSum"> </span> </td>
                                 }
@@ -1240,7 +1244,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Actual GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright">
                                         <span id="sum_act_gp_@colTdSum"> </span>
@@ -1255,7 +1259,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>%Actual GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_act_gp_per_@colTdSum"> </span> </td>
                                 }
@@ -1267,7 +1271,7 @@ else
                         <tr style="white-space: nowrap;">
                             <th>Accum Act GP</th>
                             @{
-                                for (int colTdSum = 0; colTdSum < 13; colTdSum++)
+                                for (int colTdSum = 1; colTdSum < 13; colTdSum++)
                                 {
                                     <td class="vright"> <span id="sum_acc_act_gp_@colTdSum"> </span> </td>
                                 }
@@ -1410,8 +1414,9 @@ else
                                 timer: 6000,
                                 timerProgressBar: true,
                                 onClose: () => {
+                                    $(window).unbind('beforeunload');
                                     LoadingHide();
-                                    //location.reload();
+                                    $('form[id="forecastPmForm"]').submit();
                                 }
                             });
                         } else {

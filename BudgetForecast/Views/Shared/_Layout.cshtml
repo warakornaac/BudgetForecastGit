@@ -104,14 +104,13 @@
             }
             return convertString;
         }
-
-        //$('input[type=text]').bind('paste', function () {
-        //    setTimeout(function () {
-        //        var value = $('input[type=text]').val();
-        //        var updated = value.replace(/[^A-Za-z0-9&. ]/g, '');
-        //        $('input[type=text]').val(updated);
-        //    });
-        //})
+        //event past del "-"
+        $("input[type=text]").on("paste", function (event) {
+            var element = $(this);
+            setTimeout(function () {
+                element.val(element.val().replace(/[^0-9\.]/g, ''));
+            }, 0);
+        });
     });
 
     function validateFloatKeyPress(el, evt) {

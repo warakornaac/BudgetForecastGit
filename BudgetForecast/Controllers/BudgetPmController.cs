@@ -105,7 +105,7 @@ namespace BudgetForecast.Controllers
             var UpdateBudgetPm = new List<StoreUpdateBudgetPmModel>();
             foreach (var listData in (List<StoreUpdateBudgetPmModel>)request)
             {
-                UpdateBudgetPm = new UpdateBudgetPm().Update("PM116", listData.STKGRP, listData.BUD00 , listData.BUD01, listData.BUD02, listData.BUD03, listData.BUD04, listData.BUD05, listData.BUD06, listData.BUD07, listData.BUD08, listData.BUD09, listData.BUD10, listData.BUD11, listData.BUD12, listData.GP01, listData.GP02, listData.GP03, listData.GP04, listData.GP05, listData.GP06, listData.GP07, listData.GP08, listData.GP09, listData.GP10, listData.GP11, listData.GP12);
+                UpdateBudgetPm = new UpdateBudgetPm().Update(listData.USER, listData.STKGRP, listData.BUD00 , listData.BUD01, listData.BUD02, listData.BUD03, listData.BUD04, listData.BUD05, listData.BUD06, listData.BUD07, listData.BUD08, listData.BUD09, listData.BUD10, listData.BUD11, listData.BUD12, listData.GP00, listData.GP01, listData.GP02, listData.GP03, listData.GP04, listData.GP05, listData.GP06, listData.GP07, listData.GP08, listData.GP09, listData.GP10, listData.GP11, listData.GP12);
             }
             return Json("success", JsonRequestBehavior.AllowGet);
         }

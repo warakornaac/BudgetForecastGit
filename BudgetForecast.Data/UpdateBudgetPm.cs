@@ -16,7 +16,7 @@ namespace BudgetForecast.Data
         {
 
         }
-        public List<StoreUpdateBudgetPmModel> Update(string USER, string STKGRP, double BUD00, double BUD01, double BUD02, double BUD03, double BUD04, double BUD05, double BUD06, double BUD07, double BUD08, double BUD09, double BUD10, double BUD11, double BUD12, double GP01, double GP02, double GP03, double GP04, double GP05, double GP06, double GP07, double GP08, double GP09, double GP10, double GP11, double GP12)
+        public List<StoreUpdateBudgetPmModel> Update(string USER, string STKGRP, double BUD00, double BUD01, double BUD02, double BUD03, double BUD04, double BUD05, double BUD06, double BUD07, double BUD08, double BUD09, double BUD10, double BUD11, double BUD12, double GP00, double GP01, double GP02, double GP03, double GP04, double GP05, double GP06, double GP07, double GP08, double GP09, double GP10, double GP11, double GP12)
         {
             var p = new SqlParameters();
             p.AddParams("@User", USER.ToTrim());
@@ -35,6 +35,7 @@ namespace BudgetForecast.Data
             p.AddParams("@BUD11", BUD11.ToString().Replace(",", ""));
             p.AddParams("@BUD12", BUD12.ToString().Replace(",", ""));
 
+            p.AddParams("@GP00", GP00.ToString().Replace(",", ""));
             p.AddParams("@GP01", GP01.ToString().Replace(",", ""));
             p.AddParams("@GP02", GP02.ToString().Replace(",", ""));
             p.AddParams("@GP03", GP03.ToString().Replace(",", ""));

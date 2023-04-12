@@ -11,7 +11,7 @@
 
 <title>@ViewBag.Title</title>
 <div class="card mb-12 mt-4">
-    <form action="@Url.Action("Index", "BudgetSale")" method="post" onsubmit="LoadingShow();">
+    <form action="@Url.Action("Index", "BudgetSale")" method="post" id="BudgetSale" onsubmit="">
         <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
@@ -194,7 +194,7 @@
                 select.children().remove();
                 select.append($("<option>").val("ALL").text("ลูกค้าทั้งหมด"));
                 $.each(data, function (key, value) {
-                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + "----ที่อยู่ " + value.ADDR_01 + " " + value.PRO + '</option>');
+                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + /*"----ที่อยู่ " + value.ADDR_01 + " " + value.PRO +*/ '</option>');
                 });
                 if ($("#cusCode option:selected").val() == "") {
                     $("#cusCode").val($("#cusCode option:first").val());
@@ -208,9 +208,6 @@
 
     function resetSearch() {
         LoadingShow();
-        //$('.selectpicker').val('default').selectpicker('deselectAll');
-        //$('.selectpicker').selectpicker('refresh');
-        //$("#stkGroup").val('default').selectpicker("refresh");
         location.reload();
         LoadingHide();
     }
@@ -229,7 +226,7 @@
                 select.children().remove();
                 select.append($("<option>").val("ALL").text("ลูกค้าทั้งหมดของ"));
                 $.each(data, function (key, value) {
-                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + "----ที่อยู่ " + value.ADDR_01 + " " + value.PRO + '</option>');
+                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + /*"----ที่อยู่ " + value.ADDR_01 + " " + value.PRO +*/ '</option>');
                 });
                 $('#cusCode').selectpicker('refresh');
                 if ($("#cusCode option:selected").val() == "") {
@@ -240,16 +237,18 @@
     });
 
     document.onreadystatechange = function () {
+        if (document.readyState === 'interactive') {
+            LoadingShow();
+        }
         if (document.readyState === "complete") {
              $('#slmCode').val($("#slmCode_header").val());
             $('#cusCode').selectpicker('val', JSON.parse($("#cusCode_header").val()));
-
             $('#prodMgr').selectpicker('val', $("#prodMgr_header").val());
-
             $('#stkGroup').selectpicker('val', JSON.parse($("#stkGroup_header").val()));
 
              //get list customer
             getCustomerBySlmCode($('#slmCode option:selected').val());
+            LoadingHide()
         }
     }
 </script>
