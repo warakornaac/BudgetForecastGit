@@ -219,6 +219,7 @@ else
                                                     <td>  </td>
                                                     @{
                                                         int countBudgetGpPer = 0;
+                                                        int sizeValBudgetGpPer;
                                                         double valBudgetGpPerSum = 0;
                                                         string idBudgetGpPerSumTotal = "";
                                                         foreach (var item in arrMonth)
@@ -271,7 +272,8 @@ else
                                                             <td class="vright" style="vertical-align: middle;">
                                                                 @if (valBudgetGpPer != 0)
                                                                 {
-                                                                    @valBudgetGpPer.ToString("N2").Insert(5, "%");
+                                                                    sizeValBudgetGpPer = valBudgetGpPer.ToString("N2").Length;
+                                                                    @valBudgetGpPer.ToString("N2").Insert(sizeValBudgetGpPer, "%");
                                                                 }
                                                             </td>
                                                         }
@@ -502,6 +504,7 @@ else
                                                     @{
                                                         string idBudgetActualGpPerSumTotal = "";
                                                         double valBudgetActualGpPerSum = 0;
+                                                        int sizeValActualGpPer;
                                                         foreach (var item in arrMonth)
                                                         {
                                                             double valBudgetActaulGpPer = 0;
@@ -550,7 +553,8 @@ else
                                                             <td class="vright" style="vertical-align: middle;">
                                                                 @if (valBudgetActaulGpPer != 0)
                                                                 {
-                                                                    @valBudgetActaulGpPer.ToString("N2").Insert(5, "%");
+                                                                    sizeValActualGpPer = valBudgetActaulGpPer.ToString("N2").Length;
+                                                                    @valBudgetActaulGpPer.ToString("N2").Insert(sizeValActualGpPer, "%");
                                                                 }
                                                             </td>
                                                             countBudgetGpPer++;
@@ -898,8 +902,10 @@ else
             sum_budget_by_pm += Number(budget_by_pm);
             //console.log(sum_budget_by_pm);
         }));
-        $('#sum_' + _className).text(numberWithCommas(sum_budget_by_pm));
-        $('#val_sum_' + _className).val(numberWithCommas(sum_budget_by_pm));
+        if (sum_budget_by_pm != 0) {
+            $('#sum_' + _className).text(numberWithCommas(sum_budget_by_pm));
+            $('#val_sum_' + _className).val(numberWithCommas(sum_budget_by_pm));
+        }
         //sum total budget By pm
         let sum_budget_by_pm_sum_total = 0;
         for (let numMonth = 1; numMonth <= 12; numMonth++) {

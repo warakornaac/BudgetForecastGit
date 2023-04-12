@@ -706,6 +706,7 @@ else
                                                 <td class="vright"> </td>
                                                 @{
                                                     int countBudgetGpPer = 0;
+                                                    int sizeBudgetValGpPer;
                                                     string idBudgetGpPerSumTotal = "";
                                                     string nameBudgetGpPer = "";
                                                     foreach (var item in arrMonth)
@@ -758,7 +759,8 @@ else
                                                         <td class="vright" style="vertical-align: middle;">
                                                             @if (valBudgetGpPer != 0 && !Double.IsNaN(valBudgetGpPer))
                                                             {
-                                                                @valBudgetGpPer.ToString("N0").Insert(2, "%");
+                                                                sizeBudgetValGpPer = valBudgetGpPer.ToString("N0").Length;
+                                                                @valBudgetGpPer.ToString("N0").Insert(sizeBudgetValGpPer, "%");
                                                             }
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="form-control vright budget_gp_per_@countBudgetGpPer" name="@nameBudgetGpPer" id="budget_gp_per_@countBudgetGpPer" value="@valBudgetGpPer.ToString("N0")" />
                                                         </td>
@@ -912,6 +914,7 @@ else
                                                 <td class="vright">  </td>
                                                 @{
                                                     int countActGpPer = 0;
+                                                    int sizeActValGpPer;
                                                     string nameActGpPer = "";
                                                     foreach (var item in arrMonth)
                                                     {
@@ -963,7 +966,8 @@ else
                                                         <td class="vright" style="vertical-align: middle;">
                                                             @if (!Double.IsNaN(valActGpPer) && valActGpPer != 0)
                                                             {
-                                                                @valActGpPer.ToString("N2").Insert(5, "%");
+                                                                sizeActValGpPer = valActGpPer.ToString("N2").Length;
+                                                                @valActGpPer.ToString("N2").Insert(sizeActValGpPer, "%");
                                                             }
 
                                                             <input data-id="@stkGroupItem.SEC" type="hidden" class="act_gp_per_@countActGpPer" name="@nameActGpPer" id="act_gp_per_@countActGpPer" value="@valActGpPer.ToString("N0")%" />
@@ -1465,8 +1469,11 @@ else
             sum_forecast_by_pm += Number(forecast_by_pm);
             //console.log(sum_budget_by_pm);
         }));
-        $('#sum_' + _className).text(numberWithCommas(sum_forecast_by_pm));
-        $('#val_sum_' + _className).val(numberWithCommas(sum_forecast_by_pm));
+        if (sum_forecast_by_pm != 0) {
+            $('#sum_' + _className).text(numberWithCommas(sum_forecast_by_pm));
+            $('#val_sum_' + _className).val(numberWithCommas(sum_forecast_by_pm));
+        }
+
         if (flag == "forecast") {//sum total forecast
             let sum_forecast_by_pm_sum_total = 0;
             for (let numMonth = 1; numMonth <= 14; numMonth++) {
@@ -1495,7 +1502,6 @@ else
             //sum ข้างล่าง
             await sumPmForecastSumTotal("pm_forecast_gp_sum_total");
         } else if (flag == "saleForecast") {//sum total sale forecast
-            //alert("forecastGp");
             let sum_forecast_by_pm_sum_total = 0;
             for (let numMonth = 1; numMonth <= 14; numMonth++) {
                 await Promise.all($("input[name=sale_forecast_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
@@ -1508,7 +1514,6 @@ else
             //sum ข้างล่าง
             await sumPmForecastSumTotal("sale_forecast_sum_total");
         } else if (flag == "target") {//sum total target
-            //alert("forecastGp");
             let sum_forecast_by_pm_sum_total = 0;
             for (let numMonth = 1; numMonth <= 14; numMonth++) {
                 await Promise.all($("input[name=target_" + sec + "_" + numMonth + "]").each(async function (i, obj) {
@@ -1638,6 +1643,5 @@ else
 
     $(document).ready(function () {
         calculateForecastPm();
-        //$('span id').text();
     });
 </script>
