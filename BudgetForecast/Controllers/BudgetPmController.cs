@@ -10,15 +10,17 @@ using System.Web.Script.Serialization;
 using BudgetForecast.Model;
 using BudgetForecast.Data;
 using BudgetForecast.Models;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace BudgetForecast.Controllers
 {
     public class BudgetPmController : Controller
     {
         // GET: BudgetPm
-        public ActionResult Index(string prodMgr, string[] stkGroup)
+        public ActionResult Index(string prodMgr, string year, string[] stkGroup)
         {
             //Check login
             if (this.Session["UserType"] == null)
@@ -27,61 +29,73 @@ namespace BudgetForecast.Controllers
             }
             else
             {
-                if (this.Session["UserType"] == null)
+                string user = Session["UserID"].ToString();
+                string slmCodeDefault = Session["SLMCOD"].ToString();
+                List<SLM> SlmList = new List<SLM>();
+                List<SelectListItem> GroupStkGrp = new List<SelectListItem>();
+                List<SelectListItem> PRODList = new List<SelectListItem>();
+                string flagInput = "NO";
+                using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
                 {
-                    return RedirectToAction("LogIn", "Home");
-                }
-                else
-                {
-                    string user = Session["UserID"].ToString();
-                    string slmCodeDefault = Session["SLMCOD"].ToString();
-                    List<SLM> SlmList = new List<SLM>();
-                    List<SelectListItem> GroupStkGrp = new List<SelectListItem>();
-                    List<SelectListItem> PRODList = new List<SelectListItem>();
-                    using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
+                    Connection.Open();
+
+                    var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@inUsrID", user);
+                    command.Parameters.AddWithValue("@inType", "STKGRP");
+                    SqlDataReader dr2 = command.ExecuteReader();
+                    while (dr2.Read())
                     {
-                        Connection.Open();
+                        GroupStkGrp.Add(new SelectListItem() { Value = dr2["STKGRP"].ToString(), Text = dr2["STKGRP"].ToString() + "/" + dr2["GRPNAM"].ToString() });
 
-                        var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", user);
-                        command.Parameters.AddWithValue("@inType", "STKGRP");
-                        SqlDataReader dr2 = command.ExecuteReader();
-                        while (dr2.Read())
-                        {
-                            GroupStkGrp.Add(new SelectListItem() { Value = dr2["STKGRP"].ToString(), Text = dr2["STKGRP"].ToString() + "/" + dr2["GRPNAM"].ToString() });
-
-                        }
-                        ViewBag.StkGrp = GroupStkGrp;
-                        //S20161016
-                        dr2.Close();
-                        dr2.Dispose();
-                        command.Dispose();
-                        //E20161016
-
-                        command = new SqlCommand("P_Search_Budget_Forecast", Connection);
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", user);
-                        command.Parameters.AddWithValue("@inType", "PRDNAME");
-                        //command.ExecuteNonQuery();
-                        SqlDataReader dr3 = command.ExecuteReader();
-                        while (dr3.Read())
-                        {
-                            PRODList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
-
-                        }
-                        ViewBag.PRODList = PRODList;
-                        //เอา userId เป็น default Prod name
-                        ViewBag.prodMgr = prodMgr == null ? slmCodeDefault : prodMgr;
-                        ViewBag.stkGroup = stkGroup == null ? "[]" : "[\"" + string.Join("\",\"", stkGroup.Select(x => x.ToString()).ToArray()) + "\"]";
-                        //dr3.Dispose();
-                        //S20161016
-                        dr3.Close();
-                        dr3.Dispose();
-                        command.Dispose();
-                        //E20161016
-                        Connection.Close();
                     }
+                    ViewBag.StkGrp = GroupStkGrp;
+                    //S20161016
+                    dr2.Close();
+                    dr2.Dispose();
+                    command.Dispose();
+                    //E20161016
+
+                    command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@inUsrID", user);
+                    command.Parameters.AddWithValue("@inType", "PRDNAME");
+                    //command.ExecuteNonQuery();
+                    SqlDataReader dr3 = command.ExecuteReader();
+                    while (dr3.Read())
+                    {
+                        PRODList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
+                    }
+                    //วันที่คีย์ได้ budget pm
+                    var dateCurrent = DateTime.Now.ToString("yyy-MM-dd", new CultureInfo("en-US"));
+                    var yearCurrent = DateTime.Now.Year.ToString();
+                    string txtSql = "";
+                    txtSql = "SELECT * FROM DateInput_Budget where '" + dateCurrent + "' BETWEEN START_DATE and END_DATE and YEAR = '" + yearCurrent + "' and ID = '1'";
+                    SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
+                    SqlDataReader revcus = cmdcus.ExecuteReader();
+                    while (revcus.Read())
+                    {
+                        if (revcus["ID"] != null)
+                        {
+                            flagInput = "YES";
+                        }
+                    }
+                    revcus.Close();
+                    revcus.Dispose();
+
+                    ViewBag.PRODList = PRODList;
+                    //เอา userId เป็น default Prod name
+                    ViewBag.prodMgr = prodMgr == null ? slmCodeDefault : prodMgr;
+                    ViewBag.stkGroup = stkGroup == null ? "[]" : "[\"" + string.Join("\",\"", stkGroup.Select(x => x.ToString()).ToArray()) + "\"]";
+                    ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
+                    ViewBag.flagInput = flagInput;
+                    //dr3.Dispose();
+                    //S20161016
+                    dr3.Close();
+                    dr3.Dispose();
+                    command.Dispose();
+                    //E20161016
+                    Connection.Close();
                 }
             }
 
@@ -91,7 +105,7 @@ namespace BudgetForecast.Controllers
             //stkGroup null
             if (stkGroup != null)
             {
-                SearchBudgetPm = new SearchBudgetPm().GetStoreSearchBudgetPm(prodMgr, stkGroup);
+                SearchBudgetPm = new SearchBudgetPm().GetStoreSearchBudgetPm(prodMgr, year, stkGroup);
             }
 
             ViewBag.stkGroupList = SearchBudgetPm;
@@ -105,7 +119,7 @@ namespace BudgetForecast.Controllers
             var UpdateBudgetPm = new List<StoreUpdateBudgetPmModel>();
             foreach (var listData in (List<StoreUpdateBudgetPmModel>)request)
             {
-                UpdateBudgetPm = new UpdateBudgetPm().Update(listData.USER, listData.STKGRP, listData.BUD00 , listData.BUD01, listData.BUD02, listData.BUD03, listData.BUD04, listData.BUD05, listData.BUD06, listData.BUD07, listData.BUD08, listData.BUD09, listData.BUD10, listData.BUD11, listData.BUD12, listData.GP00, listData.GP01, listData.GP02, listData.GP03, listData.GP04, listData.GP05, listData.GP06, listData.GP07, listData.GP08, listData.GP09, listData.GP10, listData.GP11, listData.GP12);
+                UpdateBudgetPm = new UpdateBudgetPm().Update(listData.USER, listData.STKGRP, listData.BUD00, listData.BUD01, listData.BUD02, listData.BUD03, listData.BUD04, listData.BUD05, listData.BUD06, listData.BUD07, listData.BUD08, listData.BUD09, listData.BUD10, listData.BUD11, listData.BUD12, listData.GP00, listData.GP01, listData.GP02, listData.GP03, listData.GP04, listData.GP05, listData.GP06, listData.GP07, listData.GP08, listData.GP09, listData.GP10, listData.GP11, listData.GP12);
             }
             return Json("success", JsonRequestBehavior.AllowGet);
         }

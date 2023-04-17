@@ -127,17 +127,17 @@ else
                                                             }
                                                             nameBudgetBypm = "budget_by_pm_" + @stkGroupItem.STKGRP + "_" + @countBudget;
                                                             <td class="vcenter" style="vertical-align: middle;">
-                                                                <input data-month="@countBudget" data-stkgroup="@stkGroupItem.STKGRP" type="text" class="form-control mask vright budget_by_pm_@countBudget" name="@nameBudgetBypm" id="budget_by_pm_@countBudget" value="@valBudgetByPm.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
+                                                                <input data-month="@countBudget" data-stkgroup="@stkGroupItem.STKGRP" type="text" class="form-control mask vright budget_by_pm_@countBudget" name="@nameBudgetBypm" id="budget_by_pm_@countBudget" value="@valBudgetByPm.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 120px;" />
                                                             </td>
 
                                                         }
                                                         idBudgetBypmSumTotal = "budget_by_pm_" + @stkGroupItem.STKGRP + "_0";
                                                         //sum total
-                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sum_total" type="text" id="@idBudgetBypmSumTotal" name="@idBudgetBypmSumTotal" value="@stkGroupItem.BUD00.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sum_total" type="text" id="@idBudgetBypmSumTotal" name="@idBudgetBypmSumTotal" value="@stkGroupItem.BUD00.ToString("N0")" style="width: 120px;" disabled /> </td>
                                                         //sale budget
-                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget" type="text" id="budget_by_pm_sale_budget" value="@stkGroupItem.BUDSLM.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget" type="text" id="budget_by_pm_sale_budget" value="@stkGroupItem.BUDSLM.ToString("N0")" style="width: 120px;" disabled /> </td>
                                                         //sale budget next
-                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget_next" type="text" id="budget_by_pm_sale_budget_next" value="@stkGroupItem.BUDSLM_Nxt.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_by_pm_sale_budget_next" type="text" id="budget_by_pm_sale_budget_next" value="@stkGroupItem.BUDSLM_Nxt.ToString("N0")" style="width: 120px;" disabled /> </td>
                                                     }
 
                                                 </tr>
@@ -203,11 +203,11 @@ else
                                                             }
                                                             nameBudgetGp = "budget_gp_" + @stkGroupItem.STKGRP + "_" + @countBudgetGp;
                                                             <td class="vcenter" style="vertical-align: middle;">
-                                                                <input data-id="@stkGroupItem.STKGRP" type="text" class="form-control vright budget_gp_@countBudgetGp" name="@nameBudgetGp" id="budget_gp_@countBudgetGp" value="@valBudgetGp.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" />
+                                                                <input data-id="@stkGroupItem.STKGRP" type="text" class="form-control mask vright budget_gp_@countBudgetGp" name="@nameBudgetGp" id="budget_gp_@countBudgetGp" value="@valBudgetGp.ToString("N0")" onkeyup="return sumBudgetByPmId(this.id, '@stkGroupItem.STKGRP');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 120px;" />
                                                             </td>
                                                         }
                                                         idBudgetGpSumTotal = "budget_gp_" + @stkGroupItem.STKGRP + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_gp_sum_total" type="text" id="@idBudgetGpSumTotal" name="@idBudgetGpSumTotal" value="@stkGroupItem.GP00.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_gp_sum_total" type="text" id="@idBudgetGpSumTotal" name="@idBudgetGpSumTotal" value="@stkGroupItem.GP00.ToString("N0")" style="width: 120px;" disabled /> </td>
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -285,7 +285,7 @@ else
                                                         idBudgetGpPerSumTotal = "budget_gp_per_" + @stkGroupItem.STKGRP + "_0";
                                                         valBudgetGpPerSum = stkGroupItem.BUD00 == 0 ? 0 : (stkGroupItem.GP00 / stkGroupItem.BUD00) * 100;
 
-                                                        <td class="vcenter"> <input class="form-control vright budget_gp_per_sum_total" type="text" id="@idBudgetGpPerSumTotal" name="@idBudgetGpPerSumTotal" value="@valBudgetGpPerSum.ToString("N2")%" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_gp_per_sum_total" type="text" id="@idBudgetGpPerSumTotal" name="@idBudgetGpPerSumTotal" value="@valBudgetGpPerSum.ToString("N2")%" style="width: 120px;" disabled /> </td>
 
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
@@ -356,7 +356,7 @@ else
                                                             </td>
                                                         }
                                                         idBudgetCustomerSumTotal = "budget_customer_" + @stkGroupItem.STKGRP + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetCustomerSumTotal" name="@idBudgetCustomerSumTotal" value="" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetCustomerSumTotal" name="@idBudgetCustomerSumTotal" value="" style="width: 120px;" disabled /> </td>
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -425,7 +425,7 @@ else
                                                             </td>
                                                         }
                                                         idBudgetActualSaleSumTotal = "budget_actual_sale_" + @stkGroupItem.ACT00_Cy + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_actual_sale_sum_total" type="text" id="@idBudgetActualSaleSumTotal" name="@idBudgetActualSaleSumTotal" value="@stkGroupItem.ACT00_Cy.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_actual_sale_sum_total" type="text" id="@idBudgetActualSaleSumTotal" name="@idBudgetActualSaleSumTotal" value="@stkGroupItem.ACT00_Cy.ToString("N0")" style="width: 120px;" disabled /> </td>
 
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
@@ -495,7 +495,7 @@ else
                                                             </td>
                                                         }
                                                         idBudgetActualGpSumTotal = "budget_actual_gp_" + @stkGroupItem.AGP00_Cy + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_actual_gp_sum_total" type="text" id="@idBudgetActualGpSumTotal" name="@idBudgetActualGpSumTotal" value="@stkGroupItem.AGP00_Cy.ToString("N0")" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_actual_gp_sum_total" type="text" id="@idBudgetActualGpSumTotal" name="@idBudgetActualGpSumTotal" value="@stkGroupItem.AGP00_Cy.ToString("N0")" style="width: 120px;" disabled /> </td>
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -568,7 +568,7 @@ else
                                                         idBudgetActualGpPerSumTotal = "budget_actual_gp_per_" + @stkGroupItem.STKGRP + "_0";
                                                         valBudgetActualGpPerSum = stkGroupItem.ACT00_Cy == 0 ? 0 : (stkGroupItem.AGP00_Cy / stkGroupItem.ACT00_Cy) * 100;
 
-                                                        <td class="vcenter"> <input class="form-control vright budget_actual_gp_per_sum_total" type="text" id="@idBudgetActualGpPerSumTotal" name="@idBudgetActualGpPerSumTotal" value="@valBudgetActualGpPerSum.ToString("N2")%" style="width: 110px;" disabled /> </td>
+                                                        <td class="vcenter"> <input class="form-control vright budget_actual_gp_per_sum_total" type="text" id="@idBudgetActualGpPerSumTotal" name="@idBudgetActualGpPerSumTotal" value="@valBudgetActualGpPerSum.ToString("N2")%" style="width: 120px;" disabled /> </td>
 
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
