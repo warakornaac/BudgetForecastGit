@@ -83,6 +83,13 @@
 
 @*input*@
 <div class="pt-2">
+    @{ 
+        if (@ViewBag.flagInput == "NO" && ((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count() != 0)
+        {
+        <div class="col-xs-6 col-md-6 alert alert-warning alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Budget สามารถคีย์ได้ช่วงวันที่ @ViewBag.startDate ถึงวันที่ @ViewBag.endDate เท่านั้น</div>
+        }
+    }
+
     @Html.Partial("_listDataBudgetPM", (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
 </div>
 

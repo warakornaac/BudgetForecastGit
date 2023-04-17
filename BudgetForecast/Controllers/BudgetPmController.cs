@@ -22,6 +22,9 @@ namespace BudgetForecast.Controllers
         // GET: BudgetPm
         public ActionResult Index(string prodMgr, string year, string[] stkGroup)
         {
+            string flagInput = "NO";
+            string startDate = "";
+            string endDate = "";
             //Check login
             if (this.Session["UserType"] == null)
             {
@@ -34,7 +37,6 @@ namespace BudgetForecast.Controllers
                 List<SLM> SlmList = new List<SLM>();
                 List<SelectListItem> GroupStkGrp = new List<SelectListItem>();
                 List<SelectListItem> PRODList = new List<SelectListItem>();
-                string flagInput = "NO";
                 using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
                 {
                     Connection.Open();
@@ -54,7 +56,6 @@ namespace BudgetForecast.Controllers
                     dr2.Close();
                     dr2.Dispose();
                     command.Dispose();
-                    //E20161016
 
                     command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
@@ -66,40 +67,50 @@ namespace BudgetForecast.Controllers
                     {
                         PRODList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
                     }
-                    //วันที่คีย์ได้ budget pm
-                    var dateCurrent = DateTime.Now.ToString("yyy-MM-dd", new CultureInfo("en-US"));
-                    var yearCurrent = DateTime.Now.Year.ToString();
-                    string txtSql = "";
-                    txtSql = "SELECT * FROM DateInput_Budget where '" + dateCurrent + "' BETWEEN START_DATE and END_DATE and YEAR = '" + yearCurrent + "' and ID = '1'";
-                    SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
-                    SqlDataReader revcus = cmdcus.ExecuteReader();
-                    while (revcus.Read())
+                    dr3.Close();
+                    dr3.Dispose();
+
+                    if (stkGroup != null)
                     {
-                        if (revcus["ID"] != null)
-                        {
-                            flagInput = "YES";
-                        }
+                        //วันที่คีย์ได้ budget pm
+                        var dateCurrent = DateTime.Now.ToString("yyy-MM-dd", new CultureInfo("en-US"));
+                        var yearCurrent = DateTime.Now.Year.ToString();
+                        var cmdSearch = new SqlCommand("P_Search_Budget_Forecast_Dateinput", Connection);
+                        cmdSearch.CommandType = CommandType.StoredProcedure;
+                        cmdSearch.Parameters.AddWithValue("@inEvent", 1);
+                        cmdSearch.Parameters.AddWithValue("@inYear", yearCurrent);
+                        SqlParameter p = new SqlParameter("@outResult", SqlDbType.NVarChar, 1000);
+                        SqlParameter p1 = new SqlParameter("@outStartDate", SqlDbType.NVarChar, 1000);
+                        SqlParameter p2 = new SqlParameter("@outEndDate", SqlDbType.NVarChar, 1000);
+                        p.Direction = ParameterDirection.Output;
+                        p1.Direction = ParameterDirection.Output;
+                        p2.Direction = ParameterDirection.Output;
+                        cmdSearch.Parameters.Add(p);
+                        cmdSearch.Parameters.Add(p1);
+                        cmdSearch.Parameters.Add(p2);
+                        int INSID = cmdSearch.ExecuteNonQuery();
+                        flagInput = cmdSearch.Parameters["@outResult"].Value.ToString();
+                        startDate = cmdSearch.Parameters["@outStartDate"].Value.ToString();
+                        endDate = cmdSearch.Parameters["@outEndDate"].Value.ToString();
+
+                        //ViewBag.flagInput = flagInput;
+                        //ViewBag.startDate = startDate;
+                        ViewBag.endDate = endDate;
+                        cmdSearch.Dispose();
                     }
-                    revcus.Close();
-                    revcus.Dispose();
 
                     ViewBag.PRODList = PRODList;
                     //เอา userId เป็น default Prod name
                     ViewBag.prodMgr = prodMgr == null ? slmCodeDefault : prodMgr;
                     ViewBag.stkGroup = stkGroup == null ? "[]" : "[\"" + string.Join("\",\"", stkGroup.Select(x => x.ToString()).ToArray()) + "\"]";
                     ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
-                    ViewBag.flagInput = flagInput;
-                    //dr3.Dispose();
-                    //S20161016
-                    dr3.Close();
-                    dr3.Dispose();
+                  
                     command.Dispose();
-                    //E20161016
                     Connection.Close();
                 }
             }
-
-
+            ViewBag.startDate = startDate;
+            ViewBag.endDate = endDate;
             var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
             var SearchBudgetPm = new List<StoreSearchBudgetPmModel>();
             //stkGroup null
