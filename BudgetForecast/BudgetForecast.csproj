@@ -184,6 +184,7 @@
     <Content Include="Views\ForecastPm\_listDataForecastPM.cshtml" />
     <Content Include="Views\BudgetSale\Index.cshtml" />
     <Content Include="Views\BudgetSale\_listDataBudgetSale.cshtml" />
+    <Content Include="Views\ForecastSale\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

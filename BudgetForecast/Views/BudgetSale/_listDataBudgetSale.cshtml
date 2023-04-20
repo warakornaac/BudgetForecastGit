@@ -52,7 +52,7 @@
 }
 @if (countList == 0)
 {
-    <div class="alert alert-danger text-center" style="font-size: 14px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
 }
 else
 {
@@ -76,7 +76,7 @@ else
                         <thead>
                             <tr style="white-space: nowrap;">
                                 <th class="vcenter" style="vertical-align: middle;">
-                                    <input type="checkbox" id="selectkAll" class="selectkAll" onclick="selectAll(this);" style="" />
+                                    <input type="checkbox" id="selectAll" class="selectAll"  style="" />
                                 </th>
                                 <th class="vcenter" style="vertical-align: middle;">Custype</th>
                                 <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
@@ -184,7 +184,7 @@ else
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_f_slm">
                         <button type="button" class="btn btn-danger" style="width: 100%; padding: 10px; ">
-                            <span><b>Next Slm</b></span> <span class="badge badge-light" id="sum_f_slm" style="font-size: 16px;"></span>
+                            <span><b>Budget Next</b></span> <span class="badge badge-light" id="sum_f_slm" style="font-size: 16px;"></span>
                         </button>
                     </div>
                 </div>
@@ -307,13 +307,13 @@ else
                             SLMCODE: '',
                             CUSCODE: cusCode,
                             STKGRP: stkGrp,
-                            YEAR: '2023',
+                            YEAR: @ViewBag.year,
                             F_SLM: parseInt($("input[name=f_slm_" + cusCode + "_" + stkGrp + "]").val().replace(/\,/g, '')),
                         }
                         request.push(details);
                     });
                     console.log(request);
-                    //return false;
+                    return false;
                     $.ajax({
                         type: 'POST',
                         cache: false,
@@ -377,16 +377,17 @@ else
             });
         }
     }
-    //check box all
-    async function selectAll(obj) {
-        LoadingShow();
-        $('.selectList').each(function () {
-            var cusCode = $(this).data('cuscode');
-            var stkGrp = $(this).data('stkgrp');
-            $('#' + cusCode + "_" + stkGrp).trigger('click');
-        });
-        LoadingHide();
-    }
+    
+    //async function selectAll(obj) {
+    //    LoadingShow();
+    //    $('.selectList').each(function () {
+    //        var cusCode = $(this).data('cuscode');
+    //        var stkGrp = $(this).data('stkgrp');
+    //        $('#' + cusCode + "_" + stkGrp).trigger('click');
+   
+    //    LoadingHide();
+    //}
+    
     //sum Budget By field name
     const sumBudgetSale = async (inputName) => {
             let sum_budget = 0;
@@ -426,6 +427,20 @@ else
     }
 
     $(document).ready(function () {
+        //check box all
+        $('#selectAll').click(function (event) {
+            if (this.checked) {
+                $(':checkbox').each(function () {;
+                    this.checked = true;
+                    $(this).closest('tr').toggleClass('highlight', $(this).is(':checked'));
+                });
+            } else {
+                $(':checkbox').each(function () {
+                    this.checked = false;
+                    $(this).closest('tr').toggleClass('highlight', $(this).is(':checked'));
+                });
+            }
+        });
         //check box disable/enable text field
         $('.selectList').change(function () {
             var cusCode = $(this).data('cuscode');

@@ -2,24 +2,24 @@
 @{
     ViewBag.Title = "_listDataBudgetPM";
     var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-    string setWidth = "740px";
+    string setWidth = "730px";
     var countList = ((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count();
 }
 <input type="hidden" id="countList" value="@countList" />
 
 @if (countList == 1)
 {
-    setWidth = "540px";
+    setWidth = "550px";
 }
 @if (countList == 0)
 {
-    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
 }
 else
 {
     <div class="card">
         <form method="post" id="formBudgetPm">
-            <div class="card-body p-2" style="height: 720px; overflow-y: auto; max-height: @setWidth">
+            <div class="card-body p-2" style="height: 730px; overflow-y: auto; max-height: @setWidth">
                 @{
                     int rowStkGroup = 0;
                     foreach (var stkGroupItem in (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
@@ -910,10 +910,10 @@ else
             sum_budget_by_pm += Number(budget_by_pm);
             //console.log(sum_budget_by_pm);
         }));
-        if (sum_budget_by_pm != 0) {
+        //if (sum_budget_by_pm != 0) {
             $('#sum_' + _className).text(numberWithCommas(sum_budget_by_pm));
             $('#val_sum_' + _className).val(numberWithCommas(sum_budget_by_pm));
-        }
+       // }
         //sum total budget By pm
         let sum_budget_by_pm_sum_total = 0;
         for (let numMonth = 1; numMonth <= 12; numMonth++) {
@@ -948,8 +948,10 @@ else
             let sum_budget_gp = $("input[name=budget_gp_" + stkgrp + "_" + numMonth + "]").val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
             let sum_budget_by_pm = $("input[name=budget_by_pm_" + stkgrp + "_" + numMonth + "]").val().replace(/([-[\]{}()*+?.\\^$|%,])/g, '') || 0;
             //if (sum_budget_by_pm != 0) {
-                sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
+            sum_total_budget_gp_per = (sum_budget_gp / sum_budget_by_pm) * 100;
+            sum_total_budget_gp_per = isFinite(sum_total_budget_gp_per) ? sum_total_budget_gp_per : 0;
             //}
+            //console.log('sum_total_budget_gp_per = ' + sum_total_budget_gp_per);
             if (!isNaN(sum_total_budget_gp_per)) {
                 if (numMonth == 0) {
                     $("#budget_gp_per_" + stkgrp + "_" + numMonth).val(sum_total_budget_gp_per.toFixed(2) + "%");

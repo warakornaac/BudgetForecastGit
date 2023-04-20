@@ -13,6 +13,7 @@ using BudgetForecast.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.DirectoryServices;
+using BudgetForecast.Library;
 
 namespace BudgetForecast.Controllers
 {
@@ -34,7 +35,7 @@ namespace BudgetForecast.Controllers
                 }
                 else
                 {
-                    string usre = Session["UserID"].ToString();
+                    string user = Session["UserID"].ToString();
                     string slmCodeDefault = Session["SLMCOD"].ToString();
                     List<SLM> SlmList = new List<SLM>();
                     List<SelectListItem> stkSecList = new List<SelectListItem>();
@@ -60,15 +61,24 @@ namespace BudgetForecast.Controllers
                         command.Dispose();
 
                         //list product
-                        command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+                        command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@inUsrID", usre);
-                        command.Parameters.AddWithValue("@inType", "PRDNAME");
+                        command.Parameters.AddWithValue("@UsrID", user);
                         SqlDataReader dr3 = command.ExecuteReader();
                         while (dr3.Read())
                         {
                             PRODList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
 
+                        }
+                        if (stkSec != null)
+                        {
+                            //วันที่คีย์ได้ budget pm
+                            var yearCurrent = DateTime.Now.Year.ToString();
+                            var getDateInput = Utils.GetDateInput(2, yearCurrent);
+
+                            ViewBag.flagInput = getDateInput.Item1;
+                            ViewBag.startDate = getDateInput.Item2;
+                            ViewBag.endDate = getDateInput.Item3;
                         }
                         ViewBag.PRODList = PRODList;
                         //เอา userId เป็น default Prod name

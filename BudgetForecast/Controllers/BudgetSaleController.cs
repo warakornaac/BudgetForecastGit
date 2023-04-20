@@ -13,6 +13,7 @@ using BudgetForecast.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.DirectoryServices;
+using BudgetForecast.Library;
 
 namespace BudgetForecast.Controllers
 {
@@ -28,7 +29,7 @@ namespace BudgetForecast.Controllers
             }
             else
             {
-                string usre = Session["UserID"].ToString();
+                string user = Session["UserID"].ToString();
                 string slmCodeDefault = Session["SLMCOD"].ToString();
                 List<SLM> SlmList = new List<SLM>();
                 List<SelectListItem> SlmCodeList = new List<SelectListItem>();
@@ -37,10 +38,9 @@ namespace BudgetForecast.Controllers
                 {
                     Connection.Open();
                     //list slmcode
-                    var command = new SqlCommand("P_Chk_user", Connection);
+                    var command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UsrID", usre);
-                    command.Parameters.AddWithValue("@Password", "");
+                    command.Parameters.AddWithValue("@UsrID", user);
                     SqlDataReader dr = command.ExecuteReader();
                     while (dr.Read())
                     {
@@ -53,7 +53,7 @@ namespace BudgetForecast.Controllers
                     //list prod
                     command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@inUsrID", usre);
+                    command.Parameters.AddWithValue("@inUsrID", user);
                     command.Parameters.AddWithValue("@inType", "PRDNAME");
                     command.Parameters.AddWithValue("@inSearch", "ALL");
                     //command.ExecuteNonQuery();
@@ -70,11 +70,23 @@ namespace BudgetForecast.Controllers
                     dr3.Dispose();
                     command.Dispose();
 
-                    ViewBag.SlmCodeList = SlmCodeList;
 
+                    if (slmCode != null)
+                    {
+                        //วันที่คีย์ได้ budget pm
+                        var yearCurrent = DateTime.Now.Year.ToString();
+                        var getDateInput = Utils.GetDateInput(3, yearCurrent);
+
+                        ViewBag.flagInput = getDateInput.Item1;
+                        ViewBag.startDate = getDateInput.Item2;
+                        ViewBag.endDate = getDateInput.Item3;
+                    }
+
+                    ViewBag.SlmCodeList = SlmCodeList;
                     ViewBag.slmCode = slmCode == null ? slmCodeDefault : slmCode;
                     ViewBag.cusCode = cusCode == null ? "[]" : "[\"" + string.Join("\",\"", cusCode.Select(x => x.ToString()).ToArray()) + "\"]";
-                   
+                    ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
+
                     command.Dispose();
                     Connection.Close();
                 }

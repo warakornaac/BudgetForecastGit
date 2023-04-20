@@ -27,7 +27,7 @@ namespace BudgetForecast.Data
             p.AddParams("@Cuskey", string.Join(",", cusCode));
             p.AddParams("@Stkgrp", string.Join(",", stkGrp));
             p.AddParams("@User", "");
-            p.AddParams("@Year", "2023");
+            p.AddParams("@Year", year);
 
             var table = GetData(CmdStore("P_Search_Budget_Sale", p));
             return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale", p)));

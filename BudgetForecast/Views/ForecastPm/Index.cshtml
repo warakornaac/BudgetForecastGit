@@ -10,6 +10,7 @@
 <input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
 <input type="hidden" id="year_header" value="@ViewBag.year" />
 <input type="hidden" name="stkSec_header[]" id="stkSec_header" value="@ViewBag.stkSec" />
+<input type="hidden" id="flagInput" value="@ViewBag.flagInput" />
 @*<h2>Budget by product</h2>*@
 <title>@ViewBag.Title</title>
 @*<div class="mt-4 pt-0 border-bottom border-bottom">
@@ -30,7 +31,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;">
+                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;" data-none-selected-text="เลือก PROD MGR">
                                 @for (var i = 0; i < getPRODList.Count; i++)
                                 {
                                     <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
@@ -75,7 +76,7 @@
                         <button type="button" class="btn btn-success btn-lg" onclick="saveForecastPm();" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
                     }
                     <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
-                    <button type="button"  class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
                 </div>
             </div>
         </div>
@@ -84,6 +85,13 @@
 
 @*input*@
 <div class="pt-2">
+    @{
+        if (@ViewBag.flagInput == "NO" && ((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() != 0)
+        {
+            <div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Forecast กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div>
+        }
+    }
+
     @Html.Partial("_listDataForecastPM", new { ViewBag.stkGroupList, ViewBag.monthList })
 </div>
 
@@ -273,6 +281,11 @@
             $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
 
             getStkgrpByProd($("#prodMgr option:selected").val());
+            //flagInput = เลยเวลาคีย์แล้ว
+            let flagInput = $("#flagInput").val();
+            if (flagInput == 'NO') {
+                $(".mask").prop('disabled', true);
+            }
             LoadingHide()
         }
     }

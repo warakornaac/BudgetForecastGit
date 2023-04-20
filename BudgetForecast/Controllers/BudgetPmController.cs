@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 using BudgetForecast.Model;
 using BudgetForecast.Data;
 using BudgetForecast.Models;
+using BudgetForecast.Library;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -57,10 +58,9 @@ namespace BudgetForecast.Controllers
                     dr2.Dispose();
                     command.Dispose();
 
-                    command = new SqlCommand("P_Search_Budget_Forecast", Connection);
+                    command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@inUsrID", user);
-                    command.Parameters.AddWithValue("@inType", "PRDNAME");
+                    command.Parameters.AddWithValue("@UsrID", user);
                     //command.ExecuteNonQuery();
                     SqlDataReader dr3 = command.ExecuteReader();
                     while (dr3.Read())
@@ -73,30 +73,12 @@ namespace BudgetForecast.Controllers
                     if (stkGroup != null)
                     {
                         //วันที่คีย์ได้ budget pm
-                        var dateCurrent = DateTime.Now.ToString("yyy-MM-dd", new CultureInfo("en-US"));
                         var yearCurrent = DateTime.Now.Year.ToString();
-                        var cmdSearch = new SqlCommand("P_Search_Budget_Forecast_Dateinput", Connection);
-                        cmdSearch.CommandType = CommandType.StoredProcedure;
-                        cmdSearch.Parameters.AddWithValue("@inEvent", 1);
-                        cmdSearch.Parameters.AddWithValue("@inYear", yearCurrent);
-                        SqlParameter p = new SqlParameter("@outResult", SqlDbType.NVarChar, 1000);
-                        SqlParameter p1 = new SqlParameter("@outStartDate", SqlDbType.NVarChar, 1000);
-                        SqlParameter p2 = new SqlParameter("@outEndDate", SqlDbType.NVarChar, 1000);
-                        p.Direction = ParameterDirection.Output;
-                        p1.Direction = ParameterDirection.Output;
-                        p2.Direction = ParameterDirection.Output;
-                        cmdSearch.Parameters.Add(p);
-                        cmdSearch.Parameters.Add(p1);
-                        cmdSearch.Parameters.Add(p2);
-                        int INSID = cmdSearch.ExecuteNonQuery();
-                        flagInput = cmdSearch.Parameters["@outResult"].Value.ToString();
-                        startDate = cmdSearch.Parameters["@outStartDate"].Value.ToString();
-                        endDate = cmdSearch.Parameters["@outEndDate"].Value.ToString();
+                        var getDateInput = Utils.GetDateInput(1, yearCurrent);
 
-                        //ViewBag.flagInput = flagInput;
-                        //ViewBag.startDate = startDate;
-                        ViewBag.endDate = endDate;
-                        cmdSearch.Dispose();
+                        ViewBag.flagInput = getDateInput.Item1;
+                        ViewBag.startDate = getDateInput.Item2;
+                        ViewBag.endDate = getDateInput.Item3;
                     }
 
                     ViewBag.PRODList = PRODList;
@@ -109,8 +91,8 @@ namespace BudgetForecast.Controllers
                     Connection.Close();
                 }
             }
-            ViewBag.startDate = startDate;
-            ViewBag.endDate = endDate;
+            //ViewBag.startDate = startDate;
+            //ViewBag.endDate = endDate;
             var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
             var SearchBudgetPm = new List<StoreSearchBudgetPmModel>();
             //stkGroup null

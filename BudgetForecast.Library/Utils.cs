@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -217,6 +219,41 @@ namespace BudgetForecast.Library
                 ret.Add(new DateTime(year, month, i));
             }
             return ret;
+        }
+        public static Tuple<string, string, string> GetDateInput(int id, string year)
+        {
+            string flagInput = "NO";
+            string startDate = "";
+            string endDate = "";
+            if (id != 0 && year != null) { 
+                using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
+                {
+                    Connection.Open();
+                    //วันที่คีย์ได้ budget pm
+                    var dateCurrent = DateTime.Now.ToString("yyy-MM-dd", new CultureInfo("en-US"));
+                    var cmdSearch = new SqlCommand("P_Search_Budget_Forecast_Dateinput", Connection);
+                    var yearCurrent = DateTime.Now.Year.ToString();
+
+                    cmdSearch.CommandType = CommandType.StoredProcedure;
+                    cmdSearch.Parameters.AddWithValue("@inEvent", id);
+                    cmdSearch.Parameters.AddWithValue("@inYear", year);
+                    SqlParameter p = new SqlParameter("@outResult", SqlDbType.NVarChar, 1000);
+                    SqlParameter p1 = new SqlParameter("@outStartDate", SqlDbType.NVarChar, 1000);
+                    SqlParameter p2 = new SqlParameter("@outEndDate", SqlDbType.NVarChar, 1000);
+                    p.Direction = ParameterDirection.Output;
+                    p1.Direction = ParameterDirection.Output;
+                    p2.Direction = ParameterDirection.Output;
+                    cmdSearch.Parameters.Add(p);
+                    cmdSearch.Parameters.Add(p1);
+                    cmdSearch.Parameters.Add(p2);
+                    int INSID = cmdSearch.ExecuteNonQuery();
+                    flagInput = cmdSearch.Parameters["@outResult"].Value.ToString();
+                    startDate = cmdSearch.Parameters["@outStartDate"].Value.ToString();
+                    endDate = cmdSearch.Parameters["@outEndDate"].Value.ToString();
+                    cmdSearch.Dispose();
+                }
+            }
+            return Tuple.Create(flagInput, startDate, endDate);
         }
     }
 }

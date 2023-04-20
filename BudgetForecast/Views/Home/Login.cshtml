@@ -12,7 +12,7 @@
     @*<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />*@
     <p id="profile-name" class="profile-name-card"></p>
 
-    <form class="form-signin form-horizontal" method="POST" action="@Url.Action("Login", "Home")">
+    <form class="form-signin form-horizontal" method="POST" action="@Url.Action("Login", "Home")" onsubmit="LoadingShow();">
         <input type="text" name="User" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
 
         <div class="input-group-btn">

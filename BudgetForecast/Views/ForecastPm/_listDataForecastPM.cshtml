@@ -13,7 +13,7 @@
 }
 @if (((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() == 0)
 {
-    <div class="alert alert-danger text-center" style="font-size: 14px;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
 }
 else
 {
@@ -1478,10 +1478,11 @@ else
             sum_forecast_by_pm += Number(forecast_by_pm);
             //console.log(sum_budget_by_pm);
         }));
-        if (sum_forecast_by_pm != 0) {
+        //console.log('sum_forecast_by_pm = ' + sum_forecast_by_pm);
+        //if (sum_forecast_by_pm != 0) {
             $('#sum_' + _className).text(numberWithCommas(sum_forecast_by_pm));
             $('#val_sum_' + _className).val(numberWithCommas(sum_forecast_by_pm));
-        }
+        //}
 
         if (flag == "forecast") {//sum total forecast
             let sum_forecast_by_pm_sum_total = 0;
