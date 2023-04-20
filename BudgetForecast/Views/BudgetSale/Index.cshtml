@@ -270,6 +270,7 @@
             //flagInput = เลยเวลาคีย์แล้ว
             let flagInput = $("#flagInput").val();
             if (flagInput == 'NO') {
+                $(window).unbind('beforeunload');
                 $("input[type=checkbox]").prop('disabled', true);
             }
             LoadingHide()
