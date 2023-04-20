@@ -433,11 +433,20 @@ else
                 $(':checkbox').each(function () {;
                     this.checked = true;
                     $(this).closest('tr').toggleClass('highlight', $(this).is(':checked'));
+                    //enable input
+                    var cusCode = $(this).data('cuscode');
+                    var stkGrp = $(this).data('stkgrp');
+                    $('#f_slm_' + cusCode + '_' + stkGrp).attr("disabled", false);
+          
                 });
             } else {
                 $(':checkbox').each(function () {
                     this.checked = false;
                     $(this).closest('tr').toggleClass('highlight', $(this).is(':checked'));
+                     //disable input
+                    var cusCode = $(this).data('cuscode');
+                    var stkGrp = $(this).data('stkgrp');
+                    $('#f_slm_' + cusCode + '_' + stkGrp).attr("disabled", true);
                 });
             }
         });
