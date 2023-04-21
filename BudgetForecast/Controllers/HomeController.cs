@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using BudgetForecast.Models;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using BudgetForecast.Library;
 
 namespace BudgetForecast.Controllers
 {
@@ -41,8 +42,8 @@ namespace BudgetForecast.Controllers
             //string DepartmentAd = string.Empty;
             this.Session["UserAD"] = null;
             this.Session["UserType"] = null;
-            this.Session["UserID"] = User;
-            this.Session["UserPassword"] = Password;
+            this.Session["UserID"] = User.ToTrim();
+            this.Session["UserPassword"] = Password.ToTrim();
             this.Session["SLMCOD"] = "";
             string UserType = string.Empty;
             string sessionId = Request["http_cookie"];
@@ -53,9 +54,9 @@ namespace BudgetForecast.Controllers
             try//มีใน AD
             {
                 //check user&pass ใน AD
-                DirectoryEntry entry = new DirectoryEntry("LDAP://ADSRV2016-01/dc=Automotive,dc=com", User, Password);
+                DirectoryEntry entry = new DirectoryEntry("LDAP://ADSRV2016-01/dc=Automotive,dc=com", User.ToTrim(), Password.ToTrim());
                 DirectorySearcher search = new DirectorySearcher(entry);
-                search.Filter = "(SAMAccountName=" + User + ")";
+                search.Filter = "(SAMAccountName=" + User.ToTrim() + ")";
                 search.PropertiesToLoad.Add("cn");
                 SearchResult result = search.FindOne();
 
@@ -65,9 +66,9 @@ namespace BudgetForecast.Controllers
 
                 Connection.Open();
                 if (result == null) {
-                    if (IsValid(User, Password))
+                    if (IsValid(User.ToTrim(), Password.ToTrim()))
                     {
-                        FormsAuthentication.SetAuthCookie(User, false);
+                        FormsAuthentication.SetAuthCookie(User.ToTrim(), false);
                         return RedirectToAction("LogIn", "Home");
                     }
                     else
@@ -79,7 +80,7 @@ namespace BudgetForecast.Controllers
                     string txtSql = "";
                     txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD " +
                         "FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
-                        "WHERE UsrID =N'" + User + "'";
+                        "WHERE UsrID =N'" + User.ToTrim() + "'";
                     SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                     SqlDataReader revcus = cmdcus.ExecuteReader();
                     //มีใน UsrTbl_Budget
@@ -95,9 +96,9 @@ namespace BudgetForecast.Controllers
                             this.Session["SLMCOD"] = revcus["SLMCOD"].ToString();
                         }
                     }
-                    else //มีใน UsrTbl_Budget
+                    else //ไม่มีใน UsrTbl_Budget
                     {
-                        //ถ้าเป็น It defauli admin
+                        //ถ้าเป็น It default admin
                         if (DepartmentAd == "MIS")
                         {
                             this.Session["UserType"] = 1; //
@@ -113,7 +114,7 @@ namespace BudgetForecast.Controllers
                     revcus.Close();
                     revcus.Dispose();
                     cmdcus.Dispose();
-                    FormsAuthentication.SetAuthCookie(User, false);
+                    FormsAuthentication.SetAuthCookie(User.ToTrim(), false);
                     if (UserType == "1" || UserType == "2")//admin pm
                     {
                         return RedirectToAction("Index", "BudgetPm");
@@ -131,7 +132,7 @@ namespace BudgetForecast.Controllers
                 string txtSql = "";
                 txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD " +
                     "FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
-                    "WHERE UsrID =N'" + User + "'and [dbo].F_decrypt([Password])='" + Password + "'";
+                    "WHERE UsrID =N'" + User.ToTrim() + "'and [dbo].F_decrypt([Password])='" + Password + "'";
                 SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                 SqlDataReader revcus = cmdcus.ExecuteReader();
                 while (revcus.Read())
@@ -147,7 +148,7 @@ namespace BudgetForecast.Controllers
                 revcus.Close();
                 revcus.Dispose();
                 cmdcus.Dispose();
-                FormsAuthentication.SetAuthCookie(User, false);
+                FormsAuthentication.SetAuthCookie(User.ToTrim(), false);
 
                 if (UserType == "1" || UserType == "2")//admin pm
                 {

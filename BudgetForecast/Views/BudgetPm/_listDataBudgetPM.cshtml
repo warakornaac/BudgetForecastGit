@@ -356,7 +356,9 @@ else
                                                             </td>
                                                         }
                                                         idBudgetCustomerSumTotal = "budget_customer_" + @stkGroupItem.STKGRP + "_0";
-                                                        <td class="vcenter"> <input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetCustomerSumTotal" name="@idBudgetCustomerSumTotal" value="" style="width: 120px;" disabled /> </td>
+                                                        <td class="vcenter"> 
+                                                            @*<input class="form-control vright budget_customer_sum_total" type="text" id="@idBudgetCustomerSumTotal" name="@idBudgetCustomerSumTotal" value="" style="width: 120px;" disabled />*@ 
+                                                        </td>
                                                         for (int colTd = 0; colTd < 2; colTd++)
                                                         {
                                                             <td> </td>
@@ -678,7 +680,7 @@ else
                                 {
                                     <td class="vright"> <span id="sum_budget_customer_@colTdSum"> </span> </td>
                                 }
-                                <td class="vright"> <span id="sum_budget_customer_sum_total"> </span> </td>
+                                <td class="vright"> @*<span id="sum_budget_customer_sum_total"> </span>*@ </td>
                                 <td class="vright"> </td>
                                 <td class="vright"> </td>
                             }

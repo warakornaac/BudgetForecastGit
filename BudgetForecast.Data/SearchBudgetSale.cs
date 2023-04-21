@@ -16,16 +16,20 @@ namespace BudgetForecast.Data
         {
 
         }
-        public List<StoreSearchBudgetSaleModel> GetStoreSearchForecastPm(string slmCode, string[] cusCode, string[] stkGrp, string year)
+        public List<StoreSearchBudgetSaleModel> GetStoreSearchForecastPm(string slmCode, string[] cusCode, string[] stkSec, string year)
         {
             //add all
             if (cusCode == null) {
                 cusCode = new string[] { "ALL" };
             }
+            if (stkSec == null)
+            {
+                stkSec = new string[] { "ALL" };
+            }
             var p = new SqlParameters();
             p.AddParams("@Slmcode", slmCode);
             p.AddParams("@Cuskey", string.Join(",", cusCode));
-            p.AddParams("@Stkgrp", string.Join(",", stkGrp));
+            p.AddParams("@Stksec", string.Join(",", stkSec));
             p.AddParams("@User", "");
             p.AddParams("@Year", year);
 

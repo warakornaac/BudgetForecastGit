@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@ViewBag.Title</title>
-
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUUL4xmD5Dk_p1W7_8LFhfUBZi51UQf5UUCYKL8PWrbg&s?sz=100">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -39,7 +39,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#"><b>HOME</b></a>
+        <a class="navbar-brand" href="#"><b>BUDGET&FORECAST</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -56,14 +56,14 @@
                     </li>
                 }
                 @*SALEMAN*@
-                @if (this.Session["UserType"].ToString() == "3")
+                @if (this.Session["UserType"].ToString() == "1" || this.Session["UserType"].ToString() == "3")
                 {
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALE</a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALE</a>
-                    </li>
+                    </li>*@
                 }
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -93,6 +93,47 @@
 </body>
 </html>
 <script type="text/javascript">
+    //set session expire alert
+    var minutesForWarning = 1;
+    var sessionTimeout = parseInt("@Session.Timeout");
+    var showWarning = true;
+    function SessionWarning() {
+        showWarning = false;
+        alert("Your session will expire in " + minutesForWarning + " mins! Please refresh page to continue working.");
+        setTimeout(function () { showWarning = true; }, 1000);
+    }
+    function RedirectToWelcomePage() {
+        if (showWarning) {
+            Swal.fire({
+                //title: 'Session expired. You will be redirected to login page.',
+                html: 'Session expired. You will be redirected to login page.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+                allowOutsideClick: true,
+                //timer: 6000,
+                //timerProgressBar: true,
+                onClose: () => {
+                    $.post("@Url.Action("Logout", "Home")",function(res){
+                         if (res.status === "success") {
+                             LoadingShow();
+                             window.location.href = '@Url.Action("Login", "Home")';
+                         }
+                         else
+                         {
+                             alert('Error Session');
+                         }
+                     });
+                }
+            });
+        }
+        //alert("Session expired. You will be redirected to welcome page.");
+    }
+    //setTimeout('SessionWarning()', (sessionTimeout - minutesForWarning) * 60 * 1000);
+    setTimeout('RedirectToWelcomePage()', sessionTimeout * 60 * 1000);
+
     function logoutSys() {
         Swal.fire({
             title: 'Are you sure want to logout?',

@@ -20,7 +20,7 @@ namespace BudgetForecast.Controllers
     public class BudgetSaleController : Controller
     {
         // GET: BudgetSale
-        public ActionResult Index(string slmCode, string[] cusCode, string[] stkGrp, string prodMgr, string[] stkGroup, string year)
+        public ActionResult Index(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year)
         {
             //Check login
             if (this.Session["UserType"] == null)
@@ -34,6 +34,7 @@ namespace BudgetForecast.Controllers
                 List<SLM> SlmList = new List<SLM>();
                 List<SelectListItem> SlmCodeList = new List<SelectListItem>();
                 List<SelectListItem> ProdList = new List<SelectListItem>();
+                List<SelectListItem> stkSecList = new List<SelectListItem>();
                 using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
                 {
                     Connection.Open();
@@ -41,6 +42,7 @@ namespace BudgetForecast.Controllers
                     var command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UsrID", user);
+                    command.Parameters.AddWithValue("@Flag", "sale");
                     SqlDataReader dr = command.ExecuteReader();
                     while (dr.Read())
                     {
@@ -48,19 +50,31 @@ namespace BudgetForecast.Controllers
                     }
                     dr.Close();
                     dr.Dispose();
-
-
-                    //list prod
+                    //list stkGrp
                     command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@inUsrID", user);
-                    command.Parameters.AddWithValue("@inType", "PRDNAME");
-                    command.Parameters.AddWithValue("@inSearch", "ALL");
+                    command.Parameters.AddWithValue("@inUsrID", slmCodeDefault);
+                    command.Parameters.AddWithValue("@inType", "SEC");
                     //command.ExecuteNonQuery();
+                    SqlDataReader dr2 = command.ExecuteReader();
+                    while (dr2.Read())
+                    {
+                        stkSecList.Add(new SelectListItem() { Value = dr2["SEC"].ToString(), Text = dr2["SEC"].ToString() + "/" + dr2["SECNAM"].ToString() });
+                    }
+                    ViewBag.stkSecList = stkSecList;
+                    dr2.Close();
+                    dr2.Dispose();
+                    command.Dispose();
+
+                    //list prod
+                    command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UsrID", "thanaphan.s");
                     SqlDataReader dr3 = command.ExecuteReader();
                     while (dr3.Read())
                     {
                         ProdList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
+
                     }
                     ViewBag.ProdList = ProdList;
                     //เอา userId เป็น default Prod name
@@ -69,7 +83,6 @@ namespace BudgetForecast.Controllers
                     dr3.Close();
                     dr3.Dispose();
                     command.Dispose();
-
 
                     if (slmCode != null)
                     {
@@ -86,6 +99,7 @@ namespace BudgetForecast.Controllers
                     ViewBag.slmCode = slmCode == null ? slmCodeDefault : slmCode;
                     ViewBag.cusCode = cusCode == null ? "[]" : "[\"" + string.Join("\",\"", cusCode.Select(x => x.ToString()).ToArray()) + "\"]";
                     ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
+                    ViewBag.stkSec = stkSec == null ? "[]" : "[\"" + string.Join("\",\"", stkSec.Select(x => x.ToString()).ToArray()) + "\"]";
 
                     command.Dispose();
                     Connection.Close();
@@ -96,7 +110,7 @@ namespace BudgetForecast.Controllers
             //stkGroup null
             if (slmCode != null || cusCode != null)
             {
-                SearchBudgetSale = new SearchBudgetSale().GetStoreSearchForecastPm(slmCode, cusCode, stkGrp, year);
+                SearchBudgetSale = new SearchBudgetSale().GetStoreSearchForecastPm(slmCode, cusCode, stkSec, year);
                 ViewBag.stkGroupList = SearchBudgetSale;
             }
 
@@ -128,52 +142,43 @@ namespace BudgetForecast.Controllers
                     CUSNAM = rev_CUSPROV["CUSNAM"].ToString(),
                     PRO = rev_CUSPROV["PRO"].ToString(),
                     ADDR_01 = rev_CUSPROV["ADDR_01"].ToString(),
-                    CUSTYP = rev_CUSPROV["CUSTYP"].ToString(),
-                    AACCrlimit = rev_CUSPROV["AACCRLINE"].ToString(),
-                    AACBalance = rev_CUSPROV["AACBAL"].ToString(),
-                    TACCrlimit = rev_CUSPROV["TACCRLINE"].ToString(),
-                    TACBalance = rev_CUSPROV["TACBAL"].ToString()
+                    CUSTYP = rev_CUSPROV["CUSTYP"].ToString()
                 });
             }
-            //rev_CUSPROV.Dispose();
-            //S20161016
+            //add new slmcode
+            CUSList.Add(new CUS() { CUSCOD = "NEW--" + slmCode, CUSNAM = "NEW--" + slmCode
+            });
             rev_CUSPROV.Close();
             rev_CUSPROV.Dispose();
             cmd.Dispose();
-            //E20161016
             Connection.Close();
             return Json(CUSList, JsonRequestBehavior.AllowGet);
-
         }
         public JsonResult GetSTKGRP(string ProdMRG)
         {
-            List<STKGRPList> STKGRPList = new List<STKGRPList>();
+            List<SECList> STKGRPList = new List<SECList>();
             SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
             Connection.Open();
             var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@inUsrID", ProdMRG);
-            command.Parameters.AddWithValue("@inType", "STKGRP");
-            command.Parameters.AddWithValue("@inSearch", "PROD");
+            command.Parameters.AddWithValue("@inType", "SEC");
 
             SqlDataReader rev_CUSPROV = command.ExecuteReader();
             while (rev_CUSPROV.Read())
             {
-                STKGRPList.Add(new STKGRPList()
+                STKGRPList.Add(new SECList()
                 {
-                    STKGRP = rev_CUSPROV["STKGRP"].ToString(),
-                    GRPNAM = rev_CUSPROV["GRPNAM"].ToString()
+                    SEC = rev_CUSPROV["SEC"].ToString(),
+                    SECNAM = rev_CUSPROV["SECNAM"].ToString()
                 });
             }
-            //rev_CUSPROV.Dispose();
-            //S20161016
             rev_CUSPROV.Close();
             rev_CUSPROV.Dispose();
             command.Dispose();
             //E20161016
             Connection.Close();
             return Json(STKGRPList, JsonRequestBehavior.AllowGet);
-
         }
     }
 }

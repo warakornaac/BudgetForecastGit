@@ -76,7 +76,7 @@ else
                         <thead>
                             <tr style="white-space: nowrap;">
                                 <th class="vcenter" style="vertical-align: middle;">
-                                    <input type="checkbox" id="selectAll" class="selectAll"  style="" />
+                                    <input type="checkbox" id="selectAll" class="selectAll" style="" />
                                 </th>
                                 <th class="vcenter" style="vertical-align: middle;">Custype</th>
                                 <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
@@ -115,10 +115,10 @@ else
                                         <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.CUSTYP</td>
                                         <td class="vcenter" style="vertical-align: middle;">
                                             @{
-                                                if (stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
-                                                {
+                                                //if (stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
+                                                //{
                                                     @stkGroupItem.PEOPLE
-                                                }
+                                                //}
                                             }
                                         </td>
                                         <td class="vleft" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.CUSNAM</td>
@@ -377,17 +377,17 @@ else
             });
         }
     }
-    
+
     //async function selectAll(obj) {
     //    LoadingShow();
     //    $('.selectList').each(function () {
     //        var cusCode = $(this).data('cuscode');
     //        var stkGrp = $(this).data('stkgrp');
     //        $('#' + cusCode + "_" + stkGrp).trigger('click');
-   
+
     //    LoadingHide();
     //}
-    
+
     //sum Budget By field name
     const sumBudgetSale = async (inputName) => {
             let sum_budget = 0;
@@ -437,7 +437,7 @@ else
                     var cusCode = $(this).data('cuscode');
                     var stkGrp = $(this).data('stkgrp');
                     $('#f_slm_' + cusCode + '_' + stkGrp).attr("disabled", false);
-          
+
                 });
             } else {
                 $(':checkbox').each(function () {
