@@ -287,6 +287,12 @@
                 $(window).unbind('beforeunload');
                 $(".mask").prop('disabled', true);
             }
+            //ถ้าไม่เป็น admin คีย์ Forecast GP,Target Inventory ไม่ได้
+            var userType = '@Session["UserType"]';
+            if (userType != 1) {
+                $('input[name^="pm_forecast_gp_"]').prop('disabled', true);
+                $('input[name^="target_"]').prop('disabled', true);
+            }
             LoadingHide()
         }
     }
