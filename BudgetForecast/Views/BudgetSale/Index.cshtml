@@ -1,6 +1,6 @@
 ﻿@using BudgetForecast.Model;
 @{
-    ViewBag.Title = "Budget by sale";
+    ViewBag.Title = "Budget by saleman";
     List<SelectListItem> getSlmCode = ViewBag.SlmCodeList;
     List<SelectListItem> getProdList = ViewBag.ProdList;
     List<SelectListItem> getStkSec = ViewBag.stkSecList;
@@ -18,7 +18,7 @@
         <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
-                    <i class="fa fa-table"></i> Budget by sale <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                    <i class="fa fa-table"></i> Budget by saleman <i class="fa fa-angle-up" style="font-size: larger; font-weight: bold;"></i>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> SLMCODE:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="slmCode" name="slmCode" style="width: 100%;" data-live-search="true" data-none-selected-text="เลือก SLMCODE">
+                            <select class="form-control selectpicker" id="slmCode" name="slmCode" style="width: 100%;" data-live-search="true" data-none-selected-text="SELECT SLMCODE">
                                 @for (var i = 0; i < getSlmCode.Count; i++)
                                 {
                                     <option value="@getSlmCode[i].Value">@getSlmCode[i].Text</option>
@@ -52,7 +52,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span>
                         <span>
-                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="เลือก CUSTOMER" data-live-search="true" multiple>
+                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" multiple>
                             </select>
                         </span>
                     </div>
@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-users"></i><b> PROD MGR:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" data-live-search="true" style="width: 100%;" title="เลือก PROD MGR">
+                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" data-live-search="true" style="width: 100%;" title="SELECT PROD MGR">
                                 @*<option value="0" selected>เลือก PROD</option>*@
                                 @for (var i = 0; i < getProdList.Count; i++)
                                 {
@@ -77,8 +77,8 @@
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
                         <span>
-                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="เลือก SEC" data-live-search="true" multiple>
-                                <option value="ALL">SEC ทั้งหมด</option>
+                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="SELECT SEC" data-live-search="true" multiple>
+                                <option value="ALL">SEC ALL</option>
 
                                 @for (var i = 0; i < getStkSec.Count; i++)
                                 {
@@ -128,6 +128,12 @@
         var msg = '';
         var error = 0;
         var stksec = $("#cusCode option:selected").val();
+        var slmCode = $("#slmCode option:selected").val();
+        if (slmCode == undefined) {
+            ++error;
+            msg += '<br>' + error + '. กรุณาเลือก SALEMAN อย่างน้อย 1 รายการ';
+        }
+
         if (stksec == undefined) {
             ++error;
             msg += '<br>' + error + '. กรุณาเลือก CUSTOMER อย่างน้อย 1 รายการ';
@@ -138,7 +144,7 @@
                 title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
                 html: msg,
                 confirmButtonColor: '#d33',
-                confirmButtonText: 'ปิด',
+                confirmButtonText: 'Close',
                 allowOutsideClick: false,
                 focusConfirm: false,
             });
@@ -192,7 +198,7 @@
                     // console.log(data);
                     var select = $("#stkSec");
                     select.children().remove();
-                    select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
+                    select.append($("<option>").val("ALL").text("SEC ALL"));
                     $(data).each(function (index, item) {
                         select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                     });
@@ -238,7 +244,7 @@
                 //console.log(data);
                 var select = $("#cusCode");
                 select.children().remove();
-                select.append($("<option>").val("ALL").text("ลูกค้าทั้งหมด"));
+                select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
                 $.each(data, function (key, value) {
                     select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + /*"----ที่อยู่ " + value.ADDR_01 + " " + value.PRO +*/ '</option>');
                 });
@@ -270,7 +276,7 @@
                 //console.log(data);
                 var select = $("#cusCode");
                 select.children().remove();
-                select.append($("<option>").val("ALL").text("ลูกค้าทั้งหมดของ"));
+                select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
                 $.each(data, function (key, value) {
                     select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + '</option>');
                 });
@@ -302,7 +308,7 @@
                 // console.log(data);
                 var select = $("#stkSec");
                 select.children().remove();
-                select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
+                select.append($("<option>").val("ALL").text("SEC ALL"));
                 $(data).each(function (index, item) {
                     select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                 });

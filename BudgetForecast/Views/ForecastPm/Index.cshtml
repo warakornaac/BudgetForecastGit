@@ -21,7 +21,7 @@
         <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
-                    <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                    <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-up" style="font-size: larger; font-weight: bold;"></i>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
                         <span>
-                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;" data-none-selected-text="เลือก PROD MGR">
+                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;" data-none-selected-text="SELECT PROD MGR">
                                 @for (var i = 0; i < getPRODList.Count; i++)
                                 {
                                     <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
@@ -55,8 +55,8 @@
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
                         <span>
-                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="เลือก SEC" data-live-search="true" multiple>
-                                <option value="ALL">SEC ทั้งหมด</option>
+                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="SELECT SEC" data-live-search="true" multiple>
+                                <option value="ALL">SEC ALL</option>
 
                                 @for (var i = 0; i < getStkSec.Count; i++)
                                 {
@@ -117,7 +117,7 @@
                 title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
                 html: msg,
                 confirmButtonColor: '#d33',
-                confirmButtonText: 'ปิด',
+                confirmButtonText: 'Close',
                 allowOutsideClick: false,
                 focusConfirm: false,
             });
@@ -130,9 +130,6 @@
 
     function resetSearch() {
         LoadingShow();
-        //$('.selectpicker').val('default').selectpicker('deselectAll');
-        //$('.selectpicker').selectpicker('refresh');
-        //$("#stkSec").val('default').selectpicker("refresh");
         location.reload();
         LoadingHide();
     }
@@ -179,7 +176,7 @@
                     // console.log(data);
                     var select = $("#stkSec");
                     select.children().remove();
-                    select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
+                    select.append($("<option>").val("ALL").text("SEC ALL"));
                     $(data).each(function (index, item) {
                         select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                     });
@@ -260,7 +257,7 @@
                 // console.log(data);
                 var select = $("#stkSec");
                 select.children().remove();
-                select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
+                select.append($("<option>").val("ALL").text("SEC ALL"));
                 $(data).each(function (index, item) {
                     select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                 });

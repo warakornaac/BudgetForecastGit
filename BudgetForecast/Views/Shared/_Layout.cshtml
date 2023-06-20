@@ -18,6 +18,7 @@
     <link href="~/Scripts/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    @*<link href="~/Content/style_admin.css" rel="stylesheet" />*@
 
     <style>
         .footer {
@@ -56,13 +57,13 @@
                     </li>
                 }
                 @*SALEMAN*@
-                @if (this.Session["UserType"].ToString() == "1" || this.Session["UserType"].ToString() == "3")
+                @if (this.Session["UserType"].ToString() == "3")
                 {
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALE</a>
+                        <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALEMAN</a>
                     </li>
                     @*<li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALE</a>
+                        <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALEMAN</a>
                     </li>*@
                 }
             </ul>
@@ -109,7 +110,7 @@
                 html: 'Session expired. You will be redirected to login page.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ปิด',
+                confirmButtonText: 'Close',
                 allowOutsideClick: false,
                 focusConfirm: false,
                 allowOutsideClick: true,
@@ -142,8 +143,8 @@
             showCancelButton: true,
             confirmButtonColor: '#00a65a',
             cancelButtonColor: '#C1C1C1',
-            confirmButtonText: '<i class="fa fa-check"></i> ใช่',
-            cancelButtonText: '<i class="fa fa-times"></i> ไม่',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
             allowOutsideClick: true,
             focusConfirm: false,
         }).then((result) => {

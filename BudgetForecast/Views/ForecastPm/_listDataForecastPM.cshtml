@@ -19,7 +19,7 @@ else
 {
     <div class="card">
         <form method="post" id="formForecastPm">
-            <div class="card-body p-2" style="height: 790px; overflow-y: auto; max-height: @setWidth">
+            <div class="card-body p-2" style="height: 875px; overflow-y: auto; max-height: @setWidth">
                 @{
                     int rowSec = 0;
                     foreach (var stkGroupItem in (List<StoreSearchForecastPmModel>)ViewBag.stkGroupList)
@@ -36,7 +36,7 @@ else
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <i class="fa fa-cog fa-lg"></i> SEC (@stkGroupItem.SEC/@stkGroupItem.SECNAM)
-                                        <span style="float: right; position: relative;"><i id="header_@stkGroupItem.SEC" class="fa fa-caret-down fa-lg"></i></span>
+                                        <span style="float: right; position: relative;"><i id="header_@stkGroupItem.SEC" class="fa fa-caret-up fa-lg"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -973,6 +973,12 @@ else
                                                                 break;
                                                             case "Dec":
                                                                 valPmForecastGp = stkGroupItem.FC_GP12;
+                                                                break;
+                                                            case "Jan Nxt":
+                                                                valPmForecastGp = stkGroupItem.FC_GP13;
+                                                                break;
+                                                            case "Feb Nxt":
+                                                                valPmForecastGp = stkGroupItem.FC_GP14;
                                                                 break;
                                                             default:
                                                                 // code block
