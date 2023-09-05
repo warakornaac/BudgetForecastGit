@@ -8,6 +8,7 @@ namespace BudgetForecast.Model
 {
     public class StoreSearchBudgetSaleModel
     {
+       // public string[][] arrData { get; set; }
         public string CUSGRP { get; set; }
         public string CUSCOD { get; set; }
         public string CUSKEY { get; set; }

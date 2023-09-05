@@ -131,6 +131,7 @@
     <Compile Include="Controllers\ForecastPmController.cs" />
     <Compile Include="Controllers\ForecastSaleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerUserADController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -144,6 +145,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\SiteLogin.css" />
+    <Content Include="Content\style_admin.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -161,6 +163,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\scriptForecastSale.js" />
+    <Content Include="Views\ForecastSale\script.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -185,6 +189,11 @@
     <Content Include="Views\BudgetSale\Index.cshtml" />
     <Content Include="Views\BudgetSale\_listDataBudgetSale.cshtml" />
     <Content Include="Views\ForecastSale\Index.cshtml" />
+    <Content Include="Views\ManagerUserAD\Index.cshtml" />
+    <Content Include="Views\ForecastSale\_listDataForecastSale.cshtml" />
+    <Content Include="Views\ForecastPm\script.cshtml" />
+    <Content Include="Views\ForecastSale\_listDataForecastSaleByMonthAll.cshtml" />
+    <Content Include="Views\ForecastSale\_listDataForecastSaleBySecAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

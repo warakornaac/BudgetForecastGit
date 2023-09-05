@@ -1,105 +1,140 @@
 ﻿@using BudgetForecast.Model;
 @{
-    ViewBag.Title = "Forecast by product";
+    ViewBag.Title = "Forecast by sale";
     // Layout = "~/Views/Shared/.cshtml";
-    var dataSlmlis = ViewBag.SlmModel;
-    List<SelectListItem> getPRODList = ViewBag.PRODList;
-    List<SelectListItem> getStkSec = ViewBag.stkSecList;
-    var usre = ViewBag.usre;
+    //var dataSlmlis = ViewBag.SlmModel;
+    //List<SelectListItem> getPRODList = ViewBag.PRODList;
+    //List<SelectListItem> getStkSec = ViewBag.stkSecList;
+    //var usre = ViewBag.usre;
+    //var countList = ((List<UserAD>)ViewBag.listADUsers).Count();
 }
-<input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
-<input type="hidden" id="year_header" value="@ViewBag.year" />
-<input type="hidden" name="stkSec_header[]" id="stkSec_header" value="@ViewBag.stkSec" />
-<input type="hidden" id="flagInput" value="@ViewBag.flagInput" />
+@*<input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
+    <input type="hidden" id="year_header" value="@ViewBag.year" />
+    <input type="hidden" name="stkSec_header[]" id="stkSec_header" value="@ViewBag.stkSec" />
+    <input type="hidden" id="flagInput" value="@ViewBag.flagInput" />*@
 @*<h2>Budget by product</h2>*@
 <title>@ViewBag.Title</title>
+<br>
+<p> @*Developer ^^*@</p>
+
+@if (ViewBag.listADUsers == null)
+{
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+}
+else
+{
+    <table class="table table-bordered">
+        @{
+
+            int rowSec = 0;
+            foreach (var listAd in (List<UserAD>)ViewBag.listADUsers)
+            {
+                rowSec++;
+                <tr>
+                    <td> @rowSec </td>
+                    <td> @listAd.Email </td>
+                    <td> @listAd.UserName </td>
+                    <td> @listAd.DisplayName </td>
+                    <td> @listAd.Department </td>
+                    <td> @listAd.Company </td>
+                    <td align="center">
+                        <button type="button" class="btn btn-primary btn-lg" onclick="resetPassword();" style="font-size: medium;"><i class="fa fa-eye"></i> </button>
+                        <button type="reset" class="btn btn-warning btn-lg" onclick="viewUser();" style="font-size: medium;"><i class="fa fa-refresh"></i> </button> &nbsp;
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+}
+
 @*<div class="mt-4 pt-0 border-bottom border-bottom">
         <h3>@ViewBag.Title</h3>
     </div>*@
-<div class="card mb-12 mt-4">
-    <form action="@Url.Action("Index", "ForecastPm")" id="forecastPmForm" method="post" onsubmit="">
-        <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
-            <div class="row">
-                <div class="col-sm-12">
-                    <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-up" style="font-size: larger; font-weight: bold;"></i>
+@*<div class="card mb-12 mt-4">
+        <form action="@Url.Action("Index", "ForecastPm")" id="forecastPmForm" method="post" onsubmit="">
+            <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <i class="fa fa-table"></i> Forecast by product <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body" id="headerSearch">
-            <div class="row">
-                <div class="col-sm-3 col-md-3">
-                    <div class="form-group">
-                        <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
-                        <span>
-                            <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;" data-none-selected-text="SELECT PROD MGR">
-                                @for (var i = 0; i < getPRODList.Count; i++)
-                                {
-                                    <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
-                                }
-                            </select>
-                        </span>
+            <div class="card-body" id="headerSearch">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <span> <i class="fa fa-user"></i><b> PROD MGR:</b></span>
+                            <span>
+                                <select class="form-control selectpicker" id="prodMgr" name="prodMgr" style="width: 100%;">
+                                    @for (var i = 0; i < getPRODList.Count; i++)
+                                    {
+                                        <option value="@getPRODList[i].Value">@getPRODList[i].Text</option>
+                                    }
+                                </select>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-3 col-md-3">
-                    <div class="form-group">
-                        <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
-                        <span>
-                            <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
-                                <option value="2023" selected>2023</option>
-                                <option value="2022">2022</option>
-                            </select>
-                        </span>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
+                            <span>
+                                <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
+                                    <option value="2023" selected>2023</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
-                        <span>
-                            <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="SELECT SEC" data-live-search="true" multiple>
-                                <option value="ALL">SEC ALL</option>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
+                            <span>
+                                <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="เลือก Sec" data-live-search="true" multiple>
+                                    <option value="ALL">SEC ทั้งหมด</option>
 
-                                @for (var i = 0; i < getStkSec.Count; i++)
-                                {
-                                    <option value="@getStkSec[i].Value">@getStkSec[i].Text</option>
-                                }
-                            </select>
-                        </span>
+                                    @for (var i = 0; i < getStkSec.Count; i++)
+                                    {
+                                        <option value="@getStkSec[i].Value">@getStkSec[i].Text</option>
+                                    }
+                                </select>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer" id="headerSearchFooter">
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    @if (ViewBag.stkSec != "[]")
-                    {
-                        <button type="button" class="btn btn-success btn-lg" onclick="saveForecastPm();" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
-                    }
-                    <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
-                    <button type="button" class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+            <div class="card-footer" id="headerSearchFooter">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        @if (ViewBag.stkSec != "[]")
+                        {
+                            <button type="button" class="btn btn-success btn-lg" onclick="saveForecastPm();" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
+                        }
+                        <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                        <button type="button" class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>*@
 
 @*input*@
 <div class="pt-2">
-    @{
-        if (@ViewBag.flagInput == "NO" && ((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() != 0)
-        {
-            <div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Forecast กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div>
+    @*@{
+            if (@ViewBag.flagInput == "NO" && ((List<StoreSearchForecastPmModel>)ViewBag.stkGroupList).Count() != 0)
+            {
+                <div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Forecast กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div>
+            }
         }
-    }
 
-    @Html.Partial("_listDataForecastPM", new { ViewBag.stkGroupList, ViewBag.monthList })
+        @Html.Partial("_listDataForecastPM", new { ViewBag.stkGroupList, ViewBag.monthList })*@
 </div>
 
 <br>
 <br>
 
 <script defer>
-    if (window.history.replaceState) {
+    @*if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
 
@@ -117,7 +152,7 @@
                 title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
                 html: msg,
                 confirmButtonColor: '#d33',
-                confirmButtonText: 'Close',
+                confirmButtonText: 'ปิด',
                 allowOutsideClick: false,
                 focusConfirm: false,
             });
@@ -130,6 +165,9 @@
 
     function resetSearch() {
         LoadingShow();
+        //$('.selectpicker').val('default').selectpicker('deselectAll');
+        //$('.selectpicker').selectpicker('refresh');
+        //$("#stkSec").val('default').selectpicker("refresh");
         location.reload();
         LoadingHide();
     }
@@ -176,7 +214,7 @@
                     // console.log(data);
                     var select = $("#stkSec");
                     select.children().remove();
-                    select.append($("<option>").val("ALL").text("SEC ALL"));
+                    select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
                     $(data).each(function (index, item) {
                         select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                     });
@@ -236,7 +274,7 @@
         });
     }
 
-    //ดึง stkgrp จาก pm
+       //ดึง stkgrp จาก pm
     function getStkgrpByProd(_prodCode) {
         //alert(_slmCode);
         let prod = "";
@@ -257,7 +295,7 @@
                 // console.log(data);
                 var select = $("#stkSec");
                 select.children().remove();
-                select.append($("<option>").val("ALL").text("SEC ALL"));
+                select.append($("<option>").val("ALL").text("SEC ทั้งหมด"));
                 $(data).each(function (index, item) {
                     select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
                 });
@@ -281,16 +319,9 @@
             //flagInput = เลยเวลาคีย์แล้ว
             let flagInput = $("#flagInput").val();
             if (flagInput == 'NO') {
-                $(window).unbind('beforeunload');
                 $(".mask").prop('disabled', true);
             }
-            //ถ้าไม่เป็น admin คีย์ Forecast GP,Target Inventory ไม่ได้
-            var userType = '@Session["UserType"]';
-            if (userType != 1) {
-                $('input[name^="pm_forecast_gp_"]').prop('readonly', true);
-                $('input[name^="target_"]').prop('readonly', true);
-            }
             LoadingHide()
-        }
+        }*@
     }
 </script>

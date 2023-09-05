@@ -11,7 +11,6 @@ namespace BudgetForecast.Model
         public string USER { get; set; }
         public string SEC { get; set; }
         public string YEAR { get; set; }
-        //public List<DataUpdateForecastPmModel> DETAILS { get; set; }
         public double FC00 { get; set; }
         public double FC01 { get; set; }
         public double FC02 { get; set; }

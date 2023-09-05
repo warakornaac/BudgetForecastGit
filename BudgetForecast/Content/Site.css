@@ -28,6 +28,8 @@ textarea {
 
 .tableFixHead {
     /*overflow: auto;*/
+    overflow: auto;
+    height: 800px;
 }
 
 .tableFixHead thead th {
@@ -73,6 +75,13 @@ th {
 
 input[type=search] {
     max-width: 100% !important;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    padding: 6px 6px;
 }
 /*remove bootstrap-select level0*/
 /*.bootstrap-select ul.dropdown-menu li:first-child {

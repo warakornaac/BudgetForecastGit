@@ -254,11 +254,18 @@ else
         $('#formBudgetSale').data('serialize', $('#formBudgetSale').serialize()); // On load save form current state
         $(window).bind('beforeunload', function (e) {
             if ($('#formBudgetSale').serialize() != $('#formBudgetSale').data('serialize')) {
+                delayHide();
                 return true;
             } else {
                 e = null;
             }
         });
+    }
+
+    function delayHide() {
+        timeout = setTimeout(function () {
+            LoadingHide();
+        }, 3000);
     }
     //btn save
     saveBudgetSale = async () => {
@@ -339,6 +346,7 @@ else
                                     timerProgressBar: true,
                                     onClose: () => {
                                         $(window).unbind('beforeunload');
+                                        $("#slmCode").prop('disabled', false);
                                         LoadingHide();
                                         $('form[id="BudgetSale"]').submit();
                                         //location.reload(true);

@@ -1,0 +1,55 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "_listDataForcastSale";
+    var arrMonth = @ViewBag.monthList;
+    string codeColorMonthCurrent = "#f9ecdc";
+    int monthInputCurrent = 0;
+    string setHeight = "980px";
+    string setHeightCustomer = "920px";
+    string name1 = Environment.MachineName; //returns webserver
+    string name2 = System.Net.Dns.GetHostName(); //returns webserver
+                                                 // string name3 = System.Windows.Forms.SystemInformation.ComputerName; //returns webserver
+    string name4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME").ToString();//returns webserver
+
+    var monthSplits = @ViewBag.MonthYearList[0].Text.Split('-');
+    monthInputCurrent = int.Parse(monthSplits[0]);
+    string formattedMonthInputCurrent = monthInputCurrent.ToString("00");
+}
+@*Summary by month*@
+<div class="card mb-12">
+    <div class="row" style="padding: 4px;">
+        @if (ViewBag.sumByMonth != null)
+        {
+            foreach (var dataItemBySec in (List<StoreSearchForecastSaleModel>)ViewBag.sumByMonth)
+            {
+                if (@dataItemBySec.Budget != 0 || dataItemBySec.Actual != 0 || dataItemBySec.FC != 0)
+                {
+                    <div class="col-xs-4 col-sm-3 col-md-4 col-lg-2" style="padding-top: 5px; display: block;" id="sum_by_dec_@dataItemBySec.Sec">
+                        <div class="card support-bar overflow-hidden" style="background-color: whitesmoke;">
+                            <div class="card-body pb-0" style="margin-top: -10px;">
+                                <h4 class="" style="font-weight: 700;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
+                                <span class="text-c-blue"></span>
+                            </div>
+                            <div class="card-footer bg-info text-white" style="padding: 1px;">
+                                <div class="row text-center">
+                                    <div class="col">
+                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_budget_all_@dataItemBySec.Sec" id="sum_sec_budget_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.Budget.ToString("N0") </span></h4>
+                                        <span>Budget</span>
+                                    </div>
+                                    <div class="col">
+                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_actual_all_@dataItemBySec.Sec" id="sum_sec_actual_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.Actual.ToString("N0") </span></h4>
+                                        <span>Actual</span>
+                                    </div>
+                                    <div class="col">
+                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecast_all_@dataItemBySec.Sec" id="sum_sec_forecast_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.FC.ToString("N0") </span></h4>
+                                        <span>Forecast</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>

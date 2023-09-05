@@ -1324,14 +1324,14 @@ else
         var request = [];
         var year = $("#year option:selected").val();
         Swal.fire({
-            title: 'ยืนยันการบันทึกข้อมูล',
+            title: 'Do you confirm save',
             // html: html,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#00a65a',
             cancelButtonColor: '#d33',
-            confirmButtonText: '<i class="fa fa-check"></i> ยืนยัน',
-            cancelButtonText: '<i class="fa fa-times"></i> ไม่',
+            confirmButtonText: '<i class="fa fa-check"></i> Yes',
+            cancelButtonText: '<i class="fa fa-times"></i> No',
             allowOutsideClick: false,
             focusConfirm: false,
         }).then((result) => {
@@ -1414,11 +1414,11 @@ else
                             //disbled beforeunload
                             $(window).unbind('beforeunload');
                             Swal.fire({
-                                title: 'บันทึกเรียบร้อย',
+                                title: 'Saved successfully',
                                 //html: 'บันทึกเรียบร้อย',
                                 icon: 'success',
                                 confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'ปิด',
+                                confirmButtonText: 'Close',
                                 allowOutsideClick: false,
                                 focusConfirm: false,
                                 timer: 6000,
@@ -1433,9 +1433,9 @@ else
                             Swal.fire({
                                 icon: 'error',
                                 //title: res.msg,
-                                html: 'พบข้อผิดพลาด',
+                                html: 'Error not saved',
                                 confirmButtonColor: '#d33',
-                                confirmButtonText: 'ปิด',
+                                confirmButtonText: 'Close',
                                 allowOutsideClick: false,
                                 focusConfirm: false,
                             });
@@ -1450,7 +1450,7 @@ else
                 }).fail(function (error) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'ระบบทำงานผิดพลาด()',
+                        title: 'Error not saved',
                         html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForcastPm<br><br>',
                         confirmButtonColor: '#d33',
                         confirmButtonText: 'ปิด',

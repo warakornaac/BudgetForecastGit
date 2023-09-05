@@ -57,14 +57,14 @@
                     </li>
                 }
                 @*SALEMAN*@
-                @if (this.Session["UserType"].ToString() == "3")
+                @if (this.Session["UserType"].ToString() == "1" || this.Session["UserType"].ToString() == "3")
                 {
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALEMAN</a>
+                        <a class="nav-link" href="@Url.Action("Index", "BudgetSale")">Budget SALESMAN</a>
                     </li>
-                    @*<li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALEMAN</a>
-                    </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALESMAN</a>
+                    </li>
                 }
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -219,6 +219,37 @@
             return false;
         }
         return true;
+    }
+    function getSelectionStart(o) {
+        if (o.createTextRange) {
+            var r = document.selection.createRange().duplicate()
+            r.moveEnd('character', o.value.length)
+            if (r.text == '') return o.value.length
+            return o.value.lastIndexOf(r.text)
+        } else return o.selectionStart
+    }
+    function IntegerAndDecimal(e, obj, isDecimal) {
+        if ([e.keyCode || e.which] == 8) //this is to allow backspace
+            return true;
+
+        if ([e.keyCode || e.which] == 46) //this is to allow decimal point
+        {
+            if (isDecimal == 'true') {
+                var val = obj.value;
+                if (val.indexOf(".") > -1) {
+                    e.returnValue = false;
+                    return false;
+                }
+                return true;
+            }
+            else {
+                e.returnValue = false;
+                return false;
+            }
+        }
+
+        if ([e.keyCode || e.which] < 48 || [e.keyCode || e.which] > 57)
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
     }
 
     //check default value number

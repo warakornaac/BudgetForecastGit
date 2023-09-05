@@ -49,9 +49,12 @@
     <Compile Include="SearchBudgetPm.cs" />
     <Compile Include="SearchBudgetSale.cs" />
     <Compile Include="SearchForecastPm.cs" />
+    <Compile Include="SearchForecastSale.cs" />
+    <Compile Include="SearchForecastSaleAll.cs" />
     <Compile Include="UpdateBudgetPm.cs" />
     <Compile Include="UpdateBudgetSale.cs" />
     <Compile Include="UpdateForecastPm.cs" />
+    <Compile Include="UpdateForecastSale.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetForecast.Library\BudgetForecast.Library.csproj">

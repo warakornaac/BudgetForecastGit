@@ -92,7 +92,6 @@ namespace BudgetForecast.Controllers
                     }
                 }
             }
-
             var arrMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan Nxt", "Feb Nxt" };
             var SearchForecastPm = new List<StoreSearchForecastPmModel>();
             //stkGroup null
@@ -110,11 +109,20 @@ namespace BudgetForecast.Controllers
         public ActionResult SaveForecast(List<StoreUpdateForecastPmModel> request)
         {
             var UpdateForecastPm = new List<StoreUpdateForecastPmModel>();
-            foreach (var listData in (List<StoreUpdateForecastPmModel>)request)
-            {
-                UpdateForecastPm = new UpdateForecastPm().Update(listData.USER, listData.SEC, listData.YEAR, listData.FC00, listData.FC01, listData.FC02, listData.FC03, listData.FC04, listData.FC05, listData.FC06, listData.FC07, listData.FC08, listData.FC09, listData.FC10, listData.FC11, listData.FC12, listData.FC13, listData.FC14, listData.FC_GP00, listData.FC_GP01, listData.FC_GP02, listData.FC_GP03, listData.FC_GP04, listData.FC_GP05, listData.FC_GP06, listData.FC_GP07, listData.FC_GP08, listData.FC_GP09, listData.FC_GP10, listData.FC_GP11, listData.FC_GP12, listData.FC_GP13, listData.FC_GP14, listData.TG_INV00, listData.TG_INV01, listData.TG_INV02, listData.TG_INV03, listData.TG_INV04, listData.TG_INV05, listData.TG_INV06, listData.TG_INV07, listData.TG_INV08, listData.TG_INV09, listData.TG_INV10, listData.TG_INV11, listData.TG_INV12, listData.TG_INV13, listData.TG_INV14);
-            }
-            return Json("success", JsonRequestBehavior.AllowGet);
+            //try
+            //{
+                foreach (var listData in (List<StoreUpdateForecastPmModel>)request)
+                {
+                    UpdateForecastPm = new UpdateForecastPm().Update(listData.USER, listData.SEC, listData.YEAR, listData.FC00, listData.FC01, listData.FC02, listData.FC03, listData.FC04, listData.FC05, listData.FC06, listData.FC07, listData.FC08, listData.FC09, listData.FC10, listData.FC11, listData.FC12, listData.FC13, listData.FC14, listData.FC_GP00, listData.FC_GP01, listData.FC_GP02, listData.FC_GP03, listData.FC_GP04, listData.FC_GP05, listData.FC_GP06, listData.FC_GP07, listData.FC_GP08, listData.FC_GP09, listData.FC_GP10, listData.FC_GP11, listData.FC_GP12, listData.FC_GP13, listData.FC_GP14, listData.TG_INV00, listData.TG_INV01, listData.TG_INV02, listData.TG_INV03, listData.TG_INV04, listData.TG_INV05, listData.TG_INV06, listData.TG_INV07, listData.TG_INV08, listData.TG_INV09, listData.TG_INV10, listData.TG_INV11, listData.TG_INV12, listData.TG_INV13, listData.TG_INV14);
+                }
+                return Json("success", JsonRequestBehavior.AllowGet);
+                //return Json(new { status = "success", message = "customer created" });
+            //}
+            //catch (Exception ex)
+            //{
+            //    //to do: log error
+            //    return Json(new { status = "error", message = "error creating customer" });
+            //}
         }
         public JsonResult GetSTKGRP(string ProdMRG)
         {

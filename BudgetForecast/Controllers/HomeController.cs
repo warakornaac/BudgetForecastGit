@@ -117,11 +117,11 @@ namespace BudgetForecast.Controllers
                     FormsAuthentication.SetAuthCookie(User.ToTrim(), false);
                     if (UserType == "1" || UserType == "2")//admin pm
                     {
-                        return RedirectToAction("Index", "BudgetPm");
+                        return RedirectToAction("Index", "ForecastPm");
                     }
                     else if (UserType == "3")//sale
                     {
-                        return RedirectToAction("Index", "BudgetSale");
+                        return RedirectToAction("Index", "ForecastSale");
                     }
                 }
                 ModelState.AddModelError("", "Login details are wrong.");
@@ -152,11 +152,11 @@ namespace BudgetForecast.Controllers
 
                 if (UserType == "1" || UserType == "2")//admin pm
                 {
-                    return RedirectToAction("Index", "BudgetPm");
+                    return RedirectToAction("Index", "ForecastPm");
                 }
                 else if (UserType == "3")//sale
                 {
-                    return RedirectToAction("Index", "BudgetSale");
+                    return RedirectToAction("Index", "ForecastSale");
                 }
 
                 ModelState.AddModelError("", "Login details are wrong.");

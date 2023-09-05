@@ -48,9 +48,12 @@
     <Compile Include="StoreSearchBudgetPmModel.cs" />
     <Compile Include="StoreSearchBudgetSaleModel.cs" />
     <Compile Include="StoreSearchForecastPmModel.cs" />
+    <Compile Include="StoreSearchForecastSaleModel.cs" />
     <Compile Include="StoreUpdateBudgetPmModel.cs" />
     <Compile Include="StoreUpdateBudgetSaleModel.cs" />
     <Compile Include="StoreUpdateForecastPmModel.cs" />
+    <Compile Include="StoreUpdateForecastSaleModel.cs" />
+    <Compile Include="UserAD.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

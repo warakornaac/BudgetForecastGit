@@ -1,0 +1,1382 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "_listDataForcastPM";
+    var arrMonth = @ViewBag.monthList;
+    string codeColorMonthCurrent = "#f9ecdc";
+    int monthInputCurrent = 0;
+    string setHeight = "980px";
+    string setHeightCustomer = "920px";
+    string name1 = Environment.MachineName; //returns webserver
+    string name2 = System.Net.Dns.GetHostName(); //returns webserver
+                                                 // string name3 = System.Windows.Forms.SystemInformation.ComputerName; //returns webserver
+    string name4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME").ToString();//returns webserver
+
+    var monthSplits = @ViewBag.MonthYearList[0].Text.Split('-');
+    monthInputCurrent = int.Parse(monthSplits[0]);
+    string formattedMonthInputCurrent = monthInputCurrent.ToString("00");
+}
+
+<style>
+    .tableFixHead thead {
+        position: sticky;
+        top: 0;
+        background: #87CEEB;
+    }
+
+    .tableFixHead {
+        overflow: auto;
+    }
+
+        .tableFixHead table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+    .input-onkey {
+        outline: none !important;
+        border: 2px solid #0014ff;
+        box-shadow: 0 0 20px #719ECE;
+    }
+
+    .input-onsave {
+        outline: none !important;
+        border: 2px solid #38bf28;
+        box-shadow: 0 0 20px #719ECE;
+    }
+
+    .panel.with-nav-tabs .panel-heading {
+        padding: 5px 5px 0 5px;
+    }
+
+    .panel.with-nav-tabs .nav-tabs {
+        border-bottom: none;
+    }
+
+    .panel.with-nav-tabs .nav-justified {
+        margin-bottom: -1px;
+    }
+    /********************************************************************/
+    /*** PANEL DEFAULT ***/
+    .with-nav-tabs.panel-default .nav-tabs > li > a,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+        color: #777;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > .open > a,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+            color: #777;
+            background-color: #ddd;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+        color: #555;
+        background-color: #fff;
+        border-color: #ddd;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #777;
+        }
+
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #ddd;
+            }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #555;
+        }
+
+    a {
+        color: #ededed;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects;
+    }
+
+   .table-scroll tr td:first-child,
+    .table-scroll th:first-child {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: 0;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:first-child {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:nth-child(2),
+    .table-scroll th:nth-child(2) {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: 114px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:nth-child(2) {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:nth-child(3),
+    .table-scroll th:nth-child(3) {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 210px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:nth-child(3) {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:last-child {
+        border-right: none;
+    }
+
+
+    .phone .table-scroll tr td,
+    .tablet .table-scroll tr td {
+        border-right: none;
+    }
+
+    /**/
+    .sticky-col {
+        position: -webkit-sticky;
+        position: sticky;
+        background-color: white;
+    }
+
+    .first-col {
+        width: 90px;
+        min-width: 90px;
+        max-width: 90px;
+        left: 0px;
+    }
+
+    .second-col {
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+        left: 114px;
+    }
+
+    .fix-td-2 {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: 114px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .fix-td-3 {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 210px;
+        z-index: 3;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .fix-td-4 {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 310px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+</style>
+@if (((List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList).Count() == 0 || ViewBag.cusCodeList == null)
+{
+    <input type="hidden" id="countList" value="0" />
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div> }
+else
+{
+    <input type="hidden" id="countList" value="1" />
+    <div class="card">
+        <form method="post" id="formInputForecastSale">
+            <div class="card-body p-2" style="height: auto; overflow-y: auto; max-height: @setHeight">
+                @{
+                    int rowSec = 0;
+                    int rowCuscod = 0;
+                    foreach (var secItem in ViewBag.secAllArray)
+                    {
+                        ++rowSec;
+                        <input type="hidden" name="stkSecList_header[]" class="stkSecList_header" value="@secItem.SEC" />
+                    }
+
+                    if (rowSec <= 2)
+                    {
+                        setHeightCustomer = "500px";
+                    }
+
+                    foreach (var cusItem in ViewBag.cusNameList)
+                    {
+                        <input type="hidden" name="cuscodList_header[]" class="cuscodList_header" value="@cusItem.CUSKEY" />
+                        ++rowCuscod;
+                        if (rowCuscod > 1)
+                        {
+                            <hr>
+                        }
+                        <div class="card mb-12">
+                            <div class="card-header bg-info text-white font-weight-bold" onclick="hideBodySec('@cusItem.CUSKEY');" style="cursor: pointer;">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <i class="fa fa-university fa-lg"></i> CUSTOMER (@cusItem.CUSKEY/@cusItem.CUSNAM)
+                                        <span style="float: right; position: relative;"><i id="header_@cusItem.CUSKEY" class="fa fa-caret-up fa-lg"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding: 0px 0px; display: inline-block;" id="body_@cusItem.CUSKEY">
+                                <div class="table-responsive tableFixHead" style="height: @setHeightCustomer;">
+                                    <table class="table table-scroll table-striped table-bordered nowrap table-hover" border="1">
+                                        <thead>
+                                            <tr style="white-space: nowrap;">
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 115px;">Month/Sec</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Type</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Last Year</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px; position: sticky; left: 305px; z-index: 4; ">Total</th>
+                                                <th rowspan="2" colspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 200px;">Under/Over</th>
+                                                <th colspan="12" align="center" class="vcenter" style="vertical-align: middle;"> 2023 </th>
+                                            </tr>
+                                            <tr>
+
+                                                @{
+                                                    foreach (var monthItemCur in @ViewBag.monthList)
+                                                    {
+                                                        string bgMonthCurrent = "";
+                                                        if (formattedMonthInputCurrent == monthItemCur)
+                                                        {
+                                                            bgMonthCurrent = codeColorMonthCurrent;
+                                                        }
+                                                        <th class="vcenter" align="center" style="font-weight: 700; min-width: 120px; position: sticky; top: 0; z-index: 1; background-color: @bgMonthCurrent"> @monthItemCur </th>
+                                                    }
+                                                }
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var secItem in ViewBag.secAllArray)
+                                            {
+                                                foreach (var dataItem in (List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList)
+                                                {
+                                                    if (dataItem.CUSKEY == cusItem.CUSKEY && dataItem.Sec == secItem.SEC)
+                                                    {
+                                                        Double[] valForecastSale = new Double[100];
+                                                        String[] checkSec = new String[100];
+
+                                                        if (dataItem.Caption == "Budget")
+                                                        {
+                                                            double underBudgetAmt = 0;
+                                                            double overBudgetAmt = 0;
+                                                            @*Budget*@
+                                                            <tr style="white-space: nowrap; border-top: 3px solid #5e6b89;">
+                                                                <td rowspan="4" class="vcenter" style="vertical-align: middle; background-color: #cbc7c7; "> <b> @secItem.SEC </b> </td>
+                                                                <td class="fix-td-2" style="vertical-align: middle; background-color: #f2f2f2;"> <b>Budget</b> </td>
+                                                                <td class="vright fix-td-3" style="vertical-align: middle; background-color: #f2f2f2;">
+                                                                    <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                    <input type="hidden" class="last_year_budget" value="@dataItem.Last_year.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright fix-td-4" style="vertical-align: middle; background-color: #f2f2f2; position: -webkit-sticky; position: sticky; left: 310px; z-index: 2; border-right: var(--border-size-s) solid var(--color-neutral-4);">
+                                                                    <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                    <input type="hidden" class="total_budget" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                    <input type="hidden" class="under_budget" value="0" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                    <input type="hidden" class="over_budget" value="0" />
+                                                                </td>
+                                                                @{
+                                                                    int countSaleBudget = 0;
+                                                                    string nameSaleBudget = "";
+                                                                    foreach (string monthItemCur in @ViewBag.monthList)
+                                                                    {
+                                                                        string bgMonthCurrent = "";
+                                                                        if (formattedMonthInputCurrent == monthItemCur)
+                                                                        {
+                                                                            bgMonthCurrent = codeColorMonthCurrent;
+                                                                        }
+                                                                        countSaleBudget++;
+                                                                        double valSaleBudget = 0;
+
+                                                                        switch (monthItemCur)
+                                                                        {
+                                                                            case "01":
+                                                                                valSaleBudget = dataItem.M01;
+                                                                                break;
+                                                                            case "02":
+                                                                                valSaleBudget = dataItem.M02;
+                                                                                break;
+                                                                            case "03":
+                                                                                valSaleBudget = dataItem.M03;
+                                                                                break;
+                                                                            case "04":
+                                                                                valSaleBudget = dataItem.M04;
+                                                                                break;
+                                                                            case "05":
+                                                                                valSaleBudget = dataItem.M05;
+                                                                                break;
+                                                                            case "06":
+                                                                                valSaleBudget = dataItem.M06;
+                                                                                break;
+                                                                            case "07":
+                                                                                valSaleBudget = dataItem.M07;
+                                                                                break;
+                                                                            case "08":
+                                                                                valSaleBudget = dataItem.M08;
+                                                                                break;
+                                                                            case "09":
+                                                                                valSaleBudget = dataItem.M09;
+                                                                                break;
+                                                                            case "10":
+                                                                                valSaleBudget = dataItem.M10;
+                                                                                break;
+                                                                            case "11":
+                                                                                valSaleBudget = dataItem.M11;
+                                                                                break;
+                                                                            case "12":
+                                                                                valSaleBudget = dataItem.M12;
+                                                                                break;
+                                                                            default:
+                                                                                valSaleBudget = 0;
+                                                                                break;
+                                                                        }
+
+                                                                        nameSaleBudget = "sale_budget_" + dataItem.Sec + "_" + countSaleBudget;
+                                                                        <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                            @if (valSaleBudget != 0)
+                                                                            {
+                                                                                @valSaleBudget.ToString("N0")
+                                                                            }
+                                                                            <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />
+                                                                        </td>
+                                                                    }
+                                                                }
+                                                            </tr>
+                                                        }
+                                                        else if (dataItem.Caption == "Actual")
+                                                        {
+                                                            double underActualAmt = 0;
+                                                            double underActualPerAmt = 0;
+                                                            double roundedNum = 0;
+                                                            int sizeUnderActual;
+
+                                                            underActualAmt = dataItem.Total_Caption - dataItem.Total_Budget;
+                                                            underActualPerAmt = (dataItem.Total_Caption / dataItem.Total_Budget) * 100;
+
+                                                            @*Actual*@
+                                                            <tr style="white-space: nowrap;">
+                                                                <td class="sticky-col first-col" style="vertical-align: middle; background-color: #ffffff; position: sticky; width: 120px; left: 114px; z-index: 2; "> <b>Actual</b> </td>
+                                                                <td class="vright fix-td-2" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 210px; z-index: 2;">
+                                                                    <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                    <input type="hidden" class="last_year_actual" value="@dataItem.Last_year.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright fix-td-3" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 312px; z-index: 2;">
+                                                                    <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                    <input type="hidden" class="total_actual" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; min-width: 100px; vertical-align: middle;">
+
+                                                                    @if (underActualAmt != 0)
+                                                                    {
+                                                                        @underActualAmt.ToString("N0")
+                                                                    }
+                                                                    <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                    @if (underActualPerAmt != 0 && !Double.IsNaN(underActualPerAmt) && dataItem.Total_Budget > 0)
+                                                                    {
+                                                                        sizeUnderActual = underActualPerAmt.ToString("N2").Length;
+                                                                        //@Math.Floor(underActualPerAmt * 100)/100;
+                                                                        roundedNum = Math.Floor(underActualPerAmt * 100) / 100;
+                                                                        @String.Concat(roundedNum, "%");
+                                                                    }
+                                                                    <input type="hidden" class="over_actual" value="@roundedNum" />
+                                                                </td>
+                                                                @{
+                                                                    int countSaleActual = 0;
+                                                                    string nameSaleActual = "";
+                                                                    foreach (string monthItemCur in @ViewBag.monthList)
+                                                                    {
+                                                                        string bgMonthCurrent = "";
+                                                                        if (formattedMonthInputCurrent == monthItemCur)
+                                                                        {
+                                                                            bgMonthCurrent = codeColorMonthCurrent;
+                                                                        }
+                                                                        countSaleActual++;
+                                                                        double valSaleActual = 0;
+
+                                                                        switch (monthItemCur)
+                                                                        {
+                                                                            case "01":
+                                                                                valSaleActual = dataItem.M01;
+                                                                                break;
+                                                                            case "02":
+                                                                                valSaleActual = dataItem.M02;
+                                                                                break;
+                                                                            case "03":
+                                                                                valSaleActual = dataItem.M03;
+                                                                                break;
+                                                                            case "04":
+                                                                                valSaleActual = dataItem.M04;
+                                                                                break;
+                                                                            case "05":
+                                                                                valSaleActual = dataItem.M05;
+                                                                                break;
+                                                                            case "06":
+                                                                                valSaleActual = dataItem.M06;
+                                                                                break;
+                                                                            case "07":
+                                                                                valSaleActual = dataItem.M07;
+                                                                                break;
+                                                                            case "08":
+                                                                                valSaleActual = dataItem.M08;
+                                                                                break;
+                                                                            case "09":
+                                                                                valSaleActual = dataItem.M09;
+                                                                                break;
+                                                                            case "10":
+                                                                                valSaleActual = dataItem.M10;
+                                                                                break;
+                                                                            case "11":
+                                                                                valSaleActual = dataItem.M11;
+                                                                                break;
+                                                                            case "12":
+                                                                                valSaleActual = dataItem.M12;
+                                                                                break;
+                                                                            default:
+                                                                                valSaleActual = 0;
+                                                                                break;
+                                                                        }
+
+                                                                        nameSaleActual = "sale_actual_" + dataItem.Sec + "_" + countSaleActual;
+                                                                        <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                            @if (valSaleActual != 0)
+                                                                            {
+                                                                                @valSaleActual.ToString("N0")
+                                                                            }
+                                                                            <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_actual_@countSaleActual @nameSaleActual" name="@nameSaleActual" id="sale_actual_@countSaleActual" value="@valSaleActual.ToString("N0")" />
+                                                                        </td>
+                                                                    }
+                                                                }
+                                                            </tr>
+                                                        }
+                                                        else if (dataItem.Caption == "FC")
+                                                        {
+                                                            @*Forecast*@
+                                                            <tr style="white-space: nowrap;" class="forecastTr">
+                                                                <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2;"> <b>Forecast</b> </td>
+                                                                <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
+                                                                    <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                    <input type="hidden" class="last_year_forecast" value="@dataItem.Last_year.ToString("N0")" />
+                                                                </td>
+                                                                @{
+                                                                    string classTotalForecast;
+                                                                    string inputTotalForecast;
+                                                                    classTotalForecast = "sum_total_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    inputTotalForecast = "sum_total_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                }
+                                                                <td class="vright fix-td-3" style="vertical-align: middle; background-color: #d4ecee; vertical-align: middle; position: sticky; left: 312px; z-index: 3; ">
+                                                                    <span class="@classTotalForecast"> <b> @dataItem.Total_Caption.ToString("N0") </b> </span>
+                                                                    <input type="hidden" class="@inputTotalForecast total_forecast" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                    <input type="hidden" class="under_forecast" value="0" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                    <input type="hidden" class="over_forecast" value="0" />
+                                                                </td>
+                                                                @{
+                                                                    int countSaleForecast = 0;
+                                                                    string nameSaleForecast = "";
+                                                                    string checkboxForecast = "";
+                                                                    string idSaleForecast = "";
+                                                                    string classTotalSaleForecast = "";
+                                                                    foreach (string monthItemCur in @ViewBag.monthList)
+                                                                    {
+                                                                        string bgMonthCurrent = "";
+                                                                        if (formattedMonthInputCurrent == monthItemCur)
+                                                                        {
+                                                                            bgMonthCurrent = codeColorMonthCurrent;
+                                                                        }
+
+                                                                        countSaleForecast++;
+                                                                        double valSaleForecast = 0;
+
+                                                                        switch (monthItemCur)
+                                                                        {
+                                                                            case "01":
+                                                                                valSaleForecast = dataItem.M01;
+                                                                                break;
+                                                                            case "02":
+                                                                                valSaleForecast = dataItem.M02;
+                                                                                break;
+                                                                            case "03":
+                                                                                valSaleForecast = dataItem.M03;
+                                                                                break;
+                                                                            case "04":
+                                                                                valSaleForecast = dataItem.M04;
+                                                                                break;
+                                                                            case "05":
+                                                                                valSaleForecast = dataItem.M05;
+                                                                                break;
+                                                                            case "06":
+                                                                                valSaleForecast = dataItem.M06;
+                                                                                break;
+                                                                            case "07":
+                                                                                valSaleForecast = dataItem.M07;
+                                                                                break;
+                                                                            case "08":
+                                                                                valSaleForecast = dataItem.M08;
+                                                                                break;
+                                                                            case "09":
+                                                                                valSaleForecast = dataItem.M09;
+                                                                                break;
+                                                                            case "10":
+                                                                                valSaleForecast = dataItem.M10;
+                                                                                break;
+                                                                            case "11":
+                                                                                valSaleForecast = dataItem.M11;
+                                                                                break;
+                                                                            case "12":
+                                                                                valSaleForecast = dataItem.M12;
+                                                                                break;
+                                                                            default:
+                                                                                valSaleForecast = 0;
+                                                                                break;
+                                                                        }
+
+                                                                        nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                        idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                        classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                        checkboxForecast = "selectList_" + countSaleForecast;
+                                                                        <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
+                                                                            @*<input data-id="101" type="hidden" class="form-control vright @idSaleForecast" name="@nameSaleForecast" id="sale_budget_@countSaleForecast" value="" />*@
+                                                                            <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" type="text" class="form-control mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" @*onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');"*@ style="width: 120px;" />
+                                                                            <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
+                                                                        </td>
+                                                                    }
+                                                                }
+                                                            </tr>
+                                                        }
+                                                        else if (dataItem.Caption == "Avg")
+                                                        {
+                                                            @*Forecast*@
+                                                            <tr style="white-space: nowrap;">
+                                                                <td class="sticky-col first-col" style="vertical-align: middle; background-color: #cbead3; position: sticky; width: 120px; left: 114px; z-index: 2; "> <b>Avg month</b> </td>
+                                                                <td class="vright fix-td-2" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 210px; z-index: 2; font-weight: bold;">
+                                                                    <input type="hidden" class="last_year_forecast" value="0)" />
+                                                                </td>
+                                                                @{
+                                                                    string classTotalForecast;
+                                                                    string inputTotalForecast;
+                                                                    classTotalForecast = "sum_total_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    inputTotalForecast = "sum_total_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                }
+                                                                <td class="vright fix-td-3" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 312px; z-index: 3; font-weight: bold; ">
+                                                                    <span class="@classTotalForecast">  </span>
+                                                                    <input type="hidden" class="@inputTotalForecast" value="0" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                    <input type="hidden" class="under_forecast" value="0" />
+                                                                </td>
+                                                                <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                    <input type="hidden" class="over_forecast" value="0" />
+                                                                </td>
+                                                                @{
+                                                                    int countSaleAvg = 0;
+                                                                    string nameSaleAvg = "";
+                                                                    string idSaleAvg = "";
+                                                                    string classTotalSaleAvg = "";
+                                                                    foreach (string monthItemCur in @ViewBag.monthList)
+                                                                    {
+                                                                        countSaleAvg++;
+                                                                        double valSaleAvg = 0;
+
+                                                                        switch (monthItemCur)
+                                                                        {
+                                                                            case "01":
+                                                                                valSaleAvg = dataItem.Total_Budget / 12;
+                                                                                break;
+                                                                            case "02":
+                                                                                valSaleAvg = (dataItem.Total_Budget - dataItem.M01) / 11;
+                                                                                break;
+                                                                            case "03":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02)) / 10;
+                                                                                break;
+                                                                            case "04":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03)) / 9;
+                                                                                break;
+                                                                            case "05":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04)) / 8;
+                                                                                break;
+                                                                            case "06":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05)) / 7;
+                                                                                break;
+                                                                            case "07":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06)) / 6;
+                                                                                break;
+                                                                            case "08":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07)) / 5;
+                                                                                break;
+                                                                            case "09":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08)) / 4;
+                                                                                break;
+                                                                            case "10":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09)) / 3;
+                                                                                break;
+                                                                            case "11":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10)) / 2;
+                                                                                break;
+                                                                            case "12":
+                                                                                valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10 + dataItem.M11)) / 1;
+                                                                                break;
+                                                                            default:
+                                                                                valSaleAvg = 0;
+                                                                                break;
+                                                                        }
+
+                                                                        nameSaleAvg = "sale_avg_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleAvg;
+                                                                        idSaleAvg = "sale_avg_" + dataItem.Sec + "_" + countSaleAvg;
+                                                                        classTotalSaleAvg = "sum_sale_avg_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                        <td class="vright" style="vertical-align: middle; background-color: #cbead3;">
+                                                                            @if (valSaleAvg != 0)
+                                                                            {
+                                                                                @valSaleAvg.ToString("N0")
+                                                                            }
+                                                                            @*<input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />*@
+                                                                            <input type="hidden" class="form-control vright @idSaleAvg" name="@nameSaleAvg" id="sale_budget_@countSaleAvg" value="" />
+                                                                        </td>
+                                                                    }
+                                                                }
+                                                            </tr>
+                                                        }
+
+                                                    } @*end compare sec*@
+                                                } @*end compare cuskey*@
+                                            } @*end dataItem*@
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </form>
+    </div>
+    //Summary by month v1
+    //end by month v1
+    //Summary by month v2
+    <div class="card" style="margin-top: 5px;">
+        <div class="card-header  bg-secondary text-white font-weight-bold" style="height: 54px;">
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-6 text-left">
+                    <ul class="nav nav-tabs card-header-tabs float-xs-left font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="searchByMonthSome" data-target="#searchByMonthSome" data-toggle="tab">Some Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="searchByMonthAll" data-target="#searchByMonthAll" data-toggle="tab">All Customer</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <h5 style="font-weight: bold;"> Summary by month </h5>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-block tab-content">
+            <div id="searchByMonthSome" class="tab-pane fade active show">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered nowrap table-hover" border="1">
+                        <thead>
+                            <tr style="white-space: nowrap;">
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 210px;">Type</th>
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Last Year</th>
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Total</th>
+                                <th rowspan="2" colspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 190px;">Under/Over</th>
+                                <th colspan="12" align="center" class="vcenter" style="vertical-align: middle;"> 2023 </th>
+                            </tr>
+                            <tr>
+
+                                @{
+                                    foreach (var monthItemCur in @ViewBag.monthList)
+                                    {
+                                        string bgMonthCurrent = "";
+                                        if (formattedMonthInputCurrent == monthItemCur)
+                                        {
+                                            bgMonthCurrent = codeColorMonthCurrent;
+                                        }
+                                        <th class="vcenter" align="center" style="font-weight: 700; min-width: 130px; background-color: @bgMonthCurrent"> @monthItemCur </th>
+                                    }
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle;"> <b>Budget</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_last_year_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_total_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; min-width: 90px;"> <span class="" id="sum_under_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; min-width: 90px;"> <span class="" id="sum_over_budget" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = codeColorMonthCurrent;
+                                    }
+                                    <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
+                                        <span class="" id="sum_sale_budget_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </td>
+                                }
+                            </tr>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle;"> <b>Actual</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_last_year_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_total_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_under_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_over_actual" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = codeColorMonthCurrent;
+                                    }
+                                    <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
+                                        <span class="" id="sum_sale_actual_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </td>
+                                }
+                            </tr>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle; background-color: #ccebedc9;"> <b>Forecast</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_last_year_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_total_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_under_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_over_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "#ccebedc9";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = "#f9ecdc";
+                                    }
+                                    <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
+                                        <span class="" id="sum_sale_forecast_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </th>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="searchByMonthAll" class="tab-pane fade">
+                <div id="showByMonthAll"></div>
+            </div>
+        </div>
+    </div>
+    //end by month v1
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-secondary text-white font-weight-bold" style="height: 54px;">
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-6 text-left">
+                    <ul class="nav nav-tabs card-header-tabs float-xs-left font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="searchBySecSome" data-target="#searchBySecSome" data-toggle="tab">Some Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link secall" href="searchBySecAll" data-target="#searchBySecAll" data-toggle="tab">All Customer</a>
+                        </li>
+                        <span>
+                            <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline; margin-left: 20px;">
+                                @for (var i = 0; i < @ViewBag.MonthYearList.Count; i++)
+                                {
+                                    var monthSplit = @ViewBag.MonthYearList[i].Text.Split('-');
+                                    <option value="@monthSplit[0]">@monthSplit[0]</option>
+                                }
+                            </select>
+                        </span>
+                        @*<span style="font-size: 1.25rem; width: 70%; justify-content: right; z-index: 10; display: flex; float: right;">*@
+                        @*Summary by sec*@
+                        @*</span>*@
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <h5 style="font-weight: bold;"> Summary by sec </h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-block tab-content">
+            <div id="searchBySecSome" class="tab-pane fade active show">
+                <div class="row" style="padding: 4px;">
+                    @if (ViewBag.secArray != null)
+                    {
+                        foreach (var secItem in ViewBag.secAllArray)
+                        {
+                            <div class="col-xs-4 col-sm-3 col-md-4 col-lg-2" style="padding-top: 5px; display: block;" id="sum_by_dec_@secItem.SEC">
+                                <div class="card support-bar overflow-hidden" style="background-color: whitesmoke;">
+                                    <div class="card-body pb-0" style="margin-top: -10px;">
+                                        <h4 class="" style="font-weight: 700;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
+                                        <span class="text-c-blue"></span>
+                                    </div>
+                                    <div class="card-footer bg-info text-white" style="padding: 1px;">
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_budget_@secItem.SEC" id="sum_sec_budget_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Budget</span>
+                                            </div>
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_actual_@secItem.SEC" id="sum_sec_actual_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Actual</span>
+                                            </div>
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecast_@secItem.SEC" id="sum_sec_forecast_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Forecast</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div id="searchBySecAll" class="tab-pane fade">
+                <div id="showBySecAll"></div>
+            </div>
+        </div>
+    </div>
+    //Summary by sec
+
+}
+@*@Scripts.Render("~/Scripts/scriptForecastSale.js")*@
+<script defer>
+    //search by month
+    var slmCode = $("#slmCode option:selected").val();
+    var cusCodeAll = $("#cusCodeAll_header").val();
+    var stkSec = $("#stkSec").val();
+    var prodMgr = $("#prodMgr option:selected").val();
+    var year = $("#year option:selected").val();
+    var monthSelect = $("#month_sec option:selected").val(); //เดือนที่ต้องการดูข้อมูล
+    $('.nav li a').click(function () {
+        var page = $(this).attr("href");
+        var flagReloadBySec = $("#flagReloadBySec").val();
+        var flagReloadByMonth = $("#flagReloadByMonth").val();
+        if (page == 'searchByMonthAll') { //หน้า sum by month all 
+            $("#flagReloadByMonth").val('Y'); //reload
+            if (flagReloadByMonth == 'N') {
+                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+            }
+        } else if (page == 'searchBySecAll') {
+            $("#flagTabBySecAll").val('Y'); //active tab
+            $("#flagReloadBySec").val('Y'); //reload
+            //ถ้าไม่เคยโหลดให้โหลด
+            if (flagReloadBySec == 'N') {
+                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+            }
+        }
+    });
+
+    function getDataForecastByMonth(slmCode, cusCode, stkSec, prodMgr, year, flg, month) {
+        var divShow = "";
+        if (flg == 1) {//main
+            divShow = "showDataInput";
+        } else if (flg == 2) { //sum by month
+            divShow = "showByMonthAll";
+        } else if (flg == 3) { //sum by sec
+            divShow = "showBySecAll";
+        }
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("SearchForecastByAllCustomer", "ForecastSale")',
+            data: {
+                slmCode: slmCode,
+                cusCode: cusCode,
+                stkSec: 'ALL',
+                prodMgr: prodMgr,
+                year: year,
+                flg: flg,
+                month: month
+            },
+            dataType: 'html',
+            cache: false,
+            Async: true,
+            beforeSend: function () {
+                $('#' + divShow).empty();
+                $('#' + divShow).html('<div style="padding: 30px; font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>')
+            },
+            success: function (res) {
+                //LoadingHide();
+                $('#' + divShow).empty();
+                $('#' + divShow).html(res);
+            }
+        });
+    }
+
+    setTimeout(function () {
+    var countList = $("#countList").val() || 0;
+    //console.log("countList = " + countList);
+    if (countList > 0) { //มี่รายการค้นหา
+        //มีข้อมูลเปิดปุ่มบันทึก
+        $("#btnSaveForecastSale").css("display", "block");
+        $('#formInputForecastSale').data('serialize', $('#formInputForecastSale').serialize()); // On load save form current
+        $(window).bind('beforeunload', function (e) {
+            if ($('#formInputForecastSale').serialize() != $('#formInputForecastSale').data('serialize')) {
+                delayHide();
+                return true;
+            } else {
+                e = null;
+            }
+        });
+    } else {
+        $("#btnSaveForecastSale").css("display", "none");
+    }
+
+    //
+    function delayHide() {
+        timeout = setTimeout(function () {
+            LoadingHide();
+        }, 3000);
+    }
+
+    //event input
+    $(".inputForecastSale").on("change paste keyup", function () {
+        let nameInput = $(this).attr("name");
+        let dataMonthInput = $(this).attr("data-month");
+        let monthInputCurrent = $("#monthInputCurrent").val();
+        if (nameInput != "") {
+            $("input[name=" + nameInput + "]").prop('checked', true);
+            //เพิ่มสี input
+            $("input[name=" + nameInput + "]").removeClass('input-onsave');
+            $("input[name=" + nameInput + "]").addClass('input-onkey');
+            //$('.defaultInput').removeClass('error');
+        }
+    });
+
+    saveForecastSale = async () => {
+        var resCountSave = 0;
+        var resCountChecked = 0;
+        var request = [];
+        var year = $("#year option:selected").val();
+        resCountChecked = $('.selectList:checked').not(':disabled').length;
+        if (resCountChecked > 0) {
+            Swal.fire({
+                title: 'Do you confirm save',
+                // html: html,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#00a65a',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '<i class="fa fa-check"></i> Yes',
+                cancelButtonText: '<i class="fa fa-times"></i> No',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        title: "Savedata, Please wait",
+                        //text: "I will close in 5 seconds.",
+                        html: '<div style="font-size: 22px;font-weight: bold;"> <span id="countSave"></span> / <span>' + resCountChecked + '</span> </div>',
+                        timer: 6000000,
+                        allowOutsideClick: false,
+                        onOpen: function () {
+                            Swal.showLoading()
+                        }
+                    }).then(function (result) {
+                        if (result.dismiss === "timer") {
+                            console.log("I was closed by the timer")
+                        }
+                    });
+
+                    //console.log("resCountChecked = " + resCountChecked);
+                    //return false;
+                    if (resCountChecked > 0) {
+                        $('.selectList:checked').not(':disabled').each(function () {
+                            var cusCode = $(this).data('cuscode');
+                            var sec = $(this).data('sec');
+                            var month = $(this).data('month');
+                            var inputValue = parseInt($("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val().replace(/\,/g, ''));
+                            //กรอกข้อมูลมา
+                            //if (inputValue != '') {
+                                $.ajax({
+                                    type: 'POST',
+                                    cache: false,
+                                    url: '@Url.Action("SaveForecast", "ForecastSale")',
+                                    data: JSON.stringify({
+                                        MONTH_INPUT: ('0' + monthInput).slice(-2),
+                                        USER: '@Session["UserID"]',
+                                        SEC: sec,
+                                        CUSCOD: cusCode,
+                                        YEAR: year,
+                                        INPUT: inputValue || 0
+                                    }),
+                                    dataType: 'json',
+                                    traditional: true,
+                                    contentType: "application/json; charset=utf-8",
+                                    processData: false,
+                                    beforeSend: function () {
+                                        // LoadingShow();
+                                    },
+                                    success: function (result) {
+                                        if (result.status == "success") {
+                                            $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").removeClass('input-onkey');
+                                            $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").addClass('input-onsave');
+                                            $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "] option:checked").removeAttr("checked");
+                                            $("#countSave").html('');
+                                            //disbled beforeunload
+                                            $(window).unbind('beforeunload');
+                                            ++resCountSave;
+                                            $("#countSave").text(resCountSave);
+                                            //console.log("resCountSave = " + resCountSave);
+                                            //ถ้าบันทึกครบแล้วให้ปิด popup
+                                            if (resCountSave == resCountChecked) {
+                                                LoadingHide();
+                                                $(".selectList").prop("checked", false);
+                                                //cal sum
+                                                calculateForecastSale();
+                                                //reload summary by sec
+                                                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+                                                $("#flagReloadByMonth").val('Y');
+                                                //sum by sec
+                                                timeout = setTimeout(function () {
+                                                    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                                                    $("#flagReloadBySec").val('Y');
+                                                }, 3000);
+
+                                                Swal.close();
+                                                Swal.fire({
+                                                    title: 'Saved successfully',
+                                                    icon: 'success',
+                                                    confirmButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Close',
+                                                    allowOutsideClick: false,
+                                                    focusConfirm: false,
+                                                    timer: 3000,
+                                                    timerProgressBar: true,
+                                                    onClose: () => {
+                                                        $(window).unbind('beforeunload');
+                                                        $("#slmCode").prop('disabled', false)
+                                                    }
+                                                });
+                                            }
+                                        } else {
+                                            LoadingHide();
+                                            Swal.close();
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+                                                html: result.message,
+                                                confirmButtonColor: '#d33',
+                                                confirmButtonText: 'ปิด',
+                                                allowOutsideClick: false,
+                                                focusConfirm: false,
+                                            });
+                                        }
+                                    },
+                                    error: function (ex) {
+                                        //notify(ex, 'danger');
+                                    },
+                                    complete: function (res) {
+                                        //LoadingHide();
+                                    }
+                                }).fail(function (error) {
+                                    LoadingHide();
+                                    Swal.close();
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'ระบบทำงานผิดพลาด()',
+                                        html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale' + error + '<br><br>',
+                                        confirmButtonColor: '#d33',
+                                        confirmButtonText: 'ปิด',
+                                        allowOutsideClick: false,
+                                        focusConfirm: false,
+                                    });
+                                });
+                            //}
+                        });
+                    }
+                    //end
+                    //console.log(countSave);
+                    //console.log(request);
+                    //return false;
+                }
+            });
+        } else {
+            LoadingHide();
+            Swal.close();
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่พบการแก้ไขข้อมูล',
+                //html: msg,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        }
+    }
+    //hide/show tab
+    function hideBodySec(sec) {
+        var x = document.getElementById("body_" + sec);
+        if (x.style.display === "none") {
+            $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");
+            $("#body_" + sec).show('fast');
+        } else {
+            $("#header_" + sec).toggleClass("fa-caret-up fa-caret-down");
+            $("#body_" + sec).hide('fast');
+        }
+    }
+
+    sumSaleForecast = async (_className, month, sec, cuscod) => {
+        $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+        var monthSelect = $("#month_sec option:selected").val();
+        //console.log("monthSelect = " + monthSelect);
+
+        let sum_forecast_by_month = 0;
+        await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
+            let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            //console.log("forecast_sale_key = " + forecast_sale_key);
+            forecast_sale_key = await getVowels(forecast_sale_key, 0);
+            sum_forecast_by_month += Number(forecast_sale_key);
+        }));
+        $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+
+        //sum total by cuscod sec
+        let sum_total_forecast_by_cuscod = 0;
+        await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+            let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+            forecast_sale_key = await getVowels(forecast_sale_key, 0);
+            sum_total_forecast_by_cuscod += Number(forecast_sale_key);
+        }));
+        $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+        $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+
+        //sum จากช่อง forecast
+        await sumSaleForecastByCaption("sale_forecast");
+        //sum by month select
+        await sumAllSaleForecastByCaption("total_forecast");
+        //sum by month all
+        //await sumAllSaleForecastByCaption("total_forecast_all");
+        //hide icon
+        setTimeout(() => {
+            $(".iconLoading").html('');
+        }, "1000");
+    }
+    //for sum by sec
+    const sumSecAll = async (month) => {
+        $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+        var sec;
+        var monthSelect;
+        var monthSelect = $("#month_sec option:selected").val();
+        if (month === undefined) {
+            month = monthSelect;
+        }
+        //sec all
+        $('.stkSecList_header').each(function () {
+            sec = $(this).val();
+            if (sec != null) {
+                sumSecByMonth(sec, month);
+            }
+        });
+        //hide icon
+        setTimeout(() => {
+            $(".iconLoading").html('');
+        }, "1000");
+    }
+    //sum sec by month
+    const sumSecByMonth = async (sec, month) => {
+        //console.log("(sec, month = "+ sec + "/" + month);
+        //sum sec forecast
+        let sum_forecast_by_month = 0;
+        await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
+            let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            forecast_sale_key = await getVowels(forecast_sale_key, 0);
+            sum_forecast_by_month += Number(forecast_sale_key);
+        }));
+        $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+        //sum sec budget
+        let sum_budget_by_month = 0;
+        await Promise.all($(".sale_budget_" + sec + "_" + month).each(async function (i, obj) {
+            let budget_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            budget_sale_key = await getVowels(budget_sale_key, 0);
+            sum_budget_by_month += Number(budget_sale_key);
+        }));
+        $('.sum_sec_budget_' + sec).text(numberWithCommas(sum_budget_by_month.toFixed(0)));
+        //sum sec actual
+        let sum_actual_by_month = 0;
+        await Promise.all($(".sale_actual_" + sec + "_" + month).each(async function (i, obj) {
+            let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            actual_sale_key = await getVowels(actual_sale_key, 0);
+            sum_actual_by_month += Number(actual_sale_key);
+        }));
+        $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
+        //Budget, Actual, Forecast เป็น 0 ไม่แสดง
+        if (sum_forecast_by_month == 0 && sum_budget_by_month == 0 && sum_actual_by_month == 0) {
+            $("#sum_by_dec_" + sec).css("display", "none");
+        } else {
+            $("#sum_by_dec_" + sec).css("display", "block");
+        }
+    }
+    //sum all month
+    const sumSaleForecastByCaption = async (inputName) => {
+        //console.log("inputName = " + inputName);
+        for (let numMonth = 1; numMonth <= 12; numMonth++) {
+            let sum_by_caption = 0;
+            await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
+                let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+                val_by_caption = await getVowels(val_by_caption, 0);
+                sum_by_caption += Number(val_by_caption);
+                //console.log("sum_by_caption = " + sum_by_caption);
+            }));
+            if (sum_by_caption != null) {
+                $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
+            }
+        }
+    }
+    //sum all last year, total, under/over
+    const sumAllSaleForecastByCaption = async (className) => {
+        //console.log("className = " + className);
+        let sum_all_by_caption = 0;
+        let sum_total_actual_before = 0;
+        let sum_total_actual_after = 0;
+        let sum_total_budget_before = 0;
+        let sum_total_budget_after = 0;
+        if (className == "over_actual") {
+            sum_total_actual_before = $("#sum_total_actual").text();
+            let sum_total_actual_after = sum_total_actual_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+            sum_total_actual_after = await getVowels(sum_total_actual_after, 0);
+            //console.log("sum_total_actual_after = " + sum_total_actual_after);
+
+            sum_total_budget_before = $("#sum_total_budget").text();
+            let sum_total_budget_after = sum_total_budget_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+            sum_total_budget_after = await getVowels(sum_total_budget_after, 0);
+            //console.log("sum_total_budget_after = " + sum_total_budget_after);
+
+            if (sum_total_budget_after != 0 && sum_total_budget_after != null) {
+                sum_all_by_caption = (sum_total_actual_after / sum_total_budget_after) * 100;
+            }
+            sum_all_by_caption = Math.floor(sum_all_by_caption * 100) / 100;
+            sum_all_by_caption += "%";
+        } else if (className == "total_forecast_all") {
+
+        } else {
+            await Promise.all($('.' + className).each(async function (i, obj) {
+                let val_all_by_caption = obj.value.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+                val_all_by_caption = await getVowels(val_all_by_caption, 0);
+                sum_all_by_caption += Number(val_all_by_caption);
+                //console.log("val_all_by_caption = " + val_all_by_caption);
+            }));
+
+            if (sum_all_by_caption != 0 && sum_all_by_caption != null && !isNaN(sum_all_by_caption)) {
+                sum_all_by_caption = sum_all_by_caption.toFixed(0)
+            }
+        }
+        $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
+    }
+
+        async function calculateForecastSale() {
+            console.log('calculateForecastSale');
+        //if (countList > 0) {
+            $(".cardSummary").LoadingOverlay("show");
+            await sumSecAll();
+            await sumSaleForecastByCaption("sale_budget");
+            await sumSaleForecastByCaption("sale_actual");
+            await sumSaleForecastByCaption("sale_forecast");
+
+            //Summary by sec
+            await sumAllSaleForecastByCaption("last_year_budget");
+            await sumAllSaleForecastByCaption("total_budget");
+            await sumAllSaleForecastByCaption("under_budget");
+            await sumAllSaleForecastByCaption("over_budget");
+
+            await sumAllSaleForecastByCaption("last_year_actual");
+            await sumAllSaleForecastByCaption("total_actual");
+            await sumAllSaleForecastByCaption("under_actual");
+            await sumAllSaleForecastByCaption("over_actual");
+
+            await sumAllSaleForecastByCaption("last_year_forecast");
+            await sumAllSaleForecastByCaption("total_forecast");
+            await sumAllSaleForecastByCaption("under_forecast");
+            await sumAllSaleForecastByCaption("over_forecast");
+
+            $(".cardSummary").LoadingOverlay("hide");
+       // }
+    }
+
+    $(document).ready(function () {
+        calculateForecastSale();
+        //flagInput = เลยเวลาคีย์แล้ว
+        let flagInput = $("#flagInput").val();
+        if (flagInput == 'NO') {
+            $(window).unbind('beforeunload');
+            $(".mask").prop('disabled', true);
+        }
+        //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
+        //$('input[name^="sale_forecast_110A0126_110_7"]').prop('readonly', true);
+
+        $("[class*=sale_forecast_]").prop('readonly', true);
+        $("[class=selectList]").prop('disabled', true);
+        if (monthInput != "") { //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
+            $(".sale_forecast_" + monthInput).prop('readonly', false);
+            $("input[data-month='" + monthInput + "']").prop("disabled", false)
+        }
+
+        if (userType == 3) {
+            $("#slmCode").prop('disabled', true);
+        }
+
+        $('input.mask').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                event.preventDefault();
+            }
+            var $this = $(this);
+            var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            //console.log(num2);
+            // the following line has been simplified. Revision history contains original.
+            $this.val(num2);
+        });
+    });
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    }
+
+ }, 2000);
+
+</script>
