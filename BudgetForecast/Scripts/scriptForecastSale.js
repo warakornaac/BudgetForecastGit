@@ -1,7 +1,6 @@
-﻿//var countList = $("#countList").val() || 0;
-//var userType = @this.Session["UserType"].ToString();
-//var monthInput = @formattedMonthInputCurrentIndex;
-//console.log("userType = " + userType);
+﻿//console.log("hostName = " + hostName);
+
+var flagSup = $("#flagSup").val();
 
 function linkTo(link) {
     window.location.href = link;
@@ -23,10 +22,28 @@ function hideBodySec(sec) {
 //get all customer by sale
 function getCustomerAllBySale() {
     var cusCodeAll = new Array();
+    var cusCodeAllCount = 0;
     $('#cusCode option').each(function () {
+        ++cusCodeAllCount;
         cusCodeAll.push(this.value);
     });
     $("#cusCodeAll_header").val(cusCodeAll);
+    if (cusCodeAllCount > 0) {
+        $("#cusCodeAllCount_header").val(cusCodeAllCount);
+    }
+}
+//get all sec by sale
+function getSecAllBySale() {
+    var stkSecAll = new Array();
+    var stkSecAllCount = 0;
+    $('#stkSec option').each(function () {
+        ++stkSecAllCount;
+        stkSecAll.push(this.value);
+    });
+    $("#stkSecAll_header").val(stkSecAll);
+    if (stkSecAllCount > 0) {
+        $("#stkSeceAllCount_header").val(stkSecAllCount);
+    }
 }
 //hide header
 function hideHeader() {
@@ -54,6 +71,23 @@ function searchForecast(e) {
     var stkSec = $("#stkSec").val();
     var prodMgr = $("#prodMgr option:selected").val();
     var year = $("#year option:selected").val();
+    var flgBudget = $("input:radio[name=flgBudget]:checked").val();
+    var flagSelectCustomerAll = $("#flagSelectCustomerAll").val();
+    var SecCountAll = $("#stkSecAllCount_header").val();
+    var getSelectCustomerAll = $("#cusCode").find('option:selected').length;
+    var getSelectSecAll = $("#stkSec").find('option:selected').length;
+
+    if (flagSelectCustomerAll == 'Y') {
+        cusCode.push("ALLCUS");
+    }
+    if (getSelectSecAll >= SecCountAll) {
+        stkSec.push("ALLSEC");
+    }
+    //ถ้าเลือก value ทั้งหมด, เลือกลูกค้าทั้งหมด, เลือก sec ทั้งหมด
+    if (flgBudget == 0 && flagSelectCustomerAll == 'Y' && getSelectSecAll > 1) {
+        ++error;
+        msg += '<br>' + error + '. เลือก VALUE เป็น NO สามารถเลือก SEC ได้ 1 รายการเท่านั้น';
+    }
     if (cusCode == undefined || cusCode == "") {
         ++error;
         msg += '<br>' + error + '. กรุณาเลือก CUSTOMER อย่างน้อย 1 รายการ';
@@ -76,15 +110,14 @@ function searchForecast(e) {
         return false;
     } else {
         //main input
-        //console.log("IndexslmCode = " + slmCode + "<br>");
-        //console.log("IndexcusCode = " + cusCode);
-        getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, 1);
+        getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, 1, flgBudget);
         $("#flagReloadByMonth").val('N');
         $("#flagReloadBySec").val('N');
     }
 }
 
-function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg) {
+function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg, flgBudget) {
+    //flgBudget = 0 Show all, 1 = Show only figure
     var divShow = "";
     if (flg == 1) {//main
         divShow = "showDataInput";
@@ -93,14 +126,15 @@ function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg) {
     }
     $.ajax({
         type: 'post',
-        url: '/ForecastSale/SearchForecast', //@Url.Action("SearchForecast", "ForecastSale")',
+        url: hostName + '/ForecastSale/SearchForecast', //@Url.Action("SearchForecast", "ForecastSale")',
         data: {
             slmCode: slmCode,
             cusCode: cusCode,
             stkSec: stkSec,
             prodMgr: prodMgr,
             year: year,
-            flg: flg
+            flg: flg,
+            flgBudget: flgBudget
         },
         dataType: 'html',
         cache: false,
@@ -124,7 +158,7 @@ function resetSearch() {
 
 function getCustomerBySlmCode(_slmCode) {
     //alert(_slmCode);
-    let slmCode = "";
+    var slmCode = "";
     if (_slmCode == "") {
         slmCode = $("#slmCode option:selected").val();
     } else {
@@ -132,7 +166,7 @@ function getCustomerBySlmCode(_slmCode) {
     }
     //alert(slmCode);
     $.ajax({
-        url: '/ForecastSale/Getdatabyslm',
+        url: hostName + '/ForecastSale/Getdatabyslm',
         data: {
             slmCode: slmCode,
         },
@@ -142,7 +176,7 @@ function getCustomerBySlmCode(_slmCode) {
             //console.log(data);
             var select = $("#cusCode");
             select.children().remove();
-            //select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
+            select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
             $.each(data, function (key, value) {
                 select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + /*"----ที่อยู่ " + value.ADDR_01 + " " + value.PRO +*/ '</option>');
             });
@@ -163,9 +197,9 @@ function getStkgrpByProd(_prodCode) {
     } else {
         prodCode = _prodCode;
     }
-    //console.log("getStkgrpByProd = " + prodCode);
+    console.log("getStkgrpByProd = " + prodCode);
     $.ajax({
-        url: '/ForecastPm/GetSTKGRP',
+        url: hostName + '/ForecastPm/GetSTKGRP',
         data: {
             ProdMRG: prodCode
         },
@@ -195,11 +229,9 @@ function getStkgrpByProd(_prodCode) {
 sumSaleForecast = async (_className, month, sec, cuscod) => {
     $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
     var monthSelect = $("#month_sec option:selected").val();
-    //console.log("monthSelect = " + monthSelect);
     let sum_forecast_by_month = 0;
     await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
         let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-        //console.log("forecast_sale_key = " + forecast_sale_key);
         forecast_sale_key = await getVowels(forecast_sale_key, 0);
         sum_forecast_by_month += Number(forecast_sale_key);
     }));
@@ -235,9 +267,9 @@ const sumSecAll = async (month) => {
     if (month === undefined) {
         month = monthSelect;
     }
-    if (flagTabBySecAll == 'Y') {
-        getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, month)
-    }
+    //if (flagTabBySecAll == 'Y') {
+    //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, month)
+    //}
 
     $('.stkSecList_header').each(function () {
         sec = $(this).val();
@@ -278,15 +310,16 @@ const sumSecByMonth = async (sec, month) => {
     }));
     $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
     //Budget, Actual, Forecast เป็น 0 ไม่แสดง
+    //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
     if (sum_forecast_by_month == 0 && sum_budget_by_month == 0 && sum_actual_by_month == 0) {
-        $("#sum_by_dec_" + sec).css("display", "none");
+       $("#sum_by_sec_" + sec).css("display", "none");
     } else {
-        $("#sum_by_dec_" + sec).css("display", "block");
+        $("#sum_by_sec_" + sec).css("display", "block");
     }
 }
 
 const sumSaleForecastByCaption = async (inputName) => {
-    //console.log("inputName = " + inputName);
+    console.log("inputName = " + inputName);
     for (let numMonth = 1; numMonth <= 12; numMonth++) {
         let sum_by_caption = 0;
         await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
@@ -303,7 +336,6 @@ const sumSaleForecastByCaption = async (inputName) => {
 
 //sum all last year, total, under/over
 const sumAllSaleForecastByCaption = async (className) => {
-    //console.log("className = " + className);
     let sum_all_by_caption = 0;
     let sum_total_actual_before = 0;
     let sum_total_actual_after = 0;
@@ -343,7 +375,7 @@ const sumAllSaleForecastByCaption = async (className) => {
 }
 
 async function calculateForecastSale() {
-    if (countList > 0) {
+    //if (countList > 0) {
         $(".cardSummary").LoadingOverlay("show");
         await sumSecAll();
         await sumSaleForecastByCaption("sale_budget");
@@ -367,7 +399,7 @@ async function calculateForecastSale() {
         await sumAllSaleForecastByCaption("over_forecast");
 
         $(".cardSummary").LoadingOverlay("hide");
-    }
+    //}
 }
 $(document).ready(function () {
     setTimeout(() => {
@@ -382,14 +414,13 @@ $(document).ready(function () {
     //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
     //$('input[name^="sale_forecast_110A0126_110_7"]').prop('readonly', true);
 
-    $("[class*=sale_forecast_]").prop('readonly', true);
-    $("[class=selectList]").prop('disabled', true);
+    $("[class*=sale_forecast_]").prop('disabled', true);
     if (monthInput != "") { //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
-        $(".sale_forecast_" + monthInput).prop('readonly', false);
+        $(".sale_forecast_" + monthInput).attr("disabled", false);
         $("input[data-month='" + monthInput + "']").prop("disabled", false)
     }
 
-    if (userType == 3) {
+    if (userType == 3 && flagSup == "") {
         $("#slmCode").prop('disabled', true);
     }
 
@@ -407,6 +438,7 @@ $(document).ready(function () {
     });
     //
     getCustomerAllBySale();
+    getSecAllBySale();
     //selectpicker stkgrp
     function toggleSelectAll(control) {
         var allOptionIsSelected = (control.val() || []).indexOf("ALL") > -1;
@@ -438,7 +470,7 @@ $(document).ready(function () {
     //GET CUSTOMER
     $('#slmCode').change(function () {
         $.ajax({
-            url: '/ForecastSale/Getdatabyslm',
+            url: hostName + '/ForecastSale/Getdatabyslm',
             data: {
                 slmCode: $(this).val(),
             },
@@ -451,7 +483,7 @@ $(document).ready(function () {
 
                 var select = $("#cusCode");
                 select.children().remove();
-                //select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
+                select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
                 $.each(data, function (key, value) {
                     select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + '</option>');
                 });
@@ -459,6 +491,7 @@ $(document).ready(function () {
                 if ($("#cusCode option:selected").val() == "") {
                     $("#cusCode").val($("#cusCode option:first").val());
                 }
+                $('#cusCode').selectpicker('selectAll');
                 //get customerall
                 getCustomerAllBySale();
             }
@@ -469,7 +502,7 @@ $(document).ready(function () {
         var stkSecHeader = $("#stkSec_header").val();
         var prodMgrHeader = $("#prodMgr_header").val();
         var prodMgrCurrent = $(this).val();
-        //console.log("prodMgrHeader = " + prodMgrHeader + " prodMgrCurrent = " + prodMgrCurrent);
+        console.log("prodMgrHeader = " + prodMgrHeader + " prodMgrCurrent = " + prodMgrCurrent);
         var stkArray = new Array();
         var ProdMRG = $('#prodMgr').val();
         console.log("ProdMRG - " + ProdMRG);
@@ -479,7 +512,7 @@ $(document).ready(function () {
             ProdMRG = "";
         }
         $.ajax({
-            url: '/BudgetSale/GetSTKGRP',//'@Url.Action("GetSTKGRP", "BudgetSale")',
+            url: hostName + '/BudgetSale/GetSection',//'@Url.Action("GetSTKGRP", "BudgetSale")',
             data: {
                 ProdMRG: ProdMRG
             },
@@ -496,41 +529,45 @@ $(document).ready(function () {
                 //console.log("stkArray = " + stkArray);
                 $('#stkSec').selectpicker('refresh');
                 if (prodMgrHeader == prodMgrCurrent) {
-                    console.log("1 = " + stkSecHeader);
+                    //console.log("1 = " + stkSecHeader);
                     $('#stkSec').selectpicker('val', JSON.parse(stkSecHeader));
                 } else {
-                    console.log("2 = " + stkArray);
+                    //console.log("2 = " + stkArray);
                     stkArray.push('ALL');
                     $('#stkSec').selectpicker('val', stkArray);
                     //$('#stkSec').selectpicker('refresh');
                 }
                 $('#stkSec').trigger('change');
+                getSecAllBySale();
             }
         });
     });
     //เลือกลูกค้าได้ 10 ร้าน
     $("#cusCode").on("change", function () {
-        var countCustomer = $(this).find('option:selected').length;
-        if (countCustomer > 0) {
-            //$("#showCustomerSelected").css('display', 'block');
-            $("#showCustomerSelected").css('display', 'contents');
-            $("#countCustomerSelected").html(countCustomer)
-        } else {
-            $("#showCustomerSelected").css('display', 'none');
-            $("#countCustomerSelected").html(0)
-        }
-        if (countCustomer > 10) {
-            Swal.fire({
-                icon: 'warning',
-                //title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
-                html: "เลือกลูกค้าได้ครั้งละ 10 ร้านเท่านั้น",
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'ปิด',
-                allowOutsideClick: false,
-                focusConfirm: false,
-            });
-            return false;
-        }
+        getCustomerAllBySale();
+        setTimeout(() => {
+            var countCustomer = $(this).find('option:selected').length;
+            var cusCodeAllCount_header = $("#cusCodeAllCount_header").val() || 0;
+            //console.log("countCustomer = " + countCustomer);
+            //console.log("cusCodeAllCount_header = " + cusCodeAllCount_header);
+            if (countCustomer > 0) {
+                $("#showCustomerSelected").css('display', 'contents');
+                $("#countCustomerSelected").html(countCustomer)
+            } else {
+                $("#showCustomerSelected").css('display', 'none');
+                $("#countCustomerSelected").html(0)
+            }
+            if (countCustomer == cusCodeAllCount_header) { //เลือกลูกค้าทั้งหมด
+                $("#flagSelectCustomerAll").val('Y');
+            } else {
+                $("#flagSelectCustomerAll").val('N');
+            }
+        }, 800);
+    });
+    //เลือก sec
+    $("#stkSec").on("change", function () {
+        var countSec = $(this).find('option:selected').length;
+        console.log("countSec = " + countSec);
     });
 });
 //
@@ -563,12 +600,13 @@ document.onreadystatechange = function () {
         if (prodMgr != "[]" && prodMgr != "ALL") {
             $('#prodMgr').selectpicker('val', prodMgr);
             getStkgrpByProd($("#prodMgr option:selected").val());
-            //$('#stkSec').trigger('change');
         } else { //prod all
+            //console.log("getStkgrpByProd");
             $('#prodMgr').selectpicker('val', 'ALL');
             $('#stkSec').selectpicker('selectAll');
-           // $('#slmCode').selectpicker('val', 'B101TNK');
-           // $('#cusCode').selectpicker('val', '110A0126');
+            getSecAllBySale();
+            // $('#slmCode').selectpicker('val', 'B101TNK');
+            // $('#cusCode').selectpicker('val', '110A0126');
         }
         LoadingHide()
     }

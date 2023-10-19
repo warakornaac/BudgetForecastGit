@@ -32,8 +32,6 @@
 
 <input type="hidden" id="flagAfterSaveMonth" value="N" />
 <input type="hidden" id="flagAfterSaveSec" value="N" />
-<input type="hidden" id="flagSup" value="@ViewBag.flagSup" />
-
 <style>
     /*   .dropdown-menu .bs-actionsbox .bs-select-all {
         display: none;
@@ -83,7 +81,7 @@
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span> @*<span style="color: red; margin-left: 50px;"> *limit select 10 customers </span>*@ &nbsp;&nbsp;&nbsp; <span id="showCustomerSelected" style="display: none; font-weight: bold;"> (Customers selected <span id="countCustomerSelected"></span>) </span>
                         <span>
-                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" data-max-options-message="limit select 10 customer" multiple>
+                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" data-max-options-message="limit select 10 customer" data-actions-box="true" data-deselect-all-text="Deselect" multiple>
                             </select>
                         </span>
                     </div>

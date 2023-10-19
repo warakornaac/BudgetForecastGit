@@ -94,6 +94,13 @@
 </body>
 </html>
 <script type="text/javascript">
+    var pathname = window.location.pathname.split('/');
+    var pathId = pathname[1].replace('/', '');;
+    var hostName = "";
+    if (pathId != 'ForecastSale' && pathId != 'BudgetSale') {
+        hostName = '/' + pathId;
+    }
+    console.log("pathname = " + hostName);
     //set session expire alert
     var minutesForWarning = 1;
     var sessionTimeout = parseInt("@Session.Timeout");
@@ -266,6 +273,13 @@
     //add comma to number
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
     }
 
     function LoadingShow() {

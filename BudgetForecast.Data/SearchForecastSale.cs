@@ -14,7 +14,7 @@ namespace BudgetForecast.Data
         public SearchForecastSale() : base(Utils.GetConfig("Lip_ConnectionString"))
         {
         }
-        public List<StoreSearchForecastSaleModel> GetStoreSearchForecastSale(string slmCode, string[] cusCode, string[] stkSec, string year, int flg, int month = 0)
+        public List<StoreSearchForecastSaleModel> GetStoreSearchForecastSale(string slmCode, string[] cusCode, string[] stkSec, string year, int flg, int month = 0, int flgBudget = 1)
         {
             //add all
             if (cusCode == null)
@@ -33,9 +33,10 @@ namespace BudgetForecast.Data
             p.AddParams("@inYEAR", year);
             p.AddParams("@Show_Flg", flg);
             p.AddParams("@Show_month", month);
+            p.AddParams("@Figure_Flg", flgBudget);
 
-            var table = GetData(CmdStore("P_Search_Forecast_Sale_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreSearchForecastSaleModel>(GetData(CmdStore("P_Search_Forecast_Sale_Dev", p)));
+            var table = GetData(CmdStore("P_Search_Forecast_Sale", p));
+            return ConvertExtension.ConvertDataTable<StoreSearchForecastSaleModel>(GetData(CmdStore("P_Search_Forecast_Sale", p)));
         }
     }
 }

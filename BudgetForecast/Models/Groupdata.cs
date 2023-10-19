@@ -283,6 +283,7 @@ namespace BudgetForecast.Models
     public class SecListKey
     {
         public string SEC { get; set; }
+        public string SEC_NAME { get; set; }
 
     }
 

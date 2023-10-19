@@ -8,12 +8,12 @@
 <br>
 <br>
 <div class="card card-container">
-    <h5 class="text-center mb-4">Budget&Forecast</h5>
+    <h5 class="text-center mb-4">Budget&Forecast <span class="text-danger">[Test]</span></h5>
     <img class="profile-img-card" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUUL4xmD5Dk_p1W7_8LFhfUBZi51UQf5UUCYKL8PWrbg&s?sz=120" alt="" />
     @*<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />*@
     <p id="profile-name" class="profile-name-card"></p>
 
-    <form class="form-signin form-horizontal" method="POST" action="@Url.Action("Login", "Home")" onsubmit="LoadingShow();">
+    <form class="form-signin form-horizontal" method="POST" action="@Url.Action("Login", "Home")" onsubmit="$.LoadingOverlay('show');">
         <input type="text" name="User" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
 
         <div class="input-group-btn">
@@ -23,7 +23,8 @@
             </div>
         </div>
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-        @*<h5 class="text-center mb-4">Automotive Asiatic (Thailand) Co.,Ltd. Tru Automotive Co.,Ltd. All rights reserved.</h5>*@
+        <br>
+        <h6 class="text-center mb-4 text-danger">ระบบรองรับ iOS เวอร์ชั่น 16.7 ขึ้นไป</h6>
     </form>
     @*<a href="#" class="forgot-password">
             Forgot the password?
@@ -41,5 +42,13 @@
         } else {
             x.type = "password";
         }
+    }
+
+    function LoadingShow() {
+        $.LoadingOverlay("show");
+    }
+
+    function LoadingHide() {
+        $.LoadingOverlay("hide");
     }
 </script>

@@ -16,7 +16,7 @@ namespace BudgetForecast.Data
         {
 
         }
-        public List<StoreSearchBudgetSaleModel> GetStoreSearchForecastPm(string slmCode, string[] cusCode, string[] stkSec, string year)
+        public List<StoreSearchBudgetSaleModel> GetStoreSearchBudgetSale(string slmCode, string[] cusCode, string[] stkSec, string[] stkGroup, int flgBudget = 1)
         {
             //add all
             if (cusCode == null) {
@@ -25,13 +25,19 @@ namespace BudgetForecast.Data
             if (stkSec == null)
             {
                 stkSec = new string[] { "ALL" };
+            } 
+            if (stkGroup == null)
+            {
+                stkGroup = new string[] { "ALL" };
             }
             var p = new SqlParameters();
             p.AddParams("@Slmcode", slmCode);
             p.AddParams("@Cuskey", string.Join(",", cusCode));
             p.AddParams("@Stksec", string.Join(",", stkSec));
+            p.AddParams("@StkGrp", string.Join(",", stkGroup));
             p.AddParams("@User", "");
-            p.AddParams("@Year", year);
+            p.AddParams("@Year", "2024");
+            p.AddParams("@Figure_Flg", flgBudget);
 
             var table = GetData(CmdStore("P_Search_Budget_Sale", p));
             return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale", p)));

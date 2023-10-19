@@ -12,7 +12,6 @@ namespace BudgetForecast.Model
         public string CUSCODE { get; set; }
         public string STKGRP { get; set; }
         public double F_SLM { get; set; }
-        public string YEAR { get; set; }
 
     }
 }

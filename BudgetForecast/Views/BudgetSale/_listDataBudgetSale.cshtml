@@ -45,6 +45,18 @@
         height: 25px;
         cursor: pointer;
     }
+
+    .input-onkey {
+        outline: none !important;
+        border: 2px solid #0014ff;
+        box-shadow: 0 0 20px #719ECE;
+    }
+
+    .input-onsave {
+        outline: none !important;
+        border: 2px solid #38bf28;
+        box-shadow: 0 0 20px #719ECE;
+    }
 </style>
 @if (countList == 1)
 {
@@ -75,9 +87,6 @@ else
                     <table class="table dataTable table-striped table-bordered nowrap table-hover" border="1">
                         <thead>
                             <tr style="white-space: nowrap;">
-                                <th class="vcenter" style="vertical-align: middle;">
-                                    <input type="checkbox" id="selectAll" class="selectAll" style="" />
-                                </th>
                                 <th class="vcenter" style="vertical-align: middle;">Custype</th>
                                 <th class="vcenter" style="vertical-align: middle;">Cuscod</th>
                                 <th class="vcenter" style="vertical-align: middle;">Cusname</th>
@@ -88,7 +97,7 @@ else
                                 <th class="vcenter" style="vertical-align: middle;">StkName</th>
                                 <th class="vcenter" style="vertical-align: middle;">LastYear</th>
                                 <th class="vcenter" style="vertical-align: middle;">Ytd</th>
-                                <th class="vcenter" style="vertical-align: middle;">Quota This Year</th>
+                                <th class="vcenter" style="vertical-align: middle;">Budget</th>
                                 <th class="vcenter" style="vertical-align: middle;">Budget Next</th>
                             </tr>
                         </thead>
@@ -106,19 +115,10 @@ else
                                 {
                                     ++rowStkGroup;
                                     <tr>
-                                        <td class="vcenter" style="vertical-align: middle; cursor: pointer;">
-                                            @{
-                                                nameSelectList = @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                                <input type="checkbox" style="" class="selectList" id="@nameSelectList" value="@nameSelectList" data-cuscode="@stkGroupItem.PEOPLE" data-stkgrp="@stkGroupItem.STKGRP" />
-                                            }
-                                        </td>
                                         <td class="vcenter" style="vertical-align: middle;"> @stkGroupItem.CUSTYP</td>
                                         <td class="vcenter" style="vertical-align: middle;">
                                             @{
-                                                //if (stkGroupItem.CUSKEY == stkGroupItem.PEOPLE)
-                                                //{
-                                                    @stkGroupItem.PEOPLE
-                                                //}
+                                                @stkGroupItem.PEOPLE
                                             }
                                         </td>
                                         <td class="vleft" style="white-space: nowrap; vertical-align: middle;"> @stkGroupItem.CUSNAM</td>
@@ -129,29 +129,29 @@ else
                                         <td class="vleft" style="vertical-align: middle;"> @stkGroupItem.GRPNAM</td>
                                         <td class="vright" style="vertical-align: middle;">
                                             @{
-                                                nameLastYear = "last_year_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                nameLastYear = "last_year_" + @stkGroupItem.CUSGRP + "_" + @stkGroupItem.STKGRP;
                                                 <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright last_year" name="@nameLastYear" id="@nameLastYear" value="@stkGroupItem.LastYr.ToString("N0")" onkeyup="return sumBudgetSale('last_year');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
                                                 @stkGroupItem.LastYr.ToString("N0")
                                             }
                                         </td>
                                         <td class="vright" style="vertical-align: middle;">
                                             @{
-                                                nameYtd = "ytd_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                nameYtd = "ytd_" + @stkGroupItem.CUSGRP + "_" + @stkGroupItem.STKGRP;
                                                 <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright ytd" name="@nameYtd" id="@nameYtd" value="@stkGroupItem.Ytd.ToString("N0")" onkeyup="return sumBudgetSale('ytd');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
                                                 @stkGroupItem.Ytd.ToString("N0")
                                             }
                                         </td>
                                         <td class="vright" style="vertical-align: middle;">
                                             @{
-                                                nameQuota = "quota_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
+                                                nameQuota = "quota_" + @stkGroupItem.CUSGRP + "_" + @stkGroupItem.STKGRP;
                                                 <input data-stkgrp="@stkGroupItem.STKGRP" type="hidden" class="form-control mask vright quota" name="@nameQuota" id="@nameQuota" value="@stkGroupItem.Quota.ToString("N0")" onkeyup="return sumBudgetSale('quota');" onkeypress="return validateFloatKeyPress(this,event);" disabled />
                                                 @stkGroupItem.Quota.ToString("N0")
                                             }
                                         </td>
                                         <td class="vcenter" style="vertical-align: middle; text-align: -webkit-center;">
                                             @{
-                                                nameFslm = "f_slm_" + @stkGroupItem.PEOPLE + "_" + @stkGroupItem.STKGRP;
-                                                <input data-stkgrp="@stkGroupItem.STKGRP" type="text" class="form-control mask vright f_slm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" style="width: 110px;" disabled />
+                                                nameFslm = "f_slm_" + @stkGroupItem.CUSGRP + "_" + @stkGroupItem.STKGRP;
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" data-cuscod="@stkGroupItem.CUSGRP" data-cusname="@stkGroupItem.CUSNAM" type="text" class="form-control mask vright f_slm inputBudgetSale @nameFslm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 110px;" />
                                             }
                                         </td>
                                     </tr>
@@ -164,25 +164,25 @@ else
             @*Footer*@
             <div class="card-footer" id="divShowSum">
                 <div class="row">
-                    <div class="col-lg-4 text-right"> </div>
-                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_last_year">
+                    <div class="col-lg-2 text-right"> </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 p-2" id="div_sum_last_year">
                         <button type="button" class="btn btn-info" style="width: 100%; padding: 10px;">
                             <span> <b>LastYear</b> </span>
                             <span class="badge badge-light" id="sum_last_year" style="font-size: 16px;"></span>
                         </button>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_ytd">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2 p-2" id="div_sum_ytd">
                         <button type="button" class="btn btn-secondary" style="width: 100%; padding: 10px; ">
                             <b>Ytd</b> <span class="badge badge-light" id="sum_ytd" style="font-size: 16px;"></span>
                         </button>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_quota">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-2" id="div_sum_quota">
                         <button type="button" class="btn btn-warning" style="width: 100%; padding: 10px; ">
-                            <span><b>Quota This Year</b></span>
+                            <span><b>Budget</b></span>
                             <span class="badge badge-light" id="sum_quota" style="font-size: 16px;"></span>
                         </button>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 p-2" id="div_sum_f_slm">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 p-2" id="div_sum_f_slm">
                         <button type="button" class="btn btn-danger" style="width: 100%; padding: 10px; ">
                             <span><b>Budget Next</b></span> <span class="badge badge-light" id="sum_f_slm" style="font-size: 16px;"></span>
                         </button>
@@ -219,7 +219,7 @@ else
                             <th class="vcenter" style="vertical-align: middle;">SL</th>
                             <th class="vcenter" style="vertical-align: middle;">Province</th>
                             <th class="vcenter" style="vertical-align: middle;">Custype</th>
-                            <th class="vcenter" style="vertical-align: middle;">People</th>
+                            <th class="vcenter" style="vertical-align: middle;">CUSKEY</th>
                             <th class="vcenter" style="vertical-align: middle;">Cusname</th>
                             <th class="vcenter" style="vertical-align: middle;">Stkgrp</th>
                             <th class="vcenter" style="vertical-align: middle;">StkgrpName</th>
@@ -249,7 +249,22 @@ else
     </div>
 }
 <script defer>
-    var countList = $("#countList").val() || 0;
+    //swal alert
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        //title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3300,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
     if (countList > 0) {
         $('#formBudgetSale').data('serialize', $('#formBudgetSale').serialize()); // On load save form current state
         $(window).bind('beforeunload', function (e) {
@@ -267,6 +282,112 @@ else
             LoadingHide();
         }, 3000);
     }
+
+    $(".inputBudgetSale").on("change paste keyup", function () {
+        let nameInput = $(this).attr("name");
+        if (nameInput != "") {
+            //เพิ่มสี input
+            $("input[name=" + nameInput + "]").removeClass('input-onsave');
+            $("input[name=" + nameInput + "]").addClass('input-onkey');
+            //$('.defaultInput').removeClass('error');
+        }
+    });
+
+    $("[class*=f_slm_]").focusin(function () {
+        var stkgrp = $(this).data('stkgrp');
+        var cusCode = $(this).data('cuscod');
+        var cusName = $(this).data('cusname');
+        console.log("stkgrp = " + stkgrp + " - " + cusCode);
+        if (cusCode != '' && stkgrp != '') {
+            var inputValueOld = parseInt($("input[name=f_slm_" + cusCode + "_" + stkgrp + "]").val().replace(/\,/g, ''));
+            $(this).one('focusout', function () {
+                var inputValueNewNoReplace = $("input[name=f_slm_" + cusCode + "_" + stkgrp + "]").val();
+                var inputValueNew = parseInt($("input[name=f_slm_" + cusCode + "_" + stkgrp + "]").val().replace(/\,/g, ''));
+                console.log('inputValueOld = ' + inputValueOld + ' | ' + ' inputValueNew = ' + inputValueNew);
+                if (inputValueOld != inputValueNew) {
+                    $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveBudget", "BudgetSale")',
+                        data: JSON.stringify({
+                            USER: '@Session["UserID"]',
+                            CUSCODE: cusCode,
+                            STKGRP: stkgrp,
+                            F_SLM: inputValueNew || 0,
+                        }),
+                       // dataType: 'json',
+                        traditional: true,
+                        contentType: "application/json; charset=utf-8",
+                        processData: false,
+                        beforeSend: function () {
+                            // LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result.status == "success") {
+                                $("input[name=f_slm_" + cusCode + "_" + stkgrp  + "]").removeClass('input-onkey');
+                                $("input[name=f_slm_" + cusCode + "_" + stkgrp + "]").addClass('input-onsave');
+                                //disbled beforeunload
+                                $(window).unbind('beforeunload');
+                                calculateBudgetPm();
+                                //save flagAfterSave = 'Y'
+                                //$("#flagAfterSaveMonth").val('Y')
+                                //$("#flagAfterSaveSec").val('Y')
+                                //var flagAfterSaveMonth = $("#flagAfterSaveMonth").val();
+                                //var flagAfterSaveSec = $("#flagAfterSaveSec").val();
+
+                                //var flagReloadByMonth = $("#flagReloadByMonth").val();
+                                //if (flagReloadByMonth == 'Y') {
+                                //    $("#flagAfterSaveMonth").val('N');
+                                //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+                                //}
+                                //var flagReloadBySec = $("#flagReloadBySec").val();
+                                //if (flagReloadBySec == 'Y') {
+                                //    $("#flagAfterSaveSec").val('N');
+                                //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                                //}
+                                toastMixin.fire({
+                                    animation: true,
+                                    html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + stkgrp + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
+                                });
+                            } else {
+                                LoadingHide();
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+                                    html: result.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            //LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        console.log(error);
+
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ระบบทำงานผิดพลาด()',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale' + error.responseText + '<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+                }
+            });
+        }
+    });
     //btn save
     saveBudgetSale = async () => {
         var msg = '';
@@ -314,7 +435,7 @@ else
                             SLMCODE: '',
                             CUSCODE: cusCode,
                             STKGRP: stkGrp,
-                            YEAR: @ViewBag.year,
+                            YEAR: '',
                             F_SLM: parseInt($("input[name=f_slm_" + cusCode + "_" + stkGrp + "]").val().replace(/\,/g, '')),
                         }
                         request.push(details);
@@ -396,32 +517,6 @@ else
     //    LoadingHide();
     //}
 
-    //sum Budget By field name
-    const sumBudgetSale = async (inputName) => {
-            let sum_budget = 0;
-            await Promise.all($('.' + inputName).each(async function (i, obj) {
-                let budget_by_pm = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-                budget_by_pm = await getVowels(budget_by_pm, 0);
-                sum_budget += Number(budget_by_pm);
-                //console.log(sum_budget);
-            }));
-            //if (sum_budget != 0) {
-                $('#div_sum_' + inputName).LoadingOverlay("show");
-                $('#sum_' + inputName).text(numberWithCommas(sum_budget));
-                $('#div_sum_' + inputName).LoadingOverlay("hide");
-            //}
-    }
-    //btn reload
-    async function calculateBudgetPm() {
-        //$("#cardSummary").LoadingOverlay("show");
-        //sam LastYr
-        await sumBudgetSale("last_year");
-        await sumBudgetSale("ytd");
-        await sumBudgetSale("quota");
-        await sumBudgetSale("quota_next");
-        await sumBudgetSale("f_slm");
-        await sumBudgetSale("f_prod");
-    }
     //check state
     document.onreadystatechange = function () {
         if (document.readyState === 'interactive') {
@@ -478,5 +573,17 @@ else
             }
         });
         calculateBudgetPm();
+        $('input.mask').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                event.preventDefault();
+            }
+            var $this = $(this);
+            var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            //console.log(num2);
+            // the following line has been simplified. Revision history contains original.
+            $this.val(num2);
+        });
     });
 </script>

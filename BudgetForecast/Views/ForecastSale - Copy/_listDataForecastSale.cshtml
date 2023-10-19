@@ -313,13 +313,19 @@ else
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             @*@foreach (var secItem in ViewBag.secAllArray)
                                             //{*@
                                                 @foreach (var dataItem in (List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList)
                                                 {
                                                     if (dataItem.CUSKEY == cusItem.CUSKEY)
                                                     {
-                                                      
+                                                        if (cusItem.CUSKEY != "" && dataItem.CUSKEY == "")
+                                                        {
+                                                             <tr style="white-space: nowrap; border-top: 3px solid #5e6b89;">
+                                                                 <td colspan="17"> -ไม่พบข้อมูล- </td>
+                                                             </tr>
+                                                        } else { 
                                                             if (dataItem.Caption == "Budget")
                                                             {
                                                                 double underBudgetAmt = 0;
@@ -713,8 +719,11 @@ else
                                                                     }
                                                                 </tr>
                                                             }
+                                                        }
+
                                                     } @*end compare sec*@
-                                                } @*end compare cuskey*@ 
+                                                } @*end compare cuskey*@
+                                            <!--}--> @*end dataItem*@
 
                                         </tbody>
                                     </table>
@@ -877,7 +886,7 @@ else
                     {
                         foreach (var secItem in ViewBag.secAllArray)
                         {
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_sec_@secItem.SEC">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_dec_@secItem.SEC">
                                 <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                                     <div class="card-body pb-0" style="margin-top: -10px;">
                                         <h4 class="" style="font-weight: 700;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
@@ -922,7 +931,7 @@ else
         animation: false,
         position: 'top-right',
         showConfirmButton: false,
-        timer: 3300,
+        timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -940,7 +949,7 @@ else
             $(this).one('focusout', function () {
                 var inputValueNewNoReplace = $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val();
                 var inputValueNew = parseInt($("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val().replace(/\,/g, ''));
-                //console.log('inputValueOld = ' + inputValueOld + ' | ' + ' inputValueNew = ' + inputValueNew);
+                console.log('inputValueOld = ' + inputValueOld + ' | ' + ' inputValueNew = ' + inputValueNew);
                 if (inputValueOld != inputValueNew) {
                     //$("#flagAfterSave").val('N');
                     $.ajax({
@@ -1066,7 +1075,6 @@ else
     var year = $("#year option:selected").val();
     var monthSelect = $("#month_sec option:selected").val(); //เดือนที่ต้องการดูข้อมูล
     $('.nav li a').click(function () {
-        //console.log('11');
         var page = $(this).attr("href");
         var flagReloadBySec = $("#flagReloadBySec").val();
         var flagReloadByMonth = $("#flagReloadByMonth").val();
@@ -1076,8 +1084,8 @@ else
         if (page == 'searchByMonthSome') {
             $("#flagReloadByMonth").val('N');
         } else if (page == 'searchByMonthAll') { //หน้า sum by month all
-            $("#flagReloadByMonth").val('Y'); //reload && flagAfterSaveMonth == 'Y'
-            if (flagReloadByMonth == 'N') {
+            $("#flagReloadByMonth").val('Y'); //reload
+            if (flagReloadByMonth == 'N' && flagAfterSaveMonth == 'Y') {
                 $("#flagAfterSaveMonth").val('N');
                 getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
             }
@@ -1087,8 +1095,8 @@ else
         } else if (page == 'searchBySecAll') {
             $("#flagTabBySecAll").val('Y'); //active tab
             $("#flagReloadBySec").val('Y'); //reload
-            //ถ้าไม่เคยโหลดให้โหลด&&
-            if (flagReloadBySec == 'N') { //flagAfterSaveSec == 'Y'
+            //ถ้าไม่เคยโหลดให้โหลด
+            if (flagReloadBySec == 'N' && flagAfterSaveSec == 'Y') {
                 $("#flagAfterSaveSec").val('N');
                 getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
             }
@@ -1140,21 +1148,21 @@ else
     setTimeout(function () {
     var countList = $("#countList").val() || 0;
     //console.log("countList = " + countList);
-    //if (countList > 0) { //มี่รายการค้นหา
-    //    //มีข้อมูลเปิดปุ่มบันทึก
-    //    $("#btnSaveForecastSale").css("display", "block");
-    //    $('#formInputForecastSale').data('serialize', $('#formInputForecastSale').serialize()); // On load save form current
-    //    $(window).bind('beforeunload', function (e) {
-    //        if ($('#formInputForecastSale').serialize() != $('#formInputForecastSale').data('serialize')) {
-    //            delayHide();
-    //            return true;
-    //        } else {
-    //            e = null;
-    //        }
-    //    });
-    //} else {
-    //    $("#btnSaveForecastSale").css("display", "none");
-    //}
+    if (countList > 0) { //มี่รายการค้นหา
+        //มีข้อมูลเปิดปุ่มบันทึก
+        $("#btnSaveForecastSale").css("display", "block");
+        $('#formInputForecastSale').data('serialize', $('#formInputForecastSale').serialize()); // On load save form current
+        $(window).bind('beforeunload', function (e) {
+            if ($('#formInputForecastSale').serialize() != $('#formInputForecastSale').data('serialize')) {
+                delayHide();
+                return true;
+            } else {
+                e = null;
+            }
+        });
+    } else {
+        $("#btnSaveForecastSale").css("display", "none");
+    }
 
     //
     function delayHide() {
@@ -1193,6 +1201,16 @@ else
         //$(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
         var monthSelect = $("#month_sec option:selected").val();
         //console.log("monthSelect = " + monthSelect);
+
+        //let sum_forecast_by_month = 0;
+        //await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
+        //    let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        //    //console.log("forecast_sale_key = " + forecast_sale_key);
+        //    forecast_sale_key = await getVowels(forecast_sale_key, 0);
+        //    sum_forecast_by_month += Number(forecast_sale_key);
+        //}));
+        //$('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+
         //sum total by cuscod sec
         let sum_total_forecast_by_cuscod = 0;
         await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
@@ -1203,6 +1221,26 @@ else
         }));
         $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
         $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+        //sam avg
+        //let sum_total_avg_forecast_by_cuscod = 0;
+        //await Promise.all($(".sum_avg_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+        //    let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        //    //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+        //    forecast_sale_key = await getVowels(forecast_sale_key, 0);
+        //    sum_total_avg_forecast_by_cuscod += Number(forecast_sale_key);
+        //}));
+        //$('.sum_total_avg_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_avg_forecast_by_cuscod.toFixed(0)));
+
+        //sum จากช่อง forecast
+        //await sumSaleForecastByCaption("sale_forecast");
+        //sum by month select
+        //await sumAllSaleForecastByCaption("total_forecast");
+        //sum by month all
+        //await sumAllSaleForecastByCaption("total_forecast_all");
+        //hide icon
+        //setTimeout(() => {
+        //    $(".iconLoading").html('');
+        //}, "1000");
      }
     //sum avg
     const sumAvgForecast = async (sec, cuscod) => {
@@ -1244,7 +1282,6 @@ else
         await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
             let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
             forecast_sale_key = await getVowels(forecast_sale_key, 0);
-            console.log("forecast_sale_key = " + forecast_sale_key);
             sum_forecast_by_month += Number(forecast_sale_key);
         }));
         $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
@@ -1265,12 +1302,10 @@ else
         }));
         $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
         //Budget, Actual, Forecast เป็น 0 ไม่แสดง
-        //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
-
-        if (sum_forecast_by_month == 0 || (sum_budget_by_month == 0 && sum_actual_by_month == 0)) {
-            $("#sum_by_sec_" + sec).css("display", "none");
+        if (sum_forecast_by_month == 0 && sum_budget_by_month == 0 && sum_actual_by_month == 0) {
+            $("#sum_by_dec_" + sec).css("display", "none");
         } else {
-            $("#sum_by_sec_" + sec).css("display", "block");
+            $("#sum_by_dec_" + sec).css("display", "block");
         }
     }
     //sum all month
@@ -1391,6 +1426,13 @@ else
             $this.val(num2);
         });
     });
+
+    function RemoveRougeChar(convertString) {
+        if (convertString.substring(0, 1) == ",") {
+            return convertString.substring(1, convertString.length)
+        }
+        return convertString;
+    }
 
  }, 2000);
 

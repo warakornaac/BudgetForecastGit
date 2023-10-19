@@ -4,13 +4,25 @@
     List<SelectListItem> getSlmCode = ViewBag.SlmCodeList;
     List<SelectListItem> getProdList = ViewBag.ProdList;
     List<SelectListItem> getStkSec = ViewBag.stkSecList;
+    List<SelectListItem> getStkGrp = ViewBag.StkGrp;
 }
 <input type="hidden" id="slmCode_header" value="@ViewBag.slmCode" />
 <input type="hidden" name="cusCode_header[]" id="cusCode_header" value="@ViewBag.cusCode" />
+<input type="hidden" name="cusCodeAllCount_header[]" id="cusCodeAllCount_header" value="0" />
 <input type="hidden" name="prodMgr_header[]" id="prodMgr_header" value="@ViewBag.prodMgr" />
 <input type="hidden" name="stkSec_header[]" id="stkSec_header" value="@ViewBag.stkSec" />
+<input type="hidden" name="stkSecAll_header[]" id="stkSecAll_header" value="" />
+<input type="hidden" name="stkSecAllCount_header[]" id="stkSecAllCount_header" value="@ViewBag.stkSecList.Count" />
+
+<input type="hidden" name="stkGrpAllCount_header[]" id="stkGrpAllCount_header" value="@ViewBag.StkGrp.Count" />
+<input type="hidden" name="stkGroup_header[]" id="stkGroup_header" value="@ViewBag.stkGroup" />
 <input type="hidden" id="year_header" value="@ViewBag.year" />
 <input type="hidden" id="flagInput" value="@ViewBag.flagInput" />
+<input type="hidden" id="flagSelectCustomerAll" value="N" />
+<input type="hidden" id="flagSelectSecAll" value="N" />
+<input type="hidden" id="flagSelectStkgrpAll" value="N" />
+
+<input type="hidden" id="flagSup" value="@ViewBag.flagSup" />
 
 <title>@ViewBag.Title</title>
 <div class="card mb-12 mt-4">
@@ -37,22 +49,23 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-sm-2 col-md-2">
+                @*<div class="col-sm-2 col-md-2">
                     <div class="form-group">
                         <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
                         <span>
                             <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
-                                <option value="2023" selected>2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
                                 <option value="2022">2022</option>
                             </select>
                         </span>
                     </div>
-                </div>
-                <div class="col-md-7 col-lg-7">
+                </div>*@
+                <div class="col-md-9 col-lg-9">
                     <div class="form-group">
-                        <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span>
+                        <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span> @*<span style="color: red; margin-left: 50px;"> *limit select 10 customers </span>*@ &nbsp;&nbsp;&nbsp; <span id="showCustomerSelected" style="display: none; font-weight: bold;"> (Customers selected <span id="countCustomerSelected"></span>) </span>
                         <span>
-                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" multiple>
+                            <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" data-max-options-message="limit select 10 customer" multiple>
                             </select>
                         </span>
                     </div>
@@ -64,7 +77,7 @@
                         <span> <i class="fa fa-users"></i><b> PROD MGR:</b></span>
                         <span>
                             <select class="form-control selectpicker" id="prodMgr" name="prodMgr" data-live-search="true" style="width: 100%;" title="SELECT PROD MGR">
-                                @*<option value="0" selected>เลือก PROD</option>*@
+                                <option value="ALL">SELECT PROD MGR ALL</option>
                                 @for (var i = 0; i < getProdList.Count; i++)
                                 {
                                     <option value="@getProdList[i].Value">@getProdList[i].Text</option>
@@ -73,19 +86,48 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-sm-9 col-md-9">
+                <div class="col-sm-5 col-md-5">
                     <div class="form-group">
                         <span> <i class="fa fa-shopping-cart"></i><b> SEC:</b></span>
                         <span>
                             <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="SELECT SEC" data-live-search="true" multiple>
                                 <option value="ALL">SEC ALL</option>
-
                                 @for (var i = 0; i < getStkSec.Count; i++)
                                 {
                                     <option value="@getStkSec[i].Value">@getStkSec[i].Text</option>
                                 }
                             </select>
                         </span>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <span> <i class="fa fa-shopping-cart"></i><b> STOCK GROUP:</b></span>
+                        <span>
+                            <select class="form-control selectpicker" id="stkGroup" name="stkGroup" style="width: 100%; padding-top: 5px;" title="SELECT STOCK GROUP" data-live-search="true" multiple>
+                                <option value="ALL">STOCK GROUP ALL</option>
+                                @for (var i = 0; i < getStkGrp.Count; i++)
+                                {
+                                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <span> <i class="fa fa-usd"></i><b> VALUE:</b></span>
+                        <br>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-danger active" id="flgBudget2">
+                                <input type="radio" name="flgBudget" value="1" autocomplete="off" checked> <b>YES</b>
+                            </label>
+                            <label class="btn btn-light" id="flgBudget1">
+                                <input type="radio" name="flgBudget" value="0" autocomplete="off"> <b>NO</b>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,293 +155,29 @@
             <div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Budget กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div>
         }
     }
-    @Html.Partial("_listDataBudgetSale", new { ViewBag.stkGroupList, @ViewBag.slmCode })
+    @*@Html.Partial("_listdataBudgetSale", new { ViewBag.stkGroupList, @ViewBag.slmCode })*@
+    <div id="showDataBudgetInput"></div>
 </div>
 
 <br>
 <br>
 
 <script defer>
+    var countList = $("#countList").val() || 0;
     var userType = @this.Session["UserType"].ToString();
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-
-    function searchBudget() {
-        $("#slmCode").prop('disabled', false);
-        LoadingShow();
-        var msg = '';
-        var error = 0;
-        var stksec = $("#cusCode option:selected").val();
-        var slmCode = $("#slmCode option:selected").val();
-        if (slmCode == undefined) {
-            ++error;
-            msg += '<br>' + error + '. กรุณาเลือก SALEMAN อย่างน้อย 1 รายการ';
-        }
-
-        if (stksec == undefined) {
-            ++error;
-            msg += '<br>' + error + '. กรุณาเลือก CUSTOMER อย่างน้อย 1 รายการ';
-        }
-        if (error) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'กรุณาตรวจสอบข้อมูลต่อไปนี้',
-                html: msg,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Close',
-                allowOutsideClick: false,
-                focusConfirm: false,
-            });
-            return false;
-        } else {
-            LoadingShow();
-            $('form[id="BudgetSale"]').submit();
-        }
-    }
-
     $(document).ready(function () {
-        //selectpicker stkgrp
-        function toggleSelectAll(control) {
-            var allOptionIsSelected = (control.val() || []).indexOf("ALL") > -1;
-            function valuesOf(elements) {
-                return $.map(elements, function (element) {
-                    return element.value;
-                });
-            }
-
-            if (control.data('allOptionIsSelected') != allOptionIsSelected) {
-                if (allOptionIsSelected) {
-                    control.selectpicker('val', valuesOf(control.find('option')));
-                } else {
-                    control.selectpicker('val', []);
-                }
-            } else {
-                if (allOptionIsSelected && control.val().length != control.find('option').length) {
-                    control.selectpicker('val', valuesOf(control.find('option:selected[value!=ALL]')));
-                    allOptionIsSelected = false;
-                } else if (!allOptionIsSelected && control.val().length == control.find('option').length - 1) {
-                    control.selectpicker('val', valuesOf(control.find('option')));
-                    allOptionIsSelected = true;
-                }
-            }
-            control.data('allOptionIsSelected', allOptionIsSelected);
-        }
-        $('#cusCode').selectpicker().change(function () { toggleSelectAll($(this)); }).trigger('change');
-        $('#stkSec').selectpicker().change(function () { toggleSelectAll($(this)); }).trigger('change');
-         //GET Stkgroup
-              $('#prodMgr').change(function () {
-            var stkSecHeader = $("#stkSec_header").val();
-            var prodMgrHeader = $("#prodMgr_header").val();
-            var prodMgrCurrent = $(this).val();
-
-            //console.log("prodMgrHeader = " + prodMgrHeader + " prodMgrCurrent = " + prodMgrCurrent);
-
-            var stkArray = new Array();
-            var ProdMRG = $('#prodMgr').val();
-            if (ProdMRG != 'ALL') { // PROD MGR != ALL
-                $.ajax({
-                    url: '@Url.Action("GetSTKGRP", "BudgetSale")',
-                    data: {
-                        ProdMRG: ProdMRG
-                    },
-                    type: "POST",
-                    dataType: "JSON",
-                    success: function (data) {
-                        var select = $("#stkSec");
-                        select.children().remove();
-                        select.append($("<option>").val("ALL").text("SEC ALL"));
-                        $(data).each(function (index, item) {
-                            select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
-                            stkArray.push(item.SEC);
-                        });
-                        //console.log("stkArray = " + stkArray);
-                        $('#stkSec').selectpicker('refresh');
-                        if (prodMgrHeader == prodMgrCurrent) {
-                            $('#stkSec').selectpicker('val', JSON.parse(stkSecHeader));
-                        } else {
-                            stkArray.push('ALL');
-                            $('#stkSec').selectpicker('val', stkArray);
-                            //$('#stkSec').selectpicker('refresh');
-                        }
-                        $('#stkSec').trigger('change');
-                    }
-                });
-            } else {
-                //PROD MGR == ALL
-                var itemSelectorOption = $('#stkSec option:selected');
-                itemSelectorOption.remove();
-                $('#stkSec').selectpicker('refresh');
-                var select = $("#stkSec");
-                select.children().remove();
-                select.append($("<option>").val("ALL").text("SEC ALL"));
-                $('#stkSec').selectpicker('val', 'ALL');
-                $('#stkSec').selectpicker('refresh');
-            }
+        $("#flgBudget1").click(function () {
+            $("#flgBudget1").removeClass("btn-light");
+            $("#flgBudget1").addClass("btn-danger");
+            $("#flgBudget2").removeClass("btn-danger");
+            $("#flgBudget2").addClass("btn-light");
+        });
+        $("#flgBudget2").click(function () {
+            $("#flgBudget2").removeClass("btn-light");
+            $("#flgBudget2").addClass("btn-danger");
+            $("#flgBudget1").removeClass("btn-danger");
+            $("#flgBudget1").addClass("btn-light");
         });
     });
-    //hide header
-    function hideHeader() {
-        var x = document.getElementById("headerSearch");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-        var y = document.getElementById("headerSearchFooter");
-        if (y.style.display === "none") {
-            y.style.display = "block";
-        } else {
-            y.style.display = "none";
-        }
-    }
-
-    function getCustomerBySlmCode(_slmCode) {
-        //alert(_slmCode);
-        let slmCode = "";
-        if (_slmCode == "") {
-            slmCode = $("#slmCode option:selected").val();
-        } else {
-            slmCode = _slmCode;
-        }
-        //alert(slmCode);
-        $.ajax({
-            url: '@Url.Action("Getdatabyslm", "BudgetSale")',
-            data: {
-                slmCode: slmCode,
-            },
-            type: "POST",
-            dataType: "JSON",
-            success: function (data) {
-                //console.log(data);
-                var select = $("#cusCode");
-                select.children().remove();
-                select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
-                $.each(data, function (key, value) {
-                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + /*"----ที่อยู่ " + value.ADDR_01 + " " + value.PRO +*/ '</option>');
-                });
-                if ($("#cusCode option:selected").val() == "") {
-                    $("#cusCode").val($("#cusCode option:first").val());
-                }
-                $('#cusCode').selectpicker('refresh');
-                //customer selected
-                $('#cusCode').selectpicker('val', JSON.parse($("#cusCode_header").val()));
-            }
-        });
-    }
-
-    function resetSearch() {
-        LoadingShow();
-        location.reload();
-        LoadingHide();
-    }
-
-    $('#slmCode').change(function () {
-        $.ajax({
-            url: '@Url.Action("Getdatabyslm", "BudgetSale")',
-            data: {
-                slmCode: $(this).val(),
-            },
-            type: "POST",
-            dataType: "JSON",
-            success: function (data) {
-                //console.log(data);
-                var select = $("#cusCode");
-                select.children().remove();
-                select.append($("<option>").val("ALL").text("CUSTOMER ALL"));
-                $.each(data, function (key, value) {
-                    select.append('<option value=' + value.CUSCOD + '>' + value.CUSCOD + '|' + value.CUSNAM + '</option>');
-                });
-                $('#cusCode').selectpicker('refresh');
-                if ($("#cusCode option:selected").val() == "") {
-                    $("#cusCode").val($("#cusCode option:first").val());
-                }
-            }
-        });
-    });
-
-   function getStkgrpByProd(_prodCode) {
-        var stkSecHeader = $("#stkSec_header").val();
-        var stkArray = new Array();
-        if (_prodCode == "") {
-            prodCode = $("#prodMgr option:selected").val();
-        } else {
-            prodCode = _prodCode;
-        }
-        console.log("getStkgrpByProd = " + prodCode);
-        $.ajax({
-            url: '@Url.Action("GetSTKGRP", "ForecastPm")',
-            data: {
-                ProdMRG: prodCode
-            },
-            type: "POST",
-            dataType: "JSON",
-            success: function (data) {
-                // console.log(data);
-                var select = $("#stkSec");
-                select.children().remove();
-                select.append($("<option>").val("ALL").text("SEC ALL"));
-                $(data).each(function (index, item) {
-                    select.append($("<option>").val(item.SEC).text(item.SEC + "/" + item.SECNAM));
-                    stkArray.push(item.SEC);
-                });
-                $('#stkSec').selectpicker('refresh');
-                if (stkSecHeader != "[]") {
-                    $('#stkSec').selectpicker('val', JSON.parse(stkSecHeader));
-                } else {
-                    stkArray.push('ALL');
-                    $('#stkSec').selectpicker('val', stkArray);
-                }
-            }
-        });
-    }
-
-    document.onreadystatechange = function () {
-        if (document.readyState === 'interactive') {
-            LoadingShow();
-        }
-        if (document.readyState === "complete") {
-            var stkSecHeader = $("#stkSec_header").val();
-            var prodMgr = $("#prodMgr_header").val();
-
-            $('#slmCode').val($("#slmCode_header").val());
-            $('#cusCode').selectpicker('val', JSON.parse($("#cusCode_header").val()));
-            $('#prodMgr').selectpicker('val', $("#prodMgr_header").val());
-            $('#stkSec').selectpicker('val', JSON.parse($("#stkSec_header").val()));
-            $('#year').val($("#year_header").val());
-             //get list customer
-            getCustomerBySlmCode($('#slmCode option:selected').val());
-            //getStkgrpByProd($("#prodMgr option:selected").val());
-            if (stkSecHeader != null) {
-                if (stkSecHeader.includes("ALL")) {
-                    $("#stkSec").val('').trigger('change');
-                }
-            }
-            if (stkSecHeader != "[]") {
-                $('#stkSec').selectpicker('val', JSON.parse(stkSecHeader));
-            }
-            if (prodMgr != "[]" && prodMgr != "ALL") {
-                // alert('getStkgrpByProd');
-                $('#prodMgr').selectpicker('val', prodMgr);
-                getStkgrpByProd($("#prodMgr option:selected").val());
-                //$('#stkSec').trigger('change');
-
-            } else {
-                $('#prodMgr').selectpicker('val', 'ALL');
-                $('#stkSec').selectpicker('val', 'ALL');
-                //$('#stkSec').selectpicker('refresh');
-            }
-            //flagInput = เลยเวลาคีย์แล้ว
-            let flagInput = $("#flagInput").val();
-            if (flagInput == 'NO') {
-                $(window).unbind('beforeunload');
-                $("input[type=checkbox]").prop('disabled', true);
-            }
-            if (userType == 3) {
-                $("#slmCode").prop('disabled', true);
-            }
-
-            LoadingHide()
-        }
-    }
 </script>
+@Scripts.Render("~/Scripts/scriptBudgetSale.js")

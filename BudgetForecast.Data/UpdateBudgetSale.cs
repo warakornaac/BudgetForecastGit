@@ -16,14 +16,14 @@ namespace BudgetForecast.Data
         {
 
         }
-        public List<StoreUpdateBudgetSaleModel> Update(string USER, string CUSCODE, string STKGRP, double F_SLM, string YEAR)
+        public List<StoreUpdateBudgetSaleModel> Update(string USER, string CUSCODE, string STKGRP, double F_SLM)
         {
             var p = new SqlParameters();
             p.AddParams("@Cuscode", CUSCODE.ToTrim());
             p.AddParams("@Stkgrp", STKGRP.ToTrim());
             p.AddParams("@User", USER.ToTrim());
             p.AddParams("@F_slm", F_SLM.ToString().Replace(",", ""));
-            p.AddParams("@Year", YEAR.ToTrim());
+            p.AddParams("@Year", "");
             p.AddParams("@outGenstatus", 'Y');
 
             var table = GetData(CmdStore("P_Update_Budget_Sale", p));

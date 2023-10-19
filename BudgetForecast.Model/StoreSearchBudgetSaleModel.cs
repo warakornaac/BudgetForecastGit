@@ -30,6 +30,7 @@ namespace BudgetForecast.Model
         public double F_Diff { get; set; }
         public string STYR { get; set; }
         public string StQYr { get; set; }
+        public int flgBudget { get; set; }
         public DateTime AsOf { get; set; }
         public string UpdateBy { get; set; }
         public DateTime Updatedate { get; set; }

@@ -61,7 +61,7 @@ namespace BudgetForecast.Controllers
                     command = new SqlCommand("P_Search_Name_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UsrID", user);
-                    //command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@Flag", "product");
                     SqlDataReader dr3 = command.ExecuteReader();
                     while (dr3.Read())
                     {

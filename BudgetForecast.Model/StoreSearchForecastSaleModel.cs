@@ -31,7 +31,8 @@ namespace BudgetForecast.Model
         public double M10 { get; set; }
         public double M11 { get; set; }
         public double M12 { get; set; }
-        public string flg { get; set; }
+        public int flg { get; set; }
+        public int flgBudget { get; set; }
         public double Mth { get; set; }
         public double Budget { get; set; }
         public double Actual { get; set; }

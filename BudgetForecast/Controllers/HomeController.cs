@@ -79,7 +79,8 @@ namespace BudgetForecast.Controllers
                     this.Session["UserAD"] = "YES";
                     string txtSql = "";
                     txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD " +
-                        "FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
+                        "FROM UsrTbl_Budget Usr " +
+                        "INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
                         "WHERE UsrID =N'" + User.ToTrim() + "'";
                     SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                     SqlDataReader revcus = cmdcus.ExecuteReader();
@@ -130,8 +131,9 @@ namespace BudgetForecast.Controllers
             {
                 Connection.Open();
                 string txtSql = "";
-                txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD " +
-                    "FROM UsrTbl_Budget Usr INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
+                txtSql = "SELECT Usr.UsrTyp, Ad.Department, ISNULL(Usr.SLMCOD ,Ad.SLMCOD) as SLMCOD " +
+                    "FROM UsrTbl_Budget Usr " +
+                    "INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
                     "WHERE UsrID =N'" + User.ToTrim() + "'and [dbo].F_decrypt([Password])='" + Password + "'";
                 SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                 SqlDataReader revcus = cmdcus.ExecuteReader();

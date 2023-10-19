@@ -20,7 +20,7 @@ namespace BudgetForecast.Controllers
 {
     public class ForecastSaleController : Controller
     {
-        public ActionResult Index(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year, int flg = 1)
+        public ActionResult Index(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year, int flg = 1, int flgBudget = 0)
         {
             //Check login
             if (this.Session["UserType"] == null)
@@ -31,6 +31,7 @@ namespace BudgetForecast.Controllers
             {
                 string user = Session["UserID"].ToString();
                 string slmCodeDefault = Session["SLMCOD"].ToString();
+                string flagSup = string.Empty;
                 List<SelectListItem> SlmCodeList = new List<SelectListItem>();
                 List<SelectListItem> ProdList = new List<SelectListItem>();
                 List<SelectListItem> SecList = new List<SelectListItem>();
@@ -54,7 +55,7 @@ namespace BudgetForecast.Controllers
                     //list stkGrp
                     command = new SqlCommand("P_Search_Budget_Forecast", Connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@inUsrID", slmCodeDefault);
+                    command.Parameters.AddWithValue("@inUsrID", "");
                     command.Parameters.AddWithValue("@inType", "SEC");
                     //command.ExecuteNonQuery();
                     SqlDataReader dr2 = command.ExecuteReader();
@@ -127,62 +128,26 @@ namespace BudgetForecast.Controllers
                         revCusList.Dispose();
                         ViewBag.cusNameList = cusList;
                     }
-                    //sec list
-                    if (stkSec != null)
+                    if (slmCodeDefault != null)
                     {
-                        string secArr;
-                        string txtSql = string.Empty;
-                        string whSec = string.Empty;
-                        List<SecListKey> secListAll = new List<SecListKey>();
-                        if (stkSec[0] != "ALL"/* || (stkSec[0] == "ALL" && stkSec[1] != "")*/) //เลือกบาง sec
+                        SqlCommand cmd = new SqlCommand("select TOP 1 * From v_SLMTAB_SM_Userrid where SUP = N'" + slmCodeDefault + "'", Connection);
+                        SqlDataReader rev = cmd.ExecuteReader();
+                        while (rev.Read())
                         {
-                            secArr = String.Join(",", stkSec.Select(s => "'" + s + "'"));
-                            //whSec = " where SEC in (" + secArr + ")";
-                            txtSql = "select SEC from MST_SECTION_COMP where SEC in (" + secArr + ") order by SEC";
+                            flagSup = rev["SUP"].ToString();
                         }
-                        else
-                        { //เลือกทั้งหมด
-                            if (prodMgr != null && prodMgr != "ALL")
-                            { //เลือก Prod มา
-                                txtSql = "SELECT stk.SEC, sec.SECNAM" +
-                                   " FROM [MST_STKGRP_PRD] prd" +
-                                   " inner join [MST_STKGRP] stk on stk.STKGRP = prd.STKGRP" +
-                                   " inner join [MST_SECTION] sec on sec.SEC = stk.SEC" +
-                                   " where prd.PROD = '" + prodMgr + "' and prd.PROD <> ''" +
-                                   " and stk.SEC not in ('m00', 'm10', 'm20', 'm310', 'm99', 'o000', 't00', 't10', 't20', 't30', 't99', 'z00') " +
-                                   " group by stk.SEC, sec.SECNAM" +
-                                   " order by stk.SEC";
-                            }
-                            else
-                            {
-                                txtSql = "SELECT section.SEC, section.SECNAM " +
-                                    " FROM Fore_Month_slm forecast" +
-                                    " inner join [MST_SECTION] section on forecast.SEC = section.SEC" +
-                                    " where forecast.SLMCOD = '" + slmCode + "' " +
-                                    " and section.SEC not in ('m00', 'm10', 'm20', 'm310', 'm99', 'o000', 't00', 't10', 't20', 't30', 't99', 'z00') " +
-                                    " group by section.SEC, section.SECNAM " +
-                                    " order by section.SEC";
-                            }
-                        }
-                        SqlCommand cmd2 = new SqlCommand(txtSql, Connection);
-                        SqlDataReader revSecList = cmd2.ExecuteReader();
-                        while (revSecList.Read())
-                        {
-                            secListAll.Add(new SecListKey()
-                            {
-                                SEC = revSecList["SEC"].ToString(),
-                            });
-                        }
-                        revSecList.Close();
-                        revSecList.Dispose();
-                        ViewBag.secAllArray = secListAll;
+                        rev.Close();
+                        rev.Dispose();
+                        cmd.Dispose();
+                        Connection.Close();
                     }
-
+                    ViewBag.secAllArray = "";
                     ViewBag.SlmCodeList = SlmCodeList;
                     ViewBag.slmCode = slmCode == null ? slmCodeDefault : slmCode;
                     ViewBag.cusCode = cusCode == null ? "[]" : "[\"" + string.Join("\",\"", cusCode.Select(x => x.ToString()).ToArray()) + "\"]";
                     ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
                     ViewBag.stkSec = stkSec == null ? "[]" : "[\"" + string.Join("\",\"", stkSec.Select(x => x.ToString()).ToArray()) + "\"]";
+                    ViewBag.flagSup = flagSup;
 
                     command.Dispose();
                     Connection.Close();
@@ -194,7 +159,7 @@ namespace BudgetForecast.Controllers
             //stkGroup null
             if (slmCode != null || cusCode != null)
             {
-                SearchForecastSale = new SearchForecastSale().GetStoreSearchForecastSale(slmCode, cusCode, stkSec, year, flg);
+                SearchForecastSale = new SearchForecastSale().GetStoreSearchForecastSale(slmCode, cusCode, stkSec, year, flg, 0, flgBudget);
 
             }
 
@@ -207,58 +172,47 @@ namespace BudgetForecast.Controllers
         }
         //search
         [HttpPost]
-        public ActionResult SearchForecast(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year, int flg)
+        public ActionResult SearchForecast(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year, int flg, int flgBudget)
         {
             List<SelectListItem> SlmCodeList = new List<SelectListItem>();
             List<SelectListItem> ProdList = new List<SelectListItem>();
             List<SelectListItem> SecList = new List<SelectListItem>();
             List<SelectListItem> MonthYearList = new List<SelectListItem>();
+            List<CusomerListKey> cusList = new List<CusomerListKey>();
+            var Listtest = new string[] {};
             using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
             {
                 Connection.Open();
-                //list stkGrp
-                var command = new SqlCommand("P_Search_Budget_Forecast", Connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@inUsrID", slmCode);
-                command.Parameters.AddWithValue("@inType", "SEC");
-                //command.ExecuteNonQuery();
-                SqlDataReader dr2 = command.ExecuteReader();
-                while (dr2.Read())
-                {
-                    SecList.Add(new SelectListItem() { Value = dr2["SEC"].ToString(), Text = dr2["SEC"].ToString() + "/" + dr2["SECNAM"].ToString() });
-                }
-                ViewBag.SecList = SecList;
-                dr2.Close();
-                dr2.Dispose();
-                command.Dispose();
-
-                if (slmCode != null)
-                {
-                    //วันที่คีย์ได้ budget pm
-                    var yearCurrent = DateTime.Now.Year.ToString();
-                    var getDateInput = Utils.GetDateInput(4, yearCurrent);
-
-                    ViewBag.flagInput = getDateInput.Item1;
-                    ViewBag.startDate = getDateInput.Item2;
-                    ViewBag.endDate = getDateInput.Item3;
-                }
                 if (cusCode != null)
                 {
+
                     string cusCodArr = String.Join(",", cusCode.Select(s => "'" + s + "'"));
-                    List<CusomerListKey> cusList = new List<CusomerListKey>();
-                    SqlCommand cmd = new SqlCommand("select cus.CUSKEY, cus.CUSNAM from v_Fore_AllCusProvCuskey as cus where cus.CUSCOD in (" + cusCodArr + ") and cus.SLMCOD = '" + slmCode + "' group by cus.CUSKEY, cus.CUSNAM order by cus.CUSKEY", Connection);
-                    SqlDataReader revCusList = cmd.ExecuteReader();
-                    while (revCusList.Read())
-                    {
-                        cusList.Add(new CusomerListKey()
-                        {
-                            CUSKEY = revCusList["CUSKEY"].ToString(),
-                            CUSNAM = revCusList["CUSNAM"].ToString(),
-                        });
-                    }
-                    revCusList.Close();
-                    revCusList.Dispose();
-                    ViewBag.cusNameList = cusList;
+                    //SqlCommand cmd = new SqlCommand("select cus.CUSKEY, cus.CUSNAM from v_Fore_AllCusProvCuskey as cus where cus.CUSCOD in (" + cusCodArr + ") and cus.SLMCOD = '" + slmCode + "' group by cus.CUSKEY, cus.CUSNAM order by cus.CUSKEY", Connection);
+
+                    //string txtSqlCus = string.Empty;
+                    //txtSqlCus = "select cus.CUSKEY, cus.CUSNAM " +
+                    //    "from v_Fore_AllCusProvCuskey as cus " +
+                    //    "inner join Fore_Month_slm forecast on forecast.CUSCOD = cus.CUSCOD " +
+                    //    "left join v_Budget_CusGrp_Month budget on budget.CUSKEY = cus.CUSCOD " +
+                    //    "where forecast.CUSCOD in (" + cusCodArr + ") and forecast.SLMCOD = '" + slmCode + "' " +
+                    //    "group by cus.CUSKEY, cus.CUSNAM";
+                    //if (flgBudget == 1) {
+                    //    txtSqlCus += " Having sum(isnull(budget.Budget,0)) > 0 OR ";
+                    //}
+                    //txtSqlCus += " order by cus.CUSKEY ";
+                    //SqlCommand cmd = new SqlCommand(txtSqlCus, Connection);
+                    //SqlCommand cmd = new SqlCommand("select CUSKEY, CUSKEYNAM from CUSPROV where SLMCOD =N'" + slmCode + "' group by CUSKEY, CUSKEYNAM order by CUSKEY", Connection);
+                    //SqlDataReader revCusList = cmd.ExecuteReader();
+                    //while (revCusList.Read())
+                    //{
+                        //cusList.Add(new CusomerListKey()
+                        //{
+                        //    CUSKEY = revCusList["CUSKEY"].ToString(),
+                        //    CUSNAM = revCusList["CUSNAM"].ToString(),
+                        //});
+                    //}
+                    //revCusList.Close();
+                    //revCusList.Dispose();
                 }
                 //sec list
                 if (stkSec != null)
@@ -271,7 +225,7 @@ namespace BudgetForecast.Controllers
                     {
                         secArr = String.Join(",", stkSec.Select(s => "'" + s + "'"));
                         //whSec = " where SEC in (" + secArr + ")";
-                        txtSql = "select SEC from MST_SECTION_COMP where SEC in (" + secArr + ") order by SEC";
+                        txtSql = "select SEC, SECNAM from MST_SECTION_COMP where SEC in (" + secArr + ") order by SEC";
                     }
                     else
                     { //เลือกทั้งหมด
@@ -304,6 +258,7 @@ namespace BudgetForecast.Controllers
                         secListAll.Add(new SecListKey()
                         {
                             SEC = revSecList["SEC"].ToString(),
+                            SEC_NAME = revSecList["SECNAM"].ToString(),
                         });
                     }
                     revSecList.Close();
@@ -311,7 +266,7 @@ namespace BudgetForecast.Controllers
                     ViewBag.secAllArray = secListAll;
                 }
                 //list month search
-                command = new SqlCommand("P_Get_Month_Current", Connection);
+                var command = new SqlCommand("P_Get_Month_Current", Connection);
                 command.CommandType = CommandType.StoredProcedure;
                 SqlDataReader dr4 = command.ExecuteReader();
                 while (dr4.Read())
@@ -328,11 +283,32 @@ namespace BudgetForecast.Controllers
             var SearchForecastSale = new List<StoreSearchForecastSaleModel>();
             ViewBag.stkGroupList = SearchForecastSale;
             //stkGroup null
-            if (slmCode != null || cusCode != null)
+            if (slmCode !=  null || cusCode != null)
             {
-                SearchForecastSale = new SearchForecastSale().GetStoreSearchForecastSale(slmCode, cusCode, stkSec, year, flg);
-
+                string flagSelectCustomerAll = Array.Find(cusCode, element => element.StartsWith("ALLCUS"));
+                string flagSelectSecAll = Array.Find(stkSec, element => element.StartsWith("ALLSEC"));
+                if (flagSelectCustomerAll != null) {
+                    cusCode = new string[] { "ALL" };
+                }    
+                if (flagSelectSecAll != null) {
+                    stkSec = new string[] { "ALL" };
+                }
+                SearchForecastSale = new SearchForecastSale().GetStoreSearchForecastSale(slmCode, cusCode, stkSec, year, flg, 0, flgBudget);
             }
+            //ดึงข้อมูลร้านค้า
+            if (SearchForecastSale != null) {
+                foreach (var dataItem in (List<StoreSearchForecastSaleModel>)SearchForecastSale) {
+                    if (dataItem.CUSKEY != null && dataItem.CUSNAM != null) {
+                        cusList.Add(new CusomerListKey()
+                        {
+                            CUSKEY = dataItem.CUSKEY.ToString(),
+                            CUSNAM = dataItem.CUSNAM.ToString(),
+                        });
+                    }
+                }
+            }
+
+            ViewBag.cusNameList = cusList.GroupBy(x => x.CUSKEY).Select(x => x.First()).ToList();
 
             ViewBag.secArray = stkSec == null ? null : stkSec;
             ViewBag.stkGroupList = SearchForecastSale;

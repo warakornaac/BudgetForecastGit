@@ -5,6 +5,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUUL4xmD5Dk_p1W7_8LFhfUBZi51UQf5UUCYKL8PWrbg&s?sz=100">
+    <script src="~/Scripts/jquery-3.6.4.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/jquery.inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/Scripts/loadingoverlay.min.js"></script>
+
+    <link href="~/Scripts/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
     <title>@ViewBag.Title </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -21,3 +31,12 @@
     @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>
+<script type="text/javascript">
+    function LoadingShow() {
+        $.LoadingOverlay("show");
+    }
+
+    function LoadingHide() {
+        $.LoadingOverlay("hide");
+    }
+</script>
