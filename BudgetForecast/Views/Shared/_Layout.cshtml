@@ -97,7 +97,7 @@
     var pathname = window.location.pathname.split('/');
     var pathId = pathname[1].replace('/', '');;
     var hostName = "";
-    if (pathId != 'ForecastSale' && pathId != 'BudgetSale') {
+    if (pathId != 'BudgetPm' && pathId != 'ForecastSale' && pathId != 'BudgetSale') {
         hostName = '/' + pathId;
     }
     console.log("pathname = " + hostName);
