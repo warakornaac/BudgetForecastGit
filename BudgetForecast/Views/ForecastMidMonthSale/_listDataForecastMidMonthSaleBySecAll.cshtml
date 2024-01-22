@@ -30,8 +30,8 @@
                         <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                             <div class="card-body pb-0" style="margin-top: -10px;">
                                 @*<button type="button" class="btn btn-success" onclick="addsecNote();" style="font-size:medium; display:inline-block; margin-bottom:8px;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-        <h4 class="" style="font-weight: 700; display:inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
-        <span class="text-c-blue"></span>*@
+                                    <h4 class="" style="font-weight: 700; display:inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
+                                    <span class="text-c-blue"></span>*@
                                 <button class="btn btn-success" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size:medium; display:inline-block; margin-bottom:8px;"> <i class="fa fa-plus" aria-hidden="true"></i></button>
                                 <h4 class="" style="font-weight: 700; display: inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                 <span class="text-c-blue"></span>
@@ -185,14 +185,11 @@
                  contentType: "application/json; charset=utf-8",
                  processData: false,
                  beforeSend: function () {
-                     $('#' + divShow).empty();
-                     $('#' + divShow).html('<div style="padding: 30px; font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>')
                  },
                  success: function (result) {
                      if (result.status == "success") {
                          Swal.fire({
                              title: "Saving Note success",
-                             //text: "That thing is still around?",
                              icon: "success"
                          });
                          $('.note_show_all_' + seccode).text(text);
@@ -218,8 +215,7 @@
                  },
                  complete: function (res) {
                      //LoadingHide();
-                     $('#' + divShow).empty();
-                     $('#' + divShow).html(res);
+
                  }
              }).fail(function (error) {
                  LoadingHide();
@@ -247,12 +243,6 @@
             let year = $("#year option:selected").val();
             let secValue = $(this).data("sec");
             let noteVal;
-            //console.log("log M = " + monthSelect);
-            //console.log("log Y = " + year);
-            //console.log("log slm = " + slmCode);
-            //console.log("log sec " + secValue);
-            //console.log("=========================");
-
             $.ajax({
                 url: '/ForecastMidMonthSale/GetNotebysec',
                 type: 'post',
@@ -263,6 +253,10 @@
                     YEAR: year
                 },
                 dataType: 'json',
+                beforeSend: function () {
+                    // LoadingShow();
+                    $('.iconLoading').html('<div style="padding: 30px; font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>');
+                },
                 success: function (data) {
                     $('[class^="note_show_all_"]').each(function () {
                         //var secValue = $(this).data("sec");
@@ -277,11 +271,13 @@
                         }
                     });
                 },
-
                 error: function () {
                     alert('Error fetching data.');
                     console.log("fail!!! ");
-
+                },
+                complete: function (res) {
+                    //LoadingHide();
+                    $('.iconLoading').empty();
                 }
             });
         });//$Func
@@ -291,7 +287,7 @@
     //Show Note
     function ShowNote(sec) {
         var NoteText = $('.note_show_' + sec).html();
-        /if (NoteText.trim() !== "") {
+        if (NoteText.trim() !== "") {
 
         Swal.fire({
             title: "Note Sec " + sec,
@@ -326,7 +322,7 @@
             },
             dataType: 'json',
             beforeSend: function () {
-                LoadingShow();
+               // LoadingShow();
             },
             success: function (data) {
                 var NoteText = "";
@@ -335,12 +331,7 @@
                 });
                 $('.popup-text-' + sec).val(NoteText);
 
-                //console.log("log M = " + value);
-                //console.log("log Y = " + year);
-                //console.log("log slm = " + slmCode);
-                //console.log("log sec " + sec);
-                //console.log("=========================");
-                //console.log("Log data = " + NoteText);
+
             },
 
             error: function () {
@@ -348,7 +339,7 @@
                 console.log("fail!!! ");
             },
             complete: function (res) {
-                LoadingHide();
+                //LoadingHide();
 
             }
         });//Ajax
