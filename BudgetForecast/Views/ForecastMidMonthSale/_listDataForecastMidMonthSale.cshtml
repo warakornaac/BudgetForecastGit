@@ -182,9 +182,9 @@
     }
 
     .first-col {
-        width: 90px;
-        min-width: 90px;
-        max-width: 90px;
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
         left: 0px;
     }
 
@@ -251,9 +251,6 @@
             max-width: 20.67%;
         }
     }
-
-
-
 </style>
 @if (((List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList).Count() == 0 || ViewBag.cusCodeList == null || ViewBag.cusNameList.Count == 0) //ไม่มีข้อมใน Fore_Month_slm
 {
@@ -599,7 +596,7 @@ else
                                                             @{
                                                                 int countSaleForecast = 0;
                                                                 string nameSaleForecast = "";
-                                                                
+
                                                                 string nameSaleForecastmonth = "";
                                                                 string idSaleForecast = "";
                                                                 string classTotalSaleForecast = "";
@@ -690,7 +687,7 @@ else
                                                     {
                                                         @* New ForeCast*@
                                                         <tr style="white-space: nowrap;" class="forecastTr">
-                                                            
+
                                                             <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>New Forecast</b> </td>
                                                             <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
                                                                 <b>@dataItem.Last_year.ToString("N0")</b>
@@ -796,12 +793,12 @@ else
                                                                             break;
                                                                     }
 
-                                                                    nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;                                                                    
+                                                                    nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
                                                                     idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
                                                                     classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
                                                                     classRemainForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
                                                                     checkboxForecast = "selectList_" + countSaleForecast;
-                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">                      
+                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
                                                                         <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classRemainForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY' );" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
                                                                         <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
                                                                     </td>
@@ -1023,7 +1020,7 @@ else
                                         bgMonthCurrent = codeColorMonthCurrent;
                                     }
                                     <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
-                                        <span class=""  id="sum_sale_actual_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                        <span class="" id="sum_sale_actual_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
                                         <input class="" type="hidden" id="sum_input_sale_actual_@monthItemCur.TrimStart('0')" />
                                     </td>
                                 }
@@ -1042,8 +1039,8 @@ else
                                         bgMonthCurrent = "#f9ecdc";
                                     }
                                     <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
-                                        <span class="" id="sum_sale_forecastm_@monthItemCur.TrimStart('0')"  style="font-size: 16px;"></span>
-                                        <input class="" type="hidden" id="sum_input_sale_forecastm_@monthItemCur.TrimStart('0')" data-month="@monthItemCur.TrimStart('0')"/>
+                                        <span class="" id="sum_sale_forecastm_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                        <input class="" type="hidden" id="sum_input_sale_forecastm_@monthItemCur.TrimStart('0')" data-month="@monthItemCur.TrimStart('0')" />
 
                                     </th>
                                 }
@@ -1063,7 +1060,7 @@ else
                                     }
                                     <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
                                         <span class="" id="sum_sale_forecast_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
-                                        <input class="" type="hidden" id="sum_input_sale_forecast_@monthItemCur.TrimStart('0')" disabled/>
+                                        <input class="" type="hidden" id="sum_input_sale_forecast_@monthItemCur.TrimStart('0')" disabled />
 
                                     </th>
                                 }
@@ -1083,7 +1080,7 @@ else
                                     }
                                     <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
                                         <span class="" id="sum_sale_remain_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
-                                        
+
                                     </th>
                                 }
                             </tr>
@@ -1140,7 +1137,7 @@ else
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_sec_@secItem.SEC">
                                 <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                                     <div class="card-body pb-0" style="margin-top: -10px;">
-                                        <button class="btn btn-success" onclick="addsecNote('@secItem.SEC');" style="font-size: medium; display: inline-block; margin-bottom: 8px; "> <i class="fa fa-plus" aria-hidden="true" ></i></button>
+                                        <button class="btn btn-success" onclick="addsecNote('@secItem.SEC');" style="font-size: medium; display: inline-block; margin-bottom: 8px; "> <i class="fa fa-plus" aria-hidden="true"></i></button>
                                         <h4 class="" style="font-weight: 700; display: inline-block;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
                                         <span class="text-c-blue"></span>
                                         <span class="note_show_@secItem.SEC d-inline-block text-truncate btn" id="@idNOTE" style="max-width: 170px; font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@secItem.SEC');">  </span>
@@ -1624,7 +1621,7 @@ else
     //}
 
         //Sum by Month
-        
+
 
 
 
@@ -1635,7 +1632,7 @@ else
         });
         calculateForecastSale();
             //flagInput = เลยเวลาคีย์แล้ว
-        
+
         let flagInput = $("#flagInput").val();
         if (flagInput == 'NO') {
             $(window).unbind('beforeunload');
@@ -1687,7 +1684,7 @@ else
                 "aria-label": "Type your message here"
             },
             showCancelButton: true,
-            
+
             confirmButtonText: "Save",
             cancelButtonText: "Cancel",
             customClass: {
@@ -1771,7 +1768,7 @@ else
                         "aria-label": "Type your message here"
                     },
                 showCancelButton: true,
-                    
+
                 confirmButtonText: "Save",
                     cancelButtonText: "Cancel",
                     customClass: {
@@ -1962,7 +1959,7 @@ else
     }
 </script>
 <style>
-    .dop{
-        height : 50px;
+    .dop {
+        height: 50px;
     }
 </style>
