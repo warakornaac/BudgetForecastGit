@@ -124,9 +124,10 @@ function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg, flgBu
     } else if (flg == 2) { //sum by month
         divShow = "showSumByMonth";
     }
+
     $.ajax({
         type: 'post',
-        url: hostName + '/ForecastSale/SearchForecast', //@Url.Action("SearchForecast", "ForecastSale")',
+        url: hostName + '/ForecastMidMonthSale/SearchForecast',/*url: hostName + '/ForecastSale/SearchForecast',*/ //@Url.Action("SearchForecast", "ForecastSale")',
         data: {
             slmCode: slmCode,
             cusCode: cusCode,
@@ -156,7 +157,29 @@ function resetSearch() {
     //LoadingHide();
 }
 
+//AddNote
+//function addsecNote(_seccode) {
+//    (async () => {
+//        const { value: text } = await Swal.fire({
+//            input: "textarea",
+//            title: "เพิ่ม Note Sec " + _seccode,
+//            inputPlaceholder: "Type your message here...",
+//            inputAttributes: {
+//                "aria-label": "Type your message here"
+//            },
+//            showCancelButton: true,
 
+//            confirmButtonText: "เพิ่ม",
+//            cancelButtonText: "ยกเลิก",
+//        });
+//        if (text) {
+//            Swal.fire({
+//                icon: "success",
+//                title: "Note Updated!!!"
+//            });
+//        }
+//    })();
+//}
 
 function getCustomerBySlmCode(_slmCode) {
     //alert(_slmCode);
@@ -168,7 +191,8 @@ function getCustomerBySlmCode(_slmCode) {
     }
     //alert(slmCode);
     $.ajax({
-        url: hostName + '/ForecastSale/Getdatabyslm',
+        //url: hostName + '/Getdatabyslm',
+        url: hostName + '/ForecastMidMonthSale/Getdatabyslm',
         data: {
             slmCode: slmCode,
         },
@@ -191,6 +215,7 @@ function getCustomerBySlmCode(_slmCode) {
         }
     });
 }
+
 function getStkgrpByProd(_prodCode) {
     var stkSecHeader = $("#stkSec_header").val();
     var stkArray = new Array();
@@ -226,39 +251,105 @@ function getStkgrpByProd(_prodCode) {
         }
     });
 }
-//
-//sum forecast sale by input
-sumSaleForecast = async (_className, month, sec, cuscod) => {
-    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
-    var monthSelect = $("#month_sec option:selected").val();
-    let sum_forecast_by_month = 0;
-    await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
-        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-        forecast_sale_key = await getVowels(forecast_sale_key, 0);
-        sum_forecast_by_month += Number(forecast_sale_key);
-    }));
-    $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
-    //sum total by cuscod sec
-    let sum_total_forecast_by_cuscod = 0;
-    await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
-        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
-        forecast_sale_key = await getVowels(forecast_sale_key, 0);
-        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
-    }));
-    $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
-    $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
 
-    //sum จากช่อง forecast
-    await sumSaleForecastByCaption("sale_forecast");
-    //sum by month
-    await sumAllSaleForecastByCaption("total_forecast");
+//sum forecast sale by input***
 
-    //hide icon
-    setTimeout(() => {
-        $(".iconLoading").html('');
-    }, "1000");
-}
+//sumSaleForecast = async (_className, month, sec, cuscod) => {
+//    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+//    var monthSelect = $("#month_sec option:selected").val();
+//    let sum_forecast_by_month = 0;
+//    await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
+//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+//        sum_forecast_by_month += Number(forecast_sale_key);
+//    }));
+//    $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+//    //sum total by cuscod sec
+//    let sum_total_forecast_by_cuscod = 0;
+//    await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+//        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
+//    }));
+//    $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+//    $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+//    //sum จากช่อง forecast
+//    await sumSaleForecastByCaption("sale_forecast");
+//    //sum by month
+//    await sumAllSaleForecastByCaption("total_forecast");
+
+
+
+
+//    let sum_forecastm_by_month = 0;
+//    await Promise.all($(".sale_forecastm_" + sec + "_" + monthSelect).each(async function (i, obj) {
+//        let forecastm_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        forecastm_sale_key = await getVowels(forecastm_sale_key, 0);
+//        sum_forecastm_by_month += Number(forecastm_sale_key);
+//    }));
+//    $('.sum_sec_forecastm_' + sec).text(numberWithCommas(sum_forecastm_by_month.toFixed(0)));
+
+//    //sum total by cuscod sec
+//    let sum_total_forecastm_by_cuscod = 0;
+//    await Promise.all($(".sum_sale_forecastm_" + cuscod + "_" + sec).each(async function (i, obj) {
+//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+//        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
+//    }));
+//    $('.sum_total_forecastm_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecastm_by_cuscod.toFixed(0)));
+//    $('.sum_total_forecastm_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecastm_by_cuscod.toFixed(0)));
+//    //sum จากช่อง forecast
+//    await sumSaleForecastByCaption("sale_forecastm");
+//    //sum by month
+//    await sumAllSaleForecastByCaption("total_forecastm");
+
+
+
+//    //hide icon
+//    setTimeout(() => {
+//        $(".iconLoading").html('');
+//    }, "1000");
+//}
+
+
+
+//sum actual and forecast by input
+//sumSaleForecastActual = async (_className, month, sec, cuscod) => {
+//    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+//    var monthSelect = $("#month_sec option:selected").val();
+//    let sum_actual_by_month = 0;
+//    await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
+//        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        actual_sale_key = await getVowels(actual_sale_key, 0);
+//        sum_actual_by_month += Number(actual_sale_key);
+//    }));
+//    $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
+//    //sum total by cuscod sec
+//    let sum_total_actual_by_cuscod = 0;
+//    await Promise.all($(".sum_sale_actaul_" + cuscod + "_" + sec).each(async function (i, obj) {
+//        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+//        actual_sale_key = await getVowels(actual_sale_key, 0);
+//        sum_total_actual_by_cuscod += Number(actual_sale_key);
+//    }));
+//    $('.sum_total_actaul_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_actual_by_cuscod.toFixed(0)));
+//    $('.sum_total_actual_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_actual_by_cuscod.toFixed(0)));
+
+//    //sum จากช่อง forecast
+//    await sumSaleForecastByCaption("sale_actual");
+//    //sum by month
+//    await sumAllSaleForecastByCaption("total_actual");
+
+//    //hide icon
+//    setTimeout(() => {
+//        $(".iconLoading").html('');
+//    }, "1000");
+//}
+
+
+
 //for sum by sec
 const sumSecAll = async (month) => {
     var flagTabBySecAll = $("#flagTabBySecAll").val();
@@ -289,12 +380,22 @@ const sumSecAll = async (month) => {
 const sumSecByMonth = async (sec, month) => {
     //sum sec forecast
     let sum_forecast_by_month = 0;
-    await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
+    await Promise.all($(".sale_forecastm_" + sec + "_" + month).each(async function (i, obj) {
         let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
         forecast_sale_key = await getVowels(forecast_sale_key, 0);
         sum_forecast_by_month += Number(forecast_sale_key);
     }));
-    $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+    $('.sum_sec_forecastm_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+
+    //sum sec New Forecast
+    let new_sum_forecast_by_month = 0;
+    await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
+        let new_forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        new_forecast_sale_key = await getVowels(new_forecast_sale_key, 0);
+        new_sum_forecast_by_month += Number(new_forecast_sale_key);
+    }));
+    $('.sum_sec_forecast_' + sec).text(numberWithCommas(new_sum_forecast_by_month.toFixed(0)));
+
     //sum sec budget
     let sum_budget_by_month = 0;
     await Promise.all($(".sale_budget_" + sec + "_" + month).each(async function (i, obj) {
@@ -311,10 +412,21 @@ const sumSecByMonth = async (sec, month) => {
         sum_actual_by_month += Number(actual_sale_key);
     }));
     $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
+
+    //Remain
+    let remain = 0;
+    if (new_sum_forecast_by_month > 0) {
+        remain = new_sum_forecast_by_month - sum_actual_by_month;
+    }
+    else {
+        remain = sum_forecast_by_month - sum_actual_by_month;
+    }
+    $('.sum_sec_remain' + sec).text(numberWithCommas(remain))
+
     //Budget, Actual, Forecast เป็น 0 ไม่แสดง
     //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
     if (sum_forecast_by_month == 0 && sum_budget_by_month == 0 && sum_actual_by_month == 0) {
-       $("#sum_by_sec_" + sec).css("display", "none");
+        $("#sum_by_sec_" + sec).css("display", "none");
     } else {
         $("#sum_by_sec_" + sec).css("display", "block");
     }
@@ -332,6 +444,7 @@ const sumSaleForecastByCaption = async (inputName) => {
         }));
         if (sum_by_caption != 0 && sum_by_caption != null) {
             $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
+            $('#sum_' + "input"+"_" + inputName + '_' + numMonth).val(sum_by_caption);
         }
     }
 }
@@ -360,6 +473,7 @@ const sumAllSaleForecastByCaption = async (className) => {
         sum_all_by_caption = Math.floor(sum_all_by_caption * 100) / 100;
         sum_all_by_caption += "%";
     } else if (className == "total_forecast_all") {
+    } else if (className == "total_forecastm_all") {
 
     } else {
         await Promise.all($('.' + className).each(async function (i, obj) {
@@ -376,31 +490,80 @@ const sumAllSaleForecastByCaption = async (className) => {
     $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
 }
 
+//sum by month remain
+const sumRemainBycaption = async () => {
+    $('[id^="sum_input_sale_forecastm_"]').each(function () {
+        let month = $(this).data('month');
+        let sum_actual = $("#sum_input_sale_actual_" + month).val();
+        let sum_new_forecast = $("#sum_input_sale_forecast_" + month).val();
+        let sum_forecast = $(this).val();
+        let remain_res = 0;
+
+        if (sum_new_forecast > 0) {
+            remain_res = sum_new_forecast - sum_actual;
+        }
+        else {
+            remain_res = sum_forecast - sum_actual;
+        }
+        //console.log("REsult : " + sum_new_forecast + " month : " + month);
+        $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
+    })
+}
+
+const sumRemainByMonthAll = async () => {
+    //$('[id^="sum_input_all_forecastm_"]').each(function () {
+    //    let month = $(this).data('month');
+    //    let sum_actual = $("#sum_input_all_actual_" + month).val();
+    //    let sum_new_forecast = $("#sum_input_all_forecast_" + month).val();
+    //    let sum_forecast = $(this).val();
+    //    let remain_res = 0;
+
+    //    if (sum_new_forecast > 0) {
+    //        remain_res = sum_new_forecast - sum_actual;
+    //    }
+    //    else {
+    //        remain_res = sum_forecast - sum_actual;
+    //    }
+    //    console.log("REsult : " + sum_new_forecast + " month : " + month);
+    //    $("#sum_sale_remain_all_" + month).text(numberWithCommas(remain_res.toFixed(0)));
+    //})
+}
 async function calculateForecastSale() {
     //if (countList > 0) {
-        $(".cardSummary").LoadingOverlay("show");
-        await sumSecAll();
-        await sumSaleForecastByCaption("sale_budget");
-        await sumSaleForecastByCaption("sale_actual");
-        await sumSaleForecastByCaption("sale_forecast");
+    $(".cardSummary").LoadingOverlay("show");
+    await sumSecAll();
+    await sumSaleForecastByCaption("sale_budget");
+    await sumSaleForecastByCaption("sale_actual");
+    await sumSaleForecastByCaption("sale_forecast");
+    await sumSaleForecastByCaption("sale_forecastm");
+    await sumRemainBycaption();
+   // await sumRemainByMonthAll();
 
-        //Summary by sec
-        await sumAllSaleForecastByCaption("last_year_budget");
-        await sumAllSaleForecastByCaption("total_budget");
-        await sumAllSaleForecastByCaption("under_budget");
-        await sumAllSaleForecastByCaption("over_budget");
+    //Summary by sec
+    await sumAllSaleForecastByCaption("last_year_budget");
+    await sumAllSaleForecastByCaption("total_budget");
+    await sumAllSaleForecastByCaption("under_budget");
+    await sumAllSaleForecastByCaption("over_budget");
 
-        await sumAllSaleForecastByCaption("last_year_actual");
-        await sumAllSaleForecastByCaption("total_actual");
-        await sumAllSaleForecastByCaption("under_actual");
-        await sumAllSaleForecastByCaption("over_actual");
+    await sumAllSaleForecastByCaption("last_year_actual");
+    await sumAllSaleForecastByCaption("total_actual");
+    await sumAllSaleForecastByCaption("under_actual");
+    await sumAllSaleForecastByCaption("over_actual");
 
-        await sumAllSaleForecastByCaption("last_year_forecast");
-        await sumAllSaleForecastByCaption("total_forecast");
-        await sumAllSaleForecastByCaption("under_forecast");
-        await sumAllSaleForecastByCaption("over_forecast");
+    await sumAllSaleForecastByCaption("last_year_forecast");
+    await sumAllSaleForecastByCaption("total_forecast");
+    await sumAllSaleForecastByCaption("under_forecast");
+    await sumAllSaleForecastByCaption("over_forecast");
 
-        $(".cardSummary").LoadingOverlay("hide");
+
+    await sumAllSaleForecastByCaption("last_year_forecastm");
+    await sumAllSaleForecastByCaption("total_forecastm");
+    await sumAllSaleForecastByCaption("under_forecastm");
+    await sumAllSaleForecastByCaption("over_forecastm");
+
+
+
+    $(".cardSummary").LoadingOverlay("hide");
     //}
 }
 $(document).ready(function () {
@@ -419,6 +582,12 @@ $(document).ready(function () {
     $("[class*=sale_forecast_]").prop('disabled', true);
     if (monthInput != "") { //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
         $(".sale_forecast_" + monthInput).attr("disabled", false);
+        $("input[data-month='" + monthInput + "']").prop("disabled", false)
+    }
+
+    $("[class*=sale_forecastm_]").prop('disabled', true);
+    if (monthInput != "") { //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
+        $(".sale_forecastm_" + monthInput).attr("disabled", false);
         $("input[data-month='" + monthInput + "']").prop("disabled", false)
     }
 
@@ -472,7 +641,8 @@ $(document).ready(function () {
     //GET CUSTOMER
     $('#slmCode').change(function () {
         $.ajax({
-            url: hostName + '/ForecastSale/Getdatabyslm',
+            url: hostName + '/ForecastMidMonthSale/Getdatabyslm',
+            //url: hostName + '/ForecastSale/Getdatabyslm',
             data: {
                 slmCode: $(this).val(),
             },
@@ -614,5 +784,5 @@ document.onreadystatechange = function () {
     }
 }
 ////////////////////////////
-//Script list forecastsale//
+//Script list forecast mid month sale//
 ////////////////////////////

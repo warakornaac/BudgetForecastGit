@@ -1,25 +1,24 @@
-﻿using System;
+﻿using BudgetForecast.Model;
+using BudgetForecast.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using BudgetForecast.Model;
 using BudgetForecast.Data;
 using BudgetForecast.Models;
 using BudgetForecast.Library;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Globalization;
+using System.Drawing;
 
 namespace BudgetForecast.Controllers
 {
-    public class ForecastSaleController : Controller
+    public class ForecastMidMonthSaleController : Controller
     {
+        // GET: NewForecastSale
         public ActionResult Index(string slmCode, string[] cusCode, string[] stkSec, string prodMgr, string[] stkGroup, string year, int flg = 1, int flgBudget = 0)
         {
             //Check login
@@ -179,6 +178,7 @@ namespace BudgetForecast.Controllers
             List<SelectListItem> SecList = new List<SelectListItem>();
             List<SelectListItem> MonthYearList = new List<SelectListItem>();
             List<CusomerListKey> cusList = new List<CusomerListKey>();
+
             var Listtest = new string[] { };
             using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
             {
@@ -281,6 +281,7 @@ namespace BudgetForecast.Controllers
 
             var arrMonth = new string[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
             var SearchForecastSale = new List<StoreSearchForecastSaleModel>();
+            var NoteForecastSale = new List<GetNoteForecastSaleModel>();
             ViewBag.stkGroupList = SearchForecastSale;
             //stkGroup null
             if (slmCode != null || cusCode != null)
@@ -295,11 +296,14 @@ namespace BudgetForecast.Controllers
                 {
                     stkSec = new string[] { "ALL" };
                 }
+
                 SearchForecastSale = new SearchForecastSale().GetStoreSearchForecastSale(slmCode, cusCode, stkSec, year, flg, 0, flgBudget);
+
             }
             //ดึงข้อมูลร้านค้า
             if (SearchForecastSale != null)
             {
+                var Month = DateTime.Now.Month;
                 foreach (var dataItem in (List<StoreSearchForecastSaleModel>)SearchForecastSale)
                 {
                     if (dataItem.CUSKEY != null && dataItem.CUSNAM != null)
@@ -310,8 +314,13 @@ namespace BudgetForecast.Controllers
                             CUSNAM = dataItem.CUSNAM.ToString(),
                         });
                     }
+
+                    // 
+
                 }
             }
+
+            //
 
             ViewBag.cusNameList = cusList.GroupBy(x => x.CUSKEY).Select(x => x.First()).ToList();
 
@@ -321,7 +330,11 @@ namespace BudgetForecast.Controllers
             ViewBag.monthList = arrMonth;
             ViewBag.cusCodeList = cusCode == null ? null : cusCode;
 
-            return PartialView("_listDataForecastSale", new
+
+
+
+
+            return PartialView("_listDataForecastMidMonthSale", new
             {
                 @ViewBag.stkGroupList,
                 @ViewBag.slmCode,
@@ -341,6 +354,8 @@ namespace BudgetForecast.Controllers
             List<SelectListItem> ProdList = new List<SelectListItem>();
             List<SelectListItem> SecList = new List<SelectListItem>();
             List<SelectListItem> MonthYearList = new List<SelectListItem>();
+            var NoteForecastSale = new List<GetNoteForecastSaleModel>();
+
             using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
             {
                 Connection.Open();
@@ -371,6 +386,9 @@ namespace BudgetForecast.Controllers
                     ViewBag.endDate = getDateInput.Item3;
                 }
 
+
+                //Note by Sec
+
                 //list month search
                 command = new SqlCommand("P_Get_Month_Current", Connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -387,6 +405,7 @@ namespace BudgetForecast.Controllers
 
             var arrMonth = new string[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
             var SearchForecastSaleAll = new List<StoreSearchForecastSaleModel>();
+
             ViewBag.stkGroupList = SearchForecastSaleAll;
             //stkGroup null
             if (slmCode != null)
@@ -398,10 +417,10 @@ namespace BudgetForecast.Controllers
             ViewBag.slmCode = slmCode;
             ViewBag.monthList = arrMonth;
 
-            string renderPage = "_listDataForecastSaleByMonthAll";//by month all
+            string renderPage = "_listDataForecastMidMonthSaleByMonthAll";//by month all
             if (flg == 3)
             { //by sec all
-                renderPage = "_listDataForecastSaleBySecAll";
+                renderPage = "_listDataForecastMidMonthSaleBySecAll";
             }
 
             return PartialView(renderPage, new
@@ -418,10 +437,10 @@ namespace BudgetForecast.Controllers
         [HttpPost]
         public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
         {
-            var UpdateForecastSale = new List<StoreUpdateForecastSaleModel>();
+            var UpdateForecastSale = new List<StoreUpdateForecastMidmonthSaleModel>();
             try
             {
-                UpdateForecastSale = new UpdateForecastSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
+                UpdateForecastSale = new UpdateForecastMidmonthSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
                 return Json(new { status = "success", message = "forecastSale updated" });
             }
             catch (Exception ex)
@@ -429,6 +448,23 @@ namespace BudgetForecast.Controllers
                 return Json(new { status = "error", message = ex.Message });
             }
         }
+
+        //SaveNote
+        [HttpPost]
+        public ActionResult SaveNote(string MONTH, string USER, string SEC, string YEAR, string SLMCOD, string INPUT)
+        {
+            var UpdateNoteSale = new List<StoreUpdateNoteSaleModel>();
+            try
+            {
+                UpdateNoteSale = new UpdateNoteForecastSale().Update(MONTH, USER, SEC, YEAR, SLMCOD, INPUT);
+                return Json(new { status = "success", message = "Note updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+        }
+
         public JsonResult Getdatabyslm(string slmCode)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
@@ -456,6 +492,49 @@ namespace BudgetForecast.Controllers
             cmd.Dispose();
             Connection.Close();
             return Json(CUSList, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetNOtebysec(string MONTH_INPUT, string SEC, string SLMCOD, string YEAR)
+        {
+
+            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
+            List<NoteData> Note = new List<NoteData>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new SqlCommand("P_Get_Note_Sale_Dev", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Slmcode", SLMCOD);
+                cmd.Parameters.AddWithValue("@Month", MONTH_INPUT);
+                cmd.Parameters.AddWithValue("@Year", YEAR);
+                cmd.Parameters.AddWithValue("@Sec", SEC);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string NoteText = reader["Note"].ToString();
+                    string Slm = reader["SLMCOD"].ToString().Trim();
+                    string Sec = reader["SEC"].ToString().ToTrim();
+                    string Month = reader["STMonth"].ToString().ToTrim();
+                    string Year = reader["STYear"].ToString().ToTrim();
+                    NoteData noteData = new NoteData
+                    {
+                        Note = NoteText,
+                        SLMCOD = Slm,
+                        SEC = Sec,
+                        STMonth = Month,
+                        STYear = Year
+
+                    };
+                    Note.Add(noteData);
+
+                }
+                reader.Close();
+                cmd.Dispose();
+                ViewBag.Note = Note;
+            }
+
+            return Json(Note, JsonRequestBehavior.AllowGet);
         }
     }
 }

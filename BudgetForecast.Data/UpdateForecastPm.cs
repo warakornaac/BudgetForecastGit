@@ -11,10 +11,12 @@ namespace BudgetForecast.Data
 {
     public class UpdateForecastPm : MsSQL
     {
-        public UpdateForecastPm() : base(Utils.GetConfig("Lip_ConnectionString")) { 
-       
+        public UpdateForecastPm() : base(Utils.GetConfig("Lip_ConnectionString"))
+        {
+
         }
-        public List<StoreUpdateForecastPmModel> Update(string USER, string SEC, string YEAR, double FC00, double FC01, double FC02, double FC03, double FC04, double FC05, double FC06, double FC07, double FC08, double FC09, double FC10, double FC11, double FC12, double FC13, double FC14, double FC_GP00, double FC_GP01, double FC_GP02, double FC_GP03, double FC_GP04, double FC_GP05, double FC_GP06, double FC_GP07, double FC_GP08, double FC_GP09, double FC_GP10, double FC_GP11, double FC_GP12, double FC_GP13, double FC_GP14, double TG_INV00, double TG_INV01, double TG_INV02, double TG_INV03, double TG_INV04, double TG_INV05, double TG_INV06, double TG_INV07, double TG_INV08, double TG_INV09, double TG_INV10, double TG_INV11, double TG_INV12, double TG_INV13, double TG_INV14) {
+        public List<StoreUpdateForecastPmModel> Update(string USER, string SEC, string YEAR, double FC00, double FC01, double FC02, double FC03, double FC04, double FC05, double FC06, double FC07, double FC08, double FC09, double FC10, double FC11, double FC12, double FC13, double FC14, double FC_GP00, double FC_GP01, double FC_GP02, double FC_GP03, double FC_GP04, double FC_GP05, double FC_GP06, double FC_GP07, double FC_GP08, double FC_GP09, double FC_GP10, double FC_GP11, double FC_GP12, double FC_GP13, double FC_GP14, double TG_INV00, double TG_INV01, double TG_INV02, double TG_INV03, double TG_INV04, double TG_INV05, double TG_INV06, double TG_INV07, double TG_INV08, double TG_INV09, double TG_INV10, double TG_INV11, double TG_INV12, double TG_INV13, double TG_INV14)
+        {
             var p = new SqlParameters();
             p.AddParams("@User", USER.ToTrim());
             p.AddParams("@sec", SEC.ToTrim());
@@ -66,8 +68,8 @@ namespace BudgetForecast.Data
             p.AddParams("@TG_INV14", TG_INV14.ToString().Replace(",", ""));
             p.AddParams("@outGenstatus", 'Y');
 
-            var table = GetData(CmdStore("P_Update_Forecast_PM", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateForecastPmModel>(GetData(CmdStore("P_Update_Forecast_PM", p)));
+            var table = GetData(CmdStore("P_Update_Forecast_PM_Dev", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateForecastPmModel>(GetData(CmdStore("P_Update_Forecast_PM_Dev", p)));
         }
     }
 }

@@ -37,6 +37,8 @@ namespace BudgetForecast.Model
         public double Budget { get; set; }
         public double Actual { get; set; }
         public double FC { get; set; }
+        public double NewFC { get; set; }
+        public string Note { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ using System.Data;
 
 namespace BudgetForecast.Data
 {
-   public class SearchBudgetSale : MsSQL
+    public class SearchBudgetSale : MsSQL
     {
         public SearchBudgetSale() : base(Utils.GetConfig("Lip_ConnectionString"))
         {
@@ -19,13 +19,14 @@ namespace BudgetForecast.Data
         public List<StoreSearchBudgetSaleModel> GetStoreSearchBudgetSale(string slmCode, string[] cusCode, string[] stkSec, string[] stkGroup, int flgBudget = 1)
         {
             //add all
-            if (cusCode == null) {
+            if (cusCode == null)
+            {
                 cusCode = new string[] { "ALL" };
             }
             if (stkSec == null)
             {
                 stkSec = new string[] { "ALL" };
-            } 
+            }
             if (stkGroup == null)
             {
                 stkGroup = new string[] { "ALL" };
@@ -39,8 +40,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", "2024");
             p.AddParams("@Figure_Flg", flgBudget);
 
-            var table = GetData(CmdStore("P_Search_Budget_Sale", p));
-            return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale", p)));
+            var table = GetData(CmdStore("P_Search_Budget_Sale_Dev", p));
+            return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale_Dev", p)));
         }
     }
 }

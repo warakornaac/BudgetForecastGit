@@ -134,6 +134,7 @@
     <Compile Include="Controllers\ForecastSaleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerUserADController.cs" />
+    <Compile Include="Controllers\ForecastMidMonthSaleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -148,6 +149,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\SiteLogin.css" />
     <Content Include="Content\style_admin.css" />
+    <Content Include="Content\uicons-thin-straight.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -155,6 +157,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\scriptForecastMmSale.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -196,6 +199,10 @@
     <Content Include="Views\ForecastPm\script.cshtml" />
     <Content Include="Views\ForecastSale\_listDataForecastSaleByMonthAll.cshtml" />
     <Content Include="Views\ForecastSale\_listDataForecastSaleBySecAll.cshtml" />
+    <Content Include="Views\ForecastMidMonthSale\Index.cshtml" />
+    <Content Include="Views\ForecastMidMonthSale\_listDataForecastMidMonthSale.cshtml" />
+    <Content Include="Views\ForecastMidMonthSale\_listDataForecastMidMonthSaleByMonthAll.cshtml" />
+    <Content Include="Views\ForecastMidMonthSale\_listDataForecastMidMonthSaleBySecAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,7 +252,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63013</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44310/</IISUrl>
+          <IISUrl>https://localhost:44315/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

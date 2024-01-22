@@ -1,10 +1,11 @@
 ﻿@using BudgetForecast.Model;
 @{
-    ViewBag.Title = "Forecast by salesman";
+    ViewBag.Title = "Mid Month Forecast by salesman";
     List<SelectListItem> getSlmCode = ViewBag.SlmCodeList;
     List<SelectListItem> getProdList = ViewBag.ProdList;
     List<SelectListItem> Sec = ViewBag.SecList;
     List<SelectListItem> MonthYearDrop = ViewBag.MonthYearList;
+    //List<SelectListItem> customCode = ViewBag.cusCode;
     ViewBag.MonthYearList = MonthYearDrop;
 
     int monthInputCurrentIndex = 0;
@@ -42,6 +43,7 @@
     .dropdown-menu .bs-actionsbox .bs-deselect-all {
         width: 100%;
     }*/
+
     .custom-textarea-class {
         width: 500px;
         height: 400px;
@@ -54,14 +56,17 @@
         resize: none;
         box-shadow: none !important;
     }
+
+
+
 </style>
 <title>@ViewBag.Title</title>
 <div class="card mb-12 mt-4">
-    <form action="@Url.Action("Index", "ForecastSale")" method="post" id="forecastSaleForm" onsubmit="">
+    <form action="@Url.Action("Index", "ForecastMidMonthSale")" method="post" id="forecastSaleForm" onsubmit="">
         <div class="card-header bg-primary text-white font-weight-bold" onclick="hideHeader();" style="cursor: pointer;">
             <div class="row">
                 <div class="col-sm-12">
-                    <i class="fa fa-table"></i> Forecast by salesman <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
+                    <i class="fa fa-table"></i> Forecast Mid month by salesman <i class="fa fa-angle-down" style="font-size: larger; font-weight: bold;"></i>
                 </div>
             </div>
         </div>
@@ -86,7 +91,7 @@
                         <span>
                             <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
                                 <option value="2024" selected>2024</option>
-                                <option value="2023" selected>2023</option>
+                                <option value="2023" >2023</option>
                                 <option value="2022">2022</option>
                             </select>
                         </span>
@@ -97,6 +102,8 @@
                         <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span> @*<span style="color: red; margin-left: 50px;"> *limit select 10 customers </span>*@ &nbsp;&nbsp;&nbsp; <span id="showCustomerSelected" style="display: none; font-weight: bold;"> (Customers selected <span id="countCustomerSelected"></span>) </span>
                         <span>
                             <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" data-max-options-message="limit select 10 customer" multiple>
+                               
+
                             </select>
                         </span>
                     </div>
@@ -123,9 +130,13 @@
                         <span>
                             <select class="form-control selectpicker stkSec" id="stkSec" name="stkSec" style="width: 100%; padding-top: 5px;" title="SELECT SEC" data-live-search="true" multiple>
                                 <option value="ALL">SEC ALL</option>
-                                @for (var i = 0; i < Sec.Count; i++)
+                                @*@for (var i = 0; i < Sec.Count; i++)
+                                    {
+                                        <option value="@Sec[i].Value">@Sec[i].Text</option>
+                                    }*@
+                                @foreach (var se in Sec)
                                 {
-                                    <option value="@Sec[i].Value">@Sec[i].Text</option>
+                                    <option value="@se.Value">@se.Text</option>
                                 }
                             </select>
                         </span>
@@ -157,7 +168,7 @@
                         @*<button type="button" class="btn btn-success btn-lg" id="btnSaveForecastSale" style="font-size: medium; float: left; position: relative;" onclick="saveForecastSale();"><i class="fa fa-save"></i> Save</button>*@
                     </div>
                     <div class="col-6 text-right" style="white-space: nowrap">
-                        <button type="button" onclick="resetSearch();" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
+                        <button type="button" onclick="resetSearch();" class="btn btn-default btn-lg" id="btnmol" style="font-size: medium;"><i class="fa fa-pencil-square-o"></i> Reset</button> &nbsp;
                         <button type="button" class="btn btn-primary btn-lg" onclick="searchForecast();" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
                     </div>
 
@@ -178,6 +189,7 @@
     <div id="showDataInput"></div>
     <div id="showSumByMonth"></div>
 </div>
+
 <br>
 <br>
 
@@ -200,4 +212,6 @@
         });
    });
 </script>
-@Scripts.Render("~/Scripts/scriptForecastSale.js")
+@*@Scripts.Render("~/Scripts/scriptForecastSale.js")*@
+@Scripts.Render("~/Scripts/scriptForecastMmSale.js")
+@*<script src="~/Scripts/scriptForecastMmSale.js"></script>*@

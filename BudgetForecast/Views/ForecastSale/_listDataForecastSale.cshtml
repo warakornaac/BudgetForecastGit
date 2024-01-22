@@ -443,7 +443,7 @@ else
                                                                         {
                                                                             @underActualAmt.ToString("N0")
                                                                         }
-                                                                        <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
+                                                                        Default                                                        <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
                                                                     </td>
                                                                     <td class="vright" style="vertical-align: middle; min-width: 100px;">
                                                                         @if (underActualPerAmt != 0 && !Double.IsNaN(underActualPerAmt) && dataItem.Total_Budget > 0)
@@ -614,7 +614,7 @@ else
                                                                             checkboxForecast = "selectList_" + countSaleForecast;
                                                                             <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
                                                                                 @*<input data-id="101" type="hidden" class="form-control vright @idSaleForecast" name="@nameSaleForecast" id="sale_budget_@countSaleForecast" value="" />*@
-                                                                                <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
+                                                                                <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control dateCheck mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
                                                                                 <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
                                                                             </td>
                                                                         }
@@ -877,11 +877,17 @@ else
                     {
                         foreach (var secItem in ViewBag.secAllArray)
                         {
+                            string idNOTE = "note_show_" + secItem.SEC;
+                            string secval = "sum_avg_forecast_" + secItem.SEC;
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_sec_@secItem.SEC">
                                 <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                                     <div class="card-body pb-0" style="margin-top: -10px;">
-                                        <h4 class="" style="font-weight: 700;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
+                                        <button class="btn btn-success" onclick="addsecNote('@secItem.SEC');" style="font-size: medium; display: inline-block; margin-bottom: 8px; "> <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <h4 class="" style="font-weight: 700; display: inline-block;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
                                         <span class="text-c-blue"></span>
+                                        <span class="note_show_@secItem.SEC d-inline-block text-truncate btn" id="@idNOTE" style="max-width: 170px; font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@secItem.SEC');">  </span>
+                                        <input type="hidden" class="form-control vright @secval" id="@secval" value="@secItem.SEC" />
+                                        <input data-sec="@secItem.SEC" class="note_input_@secItem.SEC" id="note_input_@secItem.SEC" type="hidden" />
                                     </div>
                                     <div class="card-footer bg-info text-white" style="padding-top: 1px; padding-bottom: 1px; padding-left: 6px; padding-right: 12px">
                                         <div class="row text-center">
@@ -1394,4 +1400,296 @@ else
 
  }, 2000);
 
+
+
+
+
+        //Pop Up Note Sec
+    function addsecNote(seccode) {
+        var NoteText = $('.note_show_' + seccode).html();
+        if (NoteText != "") {
+                    (async () => {
+        const { value: text } = await Swal.fire({
+            input: "textarea",
+            title: "Note Sec " + seccode,
+            inputPlaceholder: "Type your message here...",
+            inputValue: $('.note_show_' + seccode).text(),
+            inputAttributes: {
+                "aria-label": "Type your message here"
+            },
+            showCancelButton: true,
+
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            customClass: {
+                textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
+            }
+        });
+        if (text) {
+            console.log(monthSelect);
+             $.ajax({
+                 type: 'POST',
+                 cache: false,
+                 url: '@Url.Action("SaveNote", "ForecastMidMonthSale")',
+                 data: JSON.stringify({
+                     MONTH: ('0' + monthSelect).slice(-2),
+                     USER: '@Session["UserID"]',
+                     SEC: seccode,
+                     YEAR: year,
+                     SLMCOD: slmCode,
+                     INPUT: text
+                 }),
+                 dataType: 'json',
+                 traditional: true,
+                 contentType: "application/json; charset=utf-8",
+                 processData: false,
+                 beforeSend: function () {
+                     // LoadingShow();
+                 },
+                 success: function (result) {
+                     if (result.status == "success") {
+                         Swal.fire({
+                             title: "Saving Note success",
+                             //text: "That thing is still around?",
+                             icon: "success"
+                         });
+                         $('.note_show_' + seccode).text(text);
+                         console.log("Success");
+                         console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+
+                     } else {
+                         LoadingHide();
+                         Swal.close();
+                         Swal.fire({
+                             icon: 'error',
+                             title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                             html: result.message,
+                             confirmButtonColor: '#d33',
+                             confirmButtonText: 'ปิด',
+                             allowOutsideClick: false,
+                             focusConfirm: false,
+                         });
+                     }
+                 },
+                                 error: function (ex) {
+                                     //notify(ex, 'danger');
+                                 },
+                                 complete: function (res) {
+                                     LoadingHide();
+                                 }
+                             }).fail(function (error) {
+                                 LoadingHide();
+                                 Swal.close();
+                                 Swal.fire({
+                                     icon: 'error',
+                                     title: 'ระบบทำงานผิดพลาด()',
+                                     html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                                     confirmButtonColor: '#d33',
+                                     confirmButtonText: 'ปิด',
+                                     allowOutsideClick: false,
+                                     focusConfirm: false,
+                                 });
+                             });
+                        }
+                        })();
+                }
+                else {
+                    (async () => {
+                const { value: text } = await Swal.fire({
+                    input: "textarea",
+                    title: "Note Sec " + seccode,
+                    inputPlaceholder: "Type your message here...",
+                    inputAttributes: {
+                        "aria-label": "Type your message here"
+                    },
+                showCancelButton: true,
+
+                confirmButtonText: "Save",
+                    cancelButtonText: "Cancel",
+                    customClass: {
+                        textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
+                    }
+            });
+            if (text) {
+                console.log(monthSelect);
+                 $.ajax({
+                     type: 'POST',
+                     cache: false,
+                     url: '@Url.Action("SaveNote", "ForecastMidMonthSale")',
+                     data: JSON.stringify({
+                         MONTH: ('0' + monthSelect).slice(-2),
+                         USER: '@Session["UserID"]',
+                         SEC: seccode,
+                         YEAR: year,
+                         SLMCOD: slmCode,
+                         INPUT: text
+                     }),
+                     dataType: 'json',
+                     traditional: true,
+                     contentType: "application/json; charset=utf-8",
+                     processData: false,
+                     beforeSend: function () {
+                          LoadingShow();
+                     },
+                     success: function (result) {
+                         if (result.status == "success") {
+                             Swal.fire({
+                                 title: "Saving Note Success",
+                                 //text: "That thing is still around?",
+                                 icon: "success"
+                             });
+                             $('.note_show_' + seccode).text(text);
+                             console.log("Success");
+                             console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+
+                         } else {
+                             LoadingHide();
+                             Swal.close();
+                             Swal.fire({
+                                 icon: 'error',
+                                 title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                                 html: result.message,
+                                 confirmButtonColor: '#d33',
+                                 confirmButtonText: 'ปิด',
+                                 allowOutsideClick: false,
+                                 focusConfirm: false,
+                             });
+                         }
+                     },
+                     error: function (ex) {
+                         //notify(ex, 'danger');
+                     },
+                     complete: function (res) {
+                         LoadingHide();
+                     }
+                 }).fail(function (error) {
+                     LoadingHide();
+                     Swal.close();
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'ระบบทำงานผิดพลาด()',
+                         html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                         confirmButtonColor: '#d33',
+                         confirmButtonText: 'ปิด',
+                         allowOutsideClick: false,
+                         focusConfirm: false,
+                     });
+                 });
+            }
+            })();
+                }
+            }
+
+            $(document).ready(function () {
+                $('[id^="note_input_"]').each(function () {
+                    let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
+                    let slmCode = $("#slmCode option:selected").val();
+                    let year = $("#year option:selected").val();
+                    let secValue = $(this).data("sec");
+                    let noteVal;
+                    
+                    $.ajax({
+                        url: '/ForecastMidMonthSale/GetNotebysec',
+                        type: 'post',
+                        data: {
+                            MONTH_INPUT: monthSelect,
+                            SEC: secValue,
+                            SLMCOD: slmCode,
+                            YEAR: year
+                        },
+                        beforeSend: function () {
+                            LoadingShow();
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            $('[class^="note_show_"]').each(function () {
+                                var noteVal = "";
+                                $.each(data, function (index, item) {
+                                    noteVal = item.Note;
+                                });
+                                if (noteVal) {
+                                    $('.note_show_' + secValue).html(noteVal);
+                                    $(this).val(noteVal);
+                                    console.log("Sec : " + secValue + " = " + noteVal);
+                                }
+                            });
+                        },
+
+                        error: function () {
+                            alert('Error fetching data.');
+                            console.log("fail!!! " );
+
+                        }, complete: function (res) {
+                            LoadingHide();
+                        }
+            });
+        });//$Func
+    });//Doccu
+
+
+    //Show Note
+    function ShowNote(sec) {
+        var NoteText = $('.note_show_' + sec).html();
+        if (NoteText.trim() !== "") {
+
+        Swal.fire({
+            title: "Note Sec " + sec,
+            html: '<label for="dropdownId" hidden>Select Month : &nbsp;</label>' +
+                '<select id="dropdownId" name="dropdown" class="swal2-select " onchange="SelectMonthNote(' + sec + ',this.value);" hidden>' +
+                '<option value="' + monthSelect + '" selected>Default Month</option>' +
+                '<option value="1">1</option>' +
+                '<option value="2">2</option>' +
+                '<option value="3">3</option>' +
+                '</select>' +
+                '<br>' +
+                '<textarea readonly disabled class="swal2-textarea popup-textarea-class popup-text-' + sec + '">' + NoteText + '</textarea>',
+            confirmButtonText: "OK",
+            showCancelButton: false,
+            customClass: {
+                textarea: 'popup-textarea-class'
+            },
+        });
+        }
+    }
+
+    //select by month Note
+    function SelectMonthNote(sec, value) {
+        $.ajax({
+            url: '/ForecastMidMonthSale/GetNotebysec',
+            type: 'post',
+            data: {
+                MONTH_INPUT: ('0' + value).slice(-2),
+                SEC: sec,
+                SLMCOD: slmCode,
+                YEAR: year
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                LoadingShow();
+            },
+            success: function (data) {
+                var NoteText = "";
+                $.each(data, function (index, item) {
+                    NoteText = item.Note;
+                });
+                $('.popup-text-' + sec).val(NoteText);
+
+                //console.log("log M = " + value);
+                //console.log("log Y = " + year);
+                //console.log("log slm = " + slmCode);
+                //console.log("log sec " + sec);
+                //console.log("=========================");
+                //console.log("Log data = " + NoteText);
+            },
+
+            error: function () {
+                alert('Error fetching data.');
+                console.log("fail!!! ");
+            },
+            complete: function (res) {
+                LoadingHide();
+
+            }
+        });//Ajax
+    }
 </script>

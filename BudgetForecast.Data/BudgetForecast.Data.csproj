@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetNoteForecastSale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchBudgetPm.cs" />
     <Compile Include="SearchBudgetSale.cs" />
@@ -53,8 +54,10 @@
     <Compile Include="SearchForecastSaleAll.cs" />
     <Compile Include="UpdateBudgetPm.cs" />
     <Compile Include="UpdateBudgetSale.cs" />
+    <Compile Include="UpdateForecastMidmonthSale.cs" />
     <Compile Include="UpdateForecastPm.cs" />
     <Compile Include="UpdateForecastSale.cs" />
+    <Compile Include="UpdateNoteForecastSale.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetForecast.Library\BudgetForecast.Library.csproj">

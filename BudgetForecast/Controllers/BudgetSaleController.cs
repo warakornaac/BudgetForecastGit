@@ -78,7 +78,6 @@ namespace BudgetForecast.Controllers
                     while (dr3.Read())
                     {
                         ProdList.Add(new SelectListItem() { Value = dr3["PROD"].ToString(), Text = dr3["PROD"].ToString() + "/" + dr3["PRODNAM"].ToString() });
-
                     }
                     ViewBag.ProdList = ProdList;
                     //เอา userId เป็น default Prod name
@@ -99,7 +98,8 @@ namespace BudgetForecast.Controllers
                         ViewBag.endDate = getDateInput.Item3;
                     }
 
-                    if (slmCodeDefault != null) {
+                    if (slmCodeDefault != null)
+                    {
                         SqlCommand cmd1 = new SqlCommand("select TOP 1 * From v_SLMTAB_SM_Userrid where SUP = N'" + slmCodeDefault + "'", Connection);
                         SqlDataReader rev = cmd1.ExecuteReader();
                         while (rev.Read())
@@ -230,7 +230,9 @@ namespace BudgetForecast.Controllers
                 if (stkGroup[0] == "ALL")
                 {
                     stkGroup2[0] = "ALL";
-                } else {
+                }
+                else
+                {
                     stkGroup2 = stkGroup;
                 }
                 SearchBudgetSale = new SearchBudgetSale().GetStoreSearchBudgetSale(slmCode, cusCode, stkSec, stkGroup2, flgBudget);
@@ -283,7 +285,10 @@ namespace BudgetForecast.Controllers
                 });
             }
             //add new slmcode
-            CUSList.Add(new CUS() { CUSCOD = "NEW--" + slmCode, CUSNAM = "NEW--" + slmCode
+            CUSList.Add(new CUS()
+            {
+                CUSCOD = "NEW--" + slmCode,
+                CUSNAM = "NEW--" + slmCode
             });
             rev_CUSPROV.Close();
             rev_CUSPROV.Dispose();
@@ -319,8 +324,8 @@ namespace BudgetForecast.Controllers
         }
         public JsonResult GetStkgrp(string[] prodCode, string[] secCode)
         {
-            string[] prodCodeArr; 
-            string secCodeArr = string.Empty; 
+            string[] prodCodeArr;
+            string secCodeArr = string.Empty;
             List<STKGRPList> STKGRPList = new List<STKGRPList>();
             SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
             Connection.Open();

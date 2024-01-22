@@ -8,7 +8,9 @@ namespace BudgetForecast.Library
 {
     public class SqlQuery
     {
-        string connectionstring = Utils.GetConfig("MobileOrder_ConnectionString");
+        // string connectionstring = Utils.GetConfig("MobileOrder_ConnectionString");
+        string connectionstring = Utils.GetConfig("Lip_ConnectionString");
+
         public DataTable GetSqlQuery(string sql, SqlParameters param)
         {
             var dt = new DataTable();

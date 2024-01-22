@@ -35,21 +35,21 @@ namespace BudgetForecast.Models
         public string Company { get; set; }
         public string ProductGroup { get; set; }
         public string ProductLine { get; set; }
-      
+
     }
     public class LookupVehicle
-    {  
-       public string Type { get; set; }
-       public string Code { get; set; }
-       public string Description{ get; set; }
-       public string SearchDescription{ get; set; }
-       public string CodeRelation{ get; set; }
-       public string YrStart{ get; set; }
-       public string YrEnd{ get; set; }
-       public string EngineType{ get; set; }
-       public string CC{ get; set; }
-       public string Picture { get; set; }
-       public string sort { get; set; }
+    {
+        public string Type { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public string SearchDescription { get; set; }
+        public string CodeRelation { get; set; }
+        public string YrStart { get; set; }
+        public string YrEnd { get; set; }
+        public string EngineType { get; set; }
+        public string CC { get; set; }
+        public string Picture { get; set; }
+        public string sort { get; set; }
     }
     public class Stkgrop
     {
@@ -76,7 +76,7 @@ namespace BudgetForecast.Models
         public string SLMNAM { get; set; }
         public string PasswordExpiredDate { get; set; }
         public string DatetoExpire { get; set; }
-        public string SLMPhone{ get; set; }
+        public string SLMPhone { get; set; }
         public string SalesCo { get; set; }
         public string SalesCoPhone { get; set; }
     }
@@ -84,7 +84,7 @@ namespace BudgetForecast.Models
     {
         public string CODE { get; set; }
         public string Description { get; set; }
-      
+
     }
     public class Segmentgrop
     {
@@ -97,14 +97,14 @@ namespace BudgetForecast.Models
     {
         public string CODE { get; set; }
         public string NAME { get; set; }
-      
+
 
     }
     public class Searchitem
     {
         public string ItemNo { get; set; }
         public string Description { get; set; }
-       
+
     }
     public class SearchitemDetailGetdata
     {
@@ -171,11 +171,11 @@ namespace BudgetForecast.Models
     }
     public class vehicle_PlusItem
     {
-        public string Company	  { get; set; }
-        public string STKCOD	  { get; set; }
-        public string Description	 { get; set; }
-        public string Stock	 { get; set; }
-        public string EndPrice	 { get; set; }
+        public string Company { get; set; }
+        public string STKCOD { get; set; }
+        public string Description { get; set; }
+        public string Stock { get; set; }
+        public string EndPrice { get; set; }
         public string IMAGE_NAME { get; set; }
 
     }
@@ -253,26 +253,26 @@ namespace BudgetForecast.Models
     }
     public class CUS
     {
-      public string CUSCOD{ get; set; }
-      public string CUSNAM { get; set; }
-      public string PRO { get; set; }
-      public string ADDR_01{ get; set; }
-      public string ADDR_02 { get; set; }
-      public string CUSTYP { get; set; }
-      public string AACCrlimit { get; set; }
-      public string AACBalance  { get; set; }
-      public string TACCrlimit  { get; set; }
-      public string TACBalance { get; set; }
-      public string SLMCOD { get; set; }
-      public string INACTIVE { get; set; }
-      public string BLOCKED { get; set; }
-      public string AACPAYTRM { get; set; }
-      public string TACPAYTRM { get; set; }
-      public string TELNUM { get; set; }
+        public string CUSCOD { get; set; }
+        public string CUSNAM { get; set; }
+        public string PRO { get; set; }
+        public string ADDR_01 { get; set; }
+        public string ADDR_02 { get; set; }
+        public string CUSTYP { get; set; }
+        public string AACCrlimit { get; set; }
+        public string AACBalance { get; set; }
+        public string TACCrlimit { get; set; }
+        public string TACBalance { get; set; }
+        public string SLMCOD { get; set; }
+        public string INACTIVE { get; set; }
+        public string BLOCKED { get; set; }
+        public string AACPAYTRM { get; set; }
+        public string TACPAYTRM { get; set; }
+        public string TELNUM { get; set; }
 
-      public string Hierarchy1_Market_Segment { get; set; }
-      public string Hierarchy2_Channel { get; set; }
-      public string Hierarchy3_Bussiness_Type { get; set; }
+        public string Hierarchy1_Market_Segment { get; set; }
+        public string Hierarchy2_Channel { get; set; }
+        public string Hierarchy3_Bussiness_Type { get; set; }
 
     }
     public class CusomerListKey
@@ -285,6 +285,15 @@ namespace BudgetForecast.Models
         public string SEC { get; set; }
         public string SEC_NAME { get; set; }
 
+    }
+    public class NoteData
+    {
+        public string STMonth { get; set; }
+        public string STYear { get; set; }
+        public string STYM { get; set; }
+        public string SEC { get; set; }
+        public string SLMCOD { get; set; }
+        public string Note { get; set; }
     }
 
 }

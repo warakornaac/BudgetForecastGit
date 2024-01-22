@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MyLib">
-      <HintPath>..\..\ClaimWapGit\packages\MyLib.dll</HintPath>
+      <HintPath>..\packages\MyLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

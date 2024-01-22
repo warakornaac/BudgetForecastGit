@@ -1,6 +1,6 @@
 ﻿@using BudgetForecast.Model;
 @{
-    ViewBag.Title = "_listDataForcastSale";
+    ViewBag.Title = "_listDataForcastMidMonthSale";
     var arrMonth = @ViewBag.monthList;
     string codeColorMonthCurrent = "#f9ecdc";
     int monthInputCurrent = 0;
@@ -56,18 +56,20 @@
                                 string captionUnderBudget = "";
                                 string captionOverBudget = "";
                                 string captionByMonth = "";
+                                string captiontextNew = "";
 
                                 string colorTd = "";
                                 if (dataItemByMonth.Caption == "FC")
                                 {
-                                    captionText = "Forecast";
+                                    captionText = "Forecastm";
+                                    captiontextNew = "Forecast";
                                     colorTd = "background-color: #ccebedc9";
                                 }
                                 else if (dataItemByMonth.Caption == "NewFC")
                                 {
-                                    //captionText = "Forecast";
-                                    //colorTd = "background-color: #ccebedc9";
-                                    continue;
+                                    captionText = "Forecast";
+                                    captiontextNew = "New Forecast";
+                                    colorTd = "background-color: #ccebedc9";
                                 }
                                 else
                                 {
@@ -79,8 +81,18 @@
                                 captionUnderBudget = "sum_under_" + @captionText.ToString().ToLower() + "_all";
                                 captionOverBudget = "sum_over_" + @captionText.ToString().ToLower() + "_all";
 
+
+
                                 <tr style="white-space: nowrap;">
-                                    <td style="vertical-align: middle; @colorTd"> <b>  @captionText </b> </td>
+                                    @if (captiontextNew != "")
+                                    {
+                                        <td style="vertical-align: middle; @colorTd"> <b>  @captiontextNew </b> </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="vertical-align: middle; @colorTd"> <b>  @captionText </b> </td>
+
+                                    }
                                     <td class="vright" style="vertical-align: middle; font-weight: 700; @colorTd"> <span id="@captionIdLastYear" style="font-size: 16px;"> @dataItemByMonth.Last_year.ToString("N0") </span> </td>
                                     <td class="vright" style="vertical-align: middle; font-weight: 700; @colorTd"> <span id="@captionIdTotal" style="font-size: 16px;"> @dataItemByMonth.Total_Caption.ToString("N0") </span> </td>
                                     <td class="vright" style="vertical-align: middle; font-weight: 700; min-width: 90px; @colorTd"> <span class="" id="@captionUnderBudget" style="font-size: 16px;"> 0 </span> </td>
@@ -101,7 +113,18 @@
                                                 bgMonthCurrent = "#ccebedc9";
                                             }
                                         }
-                                        else 
+                                        else if (dataItemByMonth.Caption == "NewFC")
+                                        {
+                                            if (formattedMonthInputCurrent == monthItemCur)
+                                            {
+                                                bgMonthCurrent = codeColorMonthCurrent;
+                                            }
+                                            else
+                                            {
+                                                bgMonthCurrent = "#ccebedc9";
+                                            }
+                                        }
+                                        else
                                         {
                                             if (formattedMonthInputCurrent == monthItemCur)
                                             {
@@ -152,22 +175,82 @@
                                         }
 
                                         captionByMonth = "sum_sale_" + @captionText.ToString().ToLower() + "_" + @monthItemCur.TrimStart('0') + "_all";
+
                                         <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
                                             <span class="" id="@captionByMonth" style="font-size: 16px;">
                                                 @if (valByMonthSumAll != 0)
                                                 {
                                                     @valByMonthSumAll.ToString("N0")
                                                 }
+                                                @if (dataItemByMonth.Caption == "Actual")
+                                                {
+                                                    <input class="" type="hidden"  id="sum_input_all_actual_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                }@if (dataItemByMonth.Caption == "FC")
+                                                {
+                                                    <input class="" type="hidden"  data-month="@monthItemCur.TrimStart('0')" id="sum_input_all_forecastm_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                }@if (dataItemByMonth.Caption == "NewFC")
+                                                {
+                                                    <input class="" type="hidden"  id="sum_input_all_forecast_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                }
                                             </span>
+
                                         </td>
                                     }
                                 </tr>
+
                             }
                         }
+                        <tr style="white-space: nowrap;">
+                            <td style="vertical-align: middle; background-color: #cbead3;"> <b>Remaining</b> </td>
+                            <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #cbead3;"> <span id="sum_last_year_remain" style="font-size: 16px;">  </span> </td>
+                            <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #cbead3;"> <span id="sum_total_remain" style="font-size: 16px;">  </span> </td>
+                            <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #cbead3;"> <span id="sum_under_remain" style="font-size: 16px;">  </span> </td>
+                            <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #cbead3;"> <span id="sum_over_remain" style="font-size: 16px;">  </span> </td>
+                            @foreach (var monthItemCur in @ViewBag.monthList)
+                            {
+                                string bgMonthCurrent = "#cbead3";
+                                if (formattedMonthInputCurrent == monthItemCur)
+                                {
+                                    bgMonthCurrent = "#f9ecdc";
+                                }
+                                <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
+                                    <span class="" id="sum_sale_remain_all_@monthItemCur.TrimStart('0')" style="font-size: 16px;"> 0 </span>
+                                </th>
+                            }
+                        </tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('[id^="sum_input_all_forecastm_"]').each(function () {
+            let month = $(this).data('month');
+            let sum_actual = $("#sum_input_all_actual_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
+            sum_actual = Number(sum_actual);
+            let sum_new_forecast = $("#sum_input_all_forecast_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
+            sum_new_forecast = Number(sum_new_forecast);
+            let sum_forecast = $(this).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
+            sum_forecast = Number(sum_forecast);
+            let remain_res = 0;
+
+            //console.log("++++++++++++++++++++++++");
+            //console.log(sum_actual);
+            //console.log(sum_new_forecast);
+            //console.log(sum_forecast);
+            //console.log(month);
+            //console.log("++++++++++++++++++++++++");
+            if (sum_new_forecast > 0) {
+                remain_res = sum_new_forecast - sum_actual;
+            }
+            else {
+                remain_res = sum_forecast - sum_actual;
+            }
+            console.log("REsult : " + sum_new_forecast + " month : " + month);
+            $("#sum_sale_remain_all_" + month).text(numberWithCommas(remain_res.toFixed(0)));
+        })
+    });
+</script>
