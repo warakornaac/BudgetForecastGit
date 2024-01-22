@@ -264,7 +264,7 @@
                 dataType: 'json',
                 beforeSend: function () {
                     //LoadingShow();
-                    $('.iconLoading').html('<div style="padding: 30px; font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>');
+                    $('.iconLoading').html('<div style="font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>');
                 },
                 success: function (data) {
                     $('[class^="note_show_all_"]').each(function () {
