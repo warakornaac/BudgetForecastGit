@@ -496,7 +496,7 @@ namespace BudgetForecast.Controllers
 
 
         [HttpPost]
-        public JsonResult GetNOtebysec(string MONTH_INPUT, string SEC, string SLMCOD, string YEAR)
+        public JsonResult GetNotebysec(string MONTH_INPUT, string SEC, string SLMCOD, string YEAR)
         {
 
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
