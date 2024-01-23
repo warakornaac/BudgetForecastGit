@@ -1456,7 +1456,7 @@ else
             let res = 0;
             if (new_forecast > 0)
                 res = new_forecast - actual;
-            else
+            else if (new_forecast <= 0)
                 res = forecast - actual;
 
             $(".sum_remain_" + cuscod + "_" + sec + "_" + month).text(numberWithCommas(res.toFixed(0)));
