@@ -1675,7 +1675,7 @@ else
 
     //Pop Up Note Sec
     function addsecNote(seccode) {
-        var NoteText = $('.note_show_' + seccode).html();
+        var NoteText = $('.note_show_' + seccode).html().trim();
         if (NoteText != "") {
          (async () => {
             const { value: text } = await Swal.fire({
@@ -1899,7 +1899,7 @@ else
     //Show Note
     function ShowNote(sec) {
         var NoteText = $('.note_show_' + sec).html();
-        if (NoteText.trim() !== "") {
+        if (NoteText.trim() != "") {
             Swal.fire({
                 title: "Note Sec " + sec,
                 html: '<label for="dropdownId" hidden>Select Month : &nbsp;</label>' +
