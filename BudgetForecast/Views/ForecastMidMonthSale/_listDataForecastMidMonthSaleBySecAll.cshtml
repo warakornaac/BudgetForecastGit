@@ -24,7 +24,7 @@
             {
                 string idNOTE = "note_show_all_" + dataItemBySec.Sec;
                 string secval = "sum_avg_forecast_" + dataItemBySec.Sec;
-                if (@dataItemBySec.Budget != 0 || dataItemBySec.Actual != 0 || dataItemBySec.FC != 0)
+                if (@dataItemBySec.Budget != 0 || dataItemBySec.Actual != 0 || dataItemBySec.FC != 0 || dataItemBySec.NewFC != 0)
                 {
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_dec_@dataItemBySec.Sec">
                         <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
@@ -50,8 +50,12 @@
                                         <span>Actual</span>
                                     </div>
                                     <div class="col">
-                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecast_all_@dataItemBySec.Sec" id="sum_sec_forecast_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.FC.ToString("N0") </span></h4>
+                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecastm_all_@dataItemBySec.Sec" id="sum_sec_forecastm_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.FC.ToString("N0") </span></h4>
                                         <span>Forecast</span>
+                                    </div>
+                                    <div class="col">
+                                        <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecast_all_@dataItemBySec.Sec" id="sum_sec_forecastm_all_@dataItemBySec.Sec" style="font-size: 16px; font-weight: 500;"> @dataItemBySec.NewFC.ToString("N0") </span></h4>
+                                        <span>New Forecast</span>
                                     </div>
                                 </div>
                             </div>

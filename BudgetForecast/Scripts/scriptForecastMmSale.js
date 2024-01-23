@@ -15,7 +15,7 @@ function hideBodySec(sec) {
         $("#header_" + sec).toggleClass("fa-caret-up fa-caret-down");
         $("#body_" + sec).show('fast');
     } else {
-        $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");
+        $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");   
         $("#body_" + sec).hide('fast');
     }
 }
