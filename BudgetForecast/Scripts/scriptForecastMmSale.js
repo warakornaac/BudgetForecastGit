@@ -252,102 +252,6 @@ function getStkgrpByProd(_prodCode) {
     });
 }
 
-//sum forecast sale by input***
-
-//sumSaleForecast = async (_className, month, sec, cuscod) => {
-//    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
-//    var monthSelect = $("#month_sec option:selected").val();
-//    let sum_forecast_by_month = 0;
-//    await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
-//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
-//        sum_forecast_by_month += Number(forecast_sale_key);
-//    }));
-//    $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
-//    //sum total by cuscod sec
-//    let sum_total_forecast_by_cuscod = 0;
-//    await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
-//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
-//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
-//        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
-//    }));
-//    $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
-//    $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
-//    //sum จากช่อง forecast
-//    await sumSaleForecastByCaption("sale_forecast");
-//    //sum by month
-//    await sumAllSaleForecastByCaption("total_forecast");
-
-
-
-
-//    let sum_forecastm_by_month = 0;
-//    await Promise.all($(".sale_forecastm_" + sec + "_" + monthSelect).each(async function (i, obj) {
-//        let forecastm_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        forecastm_sale_key = await getVowels(forecastm_sale_key, 0);
-//        sum_forecastm_by_month += Number(forecastm_sale_key);
-//    }));
-//    $('.sum_sec_forecastm_' + sec).text(numberWithCommas(sum_forecastm_by_month.toFixed(0)));
-
-//    //sum total by cuscod sec
-//    let sum_total_forecastm_by_cuscod = 0;
-//    await Promise.all($(".sum_sale_forecastm_" + cuscod + "_" + sec).each(async function (i, obj) {
-//        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
-//        forecast_sale_key = await getVowels(forecast_sale_key, 0);
-//        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
-//    }));
-//    $('.sum_total_forecastm_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecastm_by_cuscod.toFixed(0)));
-//    $('.sum_total_forecastm_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecastm_by_cuscod.toFixed(0)));
-//    //sum จากช่อง forecast
-//    await sumSaleForecastByCaption("sale_forecastm");
-//    //sum by month
-//    await sumAllSaleForecastByCaption("total_forecastm");
-
-
-
-//    //hide icon
-//    setTimeout(() => {
-//        $(".iconLoading").html('');
-//    }, "1000");
-//}
-
-
-
-//sum actual and forecast by input
-//sumSaleForecastActual = async (_className, month, sec, cuscod) => {
-//    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
-//    var monthSelect = $("#month_sec option:selected").val();
-//    let sum_actual_by_month = 0;
-//    await Promise.all($(".sale_forecast_" + sec + "_" + monthSelect).each(async function (i, obj) {
-//        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        actual_sale_key = await getVowels(actual_sale_key, 0);
-//        sum_actual_by_month += Number(actual_sale_key);
-//    }));
-//    $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
-//    //sum total by cuscod sec
-//    let sum_total_actual_by_cuscod = 0;
-//    await Promise.all($(".sum_sale_actaul_" + cuscod + "_" + sec).each(async function (i, obj) {
-//        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-//        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
-//        actual_sale_key = await getVowels(actual_sale_key, 0);
-//        sum_total_actual_by_cuscod += Number(actual_sale_key);
-//    }));
-//    $('.sum_total_actaul_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_actual_by_cuscod.toFixed(0)));
-//    $('.sum_total_actual_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_actual_by_cuscod.toFixed(0)));
-
-//    //sum จากช่อง forecast
-//    await sumSaleForecastByCaption("sale_actual");
-//    //sum by month
-//    await sumAllSaleForecastByCaption("total_actual");
-
-//    //hide icon
-//    setTimeout(() => {
-//        $(".iconLoading").html('');
-//    }, "1000");
-//}
-
 
 
 //for sum by sec
@@ -442,9 +346,9 @@ const sumSaleForecastByCaption = async (inputName) => {
             sum_by_caption += Number(val_by_caption);
             //console.log("sum_by_caption = " + sum_by_caption);
         }));
-        if (sum_by_caption != 0 && sum_by_caption != null) {
+        if (sum_by_caption != null) {
             $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
-            $('#sum_' + "input"+"_" + inputName + '_' + numMonth).val(sum_by_caption);
+            $('#sum_' + "input" + "_" + inputName + '_' + numMonth).val(sum_by_caption);
         }
     }
 }
@@ -494,18 +398,21 @@ const sumAllSaleForecastByCaption = async (className) => {
 const sumRemainBycaption = async () => {
     $('[id^="sum_input_sale_forecastm_"]').each(function () {
         let month = $(this).data('month');
-        let sum_actual = $("#sum_input_sale_actual_" + month).val();
-        let sum_new_forecast = $("#sum_input_sale_forecast_" + month).val();
-        let sum_forecast = $(this).val();
+        let sum_actual = $("#sum_input_sale_actual_" + month).val() || 0;
+        let sum_new_forecast = $("#sum_input_sale_forecast_" + month).val() || 0;
+        let sum_forecast = $(this).val() || 0;
         let remain_res = 0;
 
         if (sum_new_forecast > 0) {
             remain_res = sum_new_forecast - sum_actual;
         }
-        else {
+        else if (sum_new_forecast <= 0) {
             remain_res = sum_forecast - sum_actual;
         }
-        //console.log("REsult : " + sum_new_forecast + " month : " + month);
+        else
+            remain_res = sum_forecast - sum_actual;
+
+        console.log("REsult : " + sum_new_forecast + " month : " + month);
         $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
     })
 }
@@ -537,7 +444,7 @@ async function calculateForecastSale() {
     await sumSaleForecastByCaption("sale_forecast");
     await sumSaleForecastByCaption("sale_forecastm");
     await sumRemainBycaption();
-   // await sumRemainByMonthAll();
+    // await sumRemainByMonthAll();
 
     //Summary by sec
     await sumAllSaleForecastByCaption("last_year_budget");

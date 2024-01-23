@@ -715,8 +715,9 @@ else
                                                                 string checkboxForecast = "";
                                                                 string idSaleForecast = "";
                                                                 string classTotalSaleForecast = "";
+                                                                string classTotalSaleForecastAll = "";
                                                                 string classRemainForecast = "";
-                                                                int i = 0;
+                                                                //int i = 0;
 
                                                                 foreach (string monthItemCur in @ViewBag.monthList)
                                                                 {
@@ -796,13 +797,14 @@ else
                                                                     nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
                                                                     idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
                                                                     classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                    //classTotalSaleForecastAll = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
                                                                     classRemainForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
                                                                     checkboxForecast = "selectList_" + countSaleForecast;
                                                                     <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
-                                                                        <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classRemainForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY' );" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
+                                                                        <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classRemainForecast @classTotalSaleForecast " name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY' );" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
                                                                         <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
                                                                     </td>
-                                                                    i++;
+
                                                                 }
                                                             }
                                                         </tr>
@@ -1041,7 +1043,6 @@ else
                                     <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
                                         <span class="" id="sum_sale_forecastm_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
                                         <input class="" type="hidden" id="sum_input_sale_forecastm_@monthItemCur.TrimStart('0')" data-month="@monthItemCur.TrimStart('0')" />
-
                                     </th>
                                 }
                             </tr>
@@ -1060,7 +1061,7 @@ else
                                     }
                                     <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
                                         <span class="" id="sum_sale_forecast_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
-                                        <input class="" type="hidden" id="sum_input_sale_forecast_@monthItemCur.TrimStart('0')" disabled />
+                                        <input class="" type="hidden" id="sum_input_sale_forecast_@monthItemCur.TrimStart('0')" />
 
                                     </th>
                                 }
@@ -1424,9 +1425,9 @@ else
     }
 
     sumSaleForecast = async (_className, month, sec, cuscod) => {
-        //$(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+
         var monthSelect = $("#month_sec option:selected").val();
-        //console.log("monthSelect = " + monthSelect);
+
         //sum total by cuscod sec
         let sum_total_forecast_by_cuscod = 0;
         await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
@@ -1436,6 +1437,8 @@ else
             sum_total_forecast_by_cuscod += Number(forecast_sale_key);
         }));
         $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+        $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+
 
 
         remainForecast(_className, month, sec, cuscod);
@@ -1456,7 +1459,7 @@ else
             let res = 0;
             if (new_forecast > 0)
                 res = new_forecast - actual;
-            else if (new_forecast <= 0)
+            else
                 res = forecast - actual;
 
             $(".sum_remain_" + cuscod + "_" + sec + "_" + month).text(numberWithCommas(res.toFixed(0)));

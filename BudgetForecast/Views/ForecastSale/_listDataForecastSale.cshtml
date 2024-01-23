@@ -1196,10 +1196,7 @@ else
     }
 
     sumSaleForecast = async (_className, month, sec, cuscod) => {
-        //$(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
         var monthSelect = $("#month_sec option:selected").val();
-        //console.log("monthSelect = " + monthSelect);
-        //sum total by cuscod sec
         let sum_total_forecast_by_cuscod = 0;
         await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
             let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');

@@ -84,9 +84,14 @@
 
 
                                 <tr style="white-space: nowrap;">
-                                    @if (captiontextNew != "")
+                                    @if (captiontextNew == "FC")
                                     {
                                         <td style="vertical-align: middle; @colorTd"> <b>  @captiontextNew </b> </td>
+                                    }
+                                    else if (captiontextNew == "NewFC")
+                                    {
+                                        <td style="vertical-align: middle; @colorTd"> <b>  @captiontextNew </b> </td>
+
                                     }
                                     else
                                     {
@@ -184,13 +189,13 @@
                                                 }
                                                 @if (dataItemByMonth.Caption == "Actual")
                                                 {
-                                                    <input class="" type="hidden"  id="sum_input_all_actual_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                    <input class="" type="hidden" id="sum_input_all_actual_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
                                                 }@if (dataItemByMonth.Caption == "FC")
                                                 {
-                                                    <input class="" type="hidden"  data-month="@monthItemCur.TrimStart('0')" id="sum_input_all_forecastm_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                    <input class="" type="hidden" data-month="@monthItemCur.TrimStart('0')" id="sum_input_all_forecastm_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
                                                 }@if (dataItemByMonth.Caption == "NewFC")
                                                 {
-                                                    <input class="" type="hidden"  id="sum_input_all_forecast_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
+                                                    <input class="" type="hidden" id="sum_input_all_forecast_@monthItemCur.TrimStart('0')" value="@valByMonthSumAll.ToString("N0")" />
                                                 }
                                             </span>
 
