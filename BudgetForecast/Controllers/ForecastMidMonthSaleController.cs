@@ -494,7 +494,7 @@ namespace BudgetForecast.Controllers
             return Json(CUSList, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpPost]
         public JsonResult GetNOtebysec(string MONTH_INPUT, string SEC, string SLMCOD, string YEAR)
         {
 
