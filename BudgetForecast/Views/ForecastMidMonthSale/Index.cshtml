@@ -46,8 +46,12 @@
 
     .custom-textarea-class {
         width: 500px;
-        height: 400px;
+        height: 450px;
+        display: flex;
+        height: 169px;
+        max-width: 450px;
     }
+
     .popup-textarea-class {
         border-style: none;
         border-color: Transparent;
@@ -56,9 +60,6 @@
         resize: none;
         box-shadow: none !important;
     }
-
-
-
 </style>
 <title>@ViewBag.Title</title>
 <div class="card mb-12 mt-4">
@@ -91,7 +92,7 @@
                         <span>
                             <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
                                 <option value="2024" selected>2024</option>
-                                <option value="2023" >2023</option>
+                                <option value="2023">2023</option>
                                 <option value="2022">2022</option>
                             </select>
                         </span>
@@ -102,8 +103,6 @@
                         <span> <i class="fa fa-shopping-cart"></i><b> CUSTOMER CODE:</b></span> @*<span style="color: red; margin-left: 50px;"> *limit select 10 customers </span>*@ &nbsp;&nbsp;&nbsp; <span id="showCustomerSelected" style="display: none; font-weight: bold;"> (Customers selected <span id="countCustomerSelected"></span>) </span>
                         <span>
                             <select class="form-control selectpicker cusCode" id="cusCode" name="cusCode" style="width: 100%; padding-top: 5px;" title="SELECT CUSTOMER" data-live-search="true" data-max-options-message="limit select 10 customer" multiple>
-                               
-
                             </select>
                         </span>
                     </div>

@@ -1138,7 +1138,7 @@ else
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_sec_@secItem.SEC">
                                 <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                                     <div class="card-body pb-0" style="margin-top: -10px;">
-                                        <button class="btn btn-success" onclick="addsecNote('@secItem.SEC');" style="font-size: medium; display: inline-block; margin-bottom: 8px; "> <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <button class="btn btn-warning" onclick="addsecNote('@secItem.SEC');" style="font-size: medium; display: inline-block; margin-bottom: 8px; "> <i class="fa fa-plus" aria-hidden="true"></i></button>
                                         <h4 class="" style="font-weight: 700; display: inline-block;">SEC @secItem.SEC <span class="iconLoading"></span> </h4>
                                         <span class="text-c-blue"></span>
                                         <span class="note_show_@secItem.SEC d-inline-block text-truncate btn" id="@idNOTE" style="max-width: 170px; font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@secItem.SEC');">  </span>
@@ -1677,8 +1677,8 @@ else
     function addsecNote(seccode) {
         var NoteText = $('.note_show_' + seccode).html();
         if (NoteText != "") {
-                    (async () => {
-        const { value: text } = await Swal.fire({
+         (async () => {
+            const { value: text } = await Swal.fire({
             input: "textarea",
             title: "Note Sec " + seccode,
             inputPlaceholder: "Type your message here...",
@@ -1687,7 +1687,7 @@ else
                 "aria-label": "Type your message here"
             },
             showCancelButton: true,
-
+            allowOutsideClick: false,
             confirmButtonText: "Save",
             cancelButtonText: "Cancel",
             customClass: {
@@ -1771,7 +1771,7 @@ else
                         "aria-label": "Type your message here"
                     },
                 showCancelButton: true,
-
+                allowOutsideClick: false,
                 confirmButtonText: "Save",
                     cancelButtonText: "Cancel",
                     customClass: {

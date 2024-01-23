@@ -32,7 +32,7 @@
                                 @*<button type="button" class="btn btn-success" onclick="addsecNote();" style="font-size:medium; display:inline-block; margin-bottom:8px;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                     <h4 class="" style="font-weight: 700; display:inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                     <span class="text-c-blue"></span>*@
-                                <button class="btn btn-success" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size:medium; display:inline-block; margin-bottom:8px;"> <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="btn btn-warning" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size:medium; display:inline-block; margin-bottom:8px;"> <i class="fa fa-plus" aria-hidden="true"></i></button>
                                 <h4 class="" style="font-weight: 700; display: inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                 <span class="text-c-blue"></span>
                                 <p class="note_show_all_@dataItemBySec.Sec @idNOTE d-inline-block text-truncate btn" id="@idNOTE" style="max-width: 170px; font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@dataItemBySec.Sec');">  </p>
@@ -80,7 +80,7 @@
                 textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
             },
             showCancelButton: true,
-
+            allowOutsideClick: false,
             confirmButtonText: "Save",
             cancelButtonText: "Cancel",
         });
@@ -162,8 +162,8 @@
                                 "aria-label": "Type your message here"
                             },
                             showCancelButton: true,
-
-                                 confirmButtonText: "Save",
+                            allowOutsideClick: false,
+                            confirmButtonText: "Save",
                             cancelButtonText: "Cancel",
                         });
         if (text) {
