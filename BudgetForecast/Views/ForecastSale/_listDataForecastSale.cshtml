@@ -314,407 +314,407 @@ else
                                         </thead>
                                         <tbody>
                                             @*@foreach (var secItem in ViewBag.secAllArray)
-                                            //{*@
-                                                @foreach (var dataItem in (List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList)
+                                                //{*@
+                                            @foreach (var dataItem in (List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList)
+                                            {
+                                                if (dataItem.CUSKEY == cusItem.CUSKEY)
                                                 {
-                                                    if (dataItem.CUSKEY == cusItem.CUSKEY)
+
+                                                    if (dataItem.Caption == "Budget")
                                                     {
-                                                      
-                                                            if (dataItem.Caption == "Budget")
-                                                            {
-                                                                double underBudgetAmt = 0;
-                                                                double overBudgetAmt = 0;
-                                                                @*Budget*@
-                                                                <tr style="white-space: nowrap; border-top: 3px solid #5e6b89;">
-                                                                    <td rowspan="4" class="vcenter" style="vertical-align: middle; background-color: #cbc7c7; cursor: pointer;" onclick="focusToForecast('@dataItem.Sec', '@cusItem.CUSKEY', '@monthInputCurrent');">
-                                                                        <span class="badge badge-warning font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Sec </span>
-                                                                        <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Secnam </span>
-                                                                        <hr>
-                                                                        <span class="badge badge-info font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSKEY </span>
-                                                                        <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSNAM </span>
-                                                                    </td>
-                                                                    <td class="fix-td-2" style="vertical-align: middle; background-color: #f2f2f2; padding-left: 13px;"> <b>Budget</b> </td>
-                                                                    <td class="vright fix-td-3" style="vertical-align: middle; background-color: #f2f2f2;">
-                                                                        <b>@dataItem.Last_year.ToString("N0")</b>
-                                                                        <input type="hidden" class="last_year_budget" value="@dataItem.Last_year.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright fix-td-4" style="vertical-align: middle; background-color: #f2f2f2; position: -webkit-sticky; position: sticky; left: 310px; z-index: 2; border-right: var(--border-size-s) solid var(--color-neutral-4);">
-                                                                        <b>@dataItem.Total_Caption.ToString("N0")</b>
-                                                                        <input type="hidden" class="total_budget" value="@dataItem.Total_Caption.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; min-width: 100px;">
-                                                                        <input type="hidden" class="under_budget" value="0" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; min-width: 100px;">
-                                                                        <input type="hidden" class="over_budget" value="0" />
-                                                                    </td>
-                                                                    @{
-                                                                        int countSaleBudget = 0;
-                                                                        string nameSaleBudget = "";
-                                                                        foreach (string monthItemCur in @ViewBag.monthList)
-                                                                        {
-                                                                            string bgMonthCurrent = "";
-                                                                            if (formattedMonthInputCurrent == monthItemCur)
-                                                                            {
-                                                                                bgMonthCurrent = codeColorMonthCurrent;
-                                                                            }
-                                                                            countSaleBudget++;
-                                                                            double valSaleBudget = 0;
-
-                                                                            switch (monthItemCur)
-                                                                            {
-                                                                                case "01":
-                                                                                    valSaleBudget = dataItem.M01;
-                                                                                    break;
-                                                                                case "02":
-                                                                                    valSaleBudget = dataItem.M02;
-                                                                                    break;
-                                                                                case "03":
-                                                                                    valSaleBudget = dataItem.M03;
-                                                                                    break;
-                                                                                case "04":
-                                                                                    valSaleBudget = dataItem.M04;
-                                                                                    break;
-                                                                                case "05":
-                                                                                    valSaleBudget = dataItem.M05;
-                                                                                    break;
-                                                                                case "06":
-                                                                                    valSaleBudget = dataItem.M06;
-                                                                                    break;
-                                                                                case "07":
-                                                                                    valSaleBudget = dataItem.M07;
-                                                                                    break;
-                                                                                case "08":
-                                                                                    valSaleBudget = dataItem.M08;
-                                                                                    break;
-                                                                                case "09":
-                                                                                    valSaleBudget = dataItem.M09;
-                                                                                    break;
-                                                                                case "10":
-                                                                                    valSaleBudget = dataItem.M10;
-                                                                                    break;
-                                                                                case "11":
-                                                                                    valSaleBudget = dataItem.M11;
-                                                                                    break;
-                                                                                case "12":
-                                                                                    valSaleBudget = dataItem.M12;
-                                                                                    break;
-                                                                                default:
-                                                                                    valSaleBudget = 0;
-                                                                                    break;
-                                                                            }
-
-                                                                            nameSaleBudget = "sale_budget_" + dataItem.Sec + "_" + countSaleBudget;
-                                                                            <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
-                                                                                @if (valSaleBudget != 0)
-                                                                                {
-                                                                                    @valSaleBudget.ToString("N0")
-                                                                                }
-                                                                                <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />
-                                                                            </td>
-                                                                        }
+                                                        double underBudgetAmt = 0;
+                                                        double overBudgetAmt = 0;
+                                                        @*Budget*@
+                                                        <tr style="white-space: nowrap; border-top: 3px solid #5e6b89;">
+                                                            <td rowspan="4" class="vcenter" style="vertical-align: middle; background-color: #cbc7c7; cursor: pointer;" onclick="focusToForecast('@dataItem.Sec', '@cusItem.CUSKEY', '@monthInputCurrent');">
+                                                                <span class="badge badge-warning font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Sec </span>
+                                                                <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Secnam </span>
+                                                                <hr>
+                                                                <span class="badge badge-info font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSKEY </span>
+                                                                <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSNAM </span>
+                                                            </td>
+                                                            <td class="fix-td-2" style="vertical-align: middle; background-color: #f2f2f2; padding-left: 13px;"> <b>Budget</b> </td>
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #f2f2f2;">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_budget" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright fix-td-4" style="vertical-align: middle; background-color: #f2f2f2; position: -webkit-sticky; position: sticky; left: 310px; z-index: 2; border-right: var(--border-size-s) solid var(--color-neutral-4);">
+                                                                <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                <input type="hidden" class="total_budget" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                <input type="hidden" class="under_budget" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                <input type="hidden" class="over_budget" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleBudget = 0;
+                                                                string nameSaleBudget = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
                                                                     }
-                                                                </tr>
+                                                                    countSaleBudget++;
+                                                                    double valSaleBudget = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleBudget = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleBudget = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleBudget = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleBudget = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleBudget = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleBudget = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleBudget = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleBudget = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleBudget = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleBudget = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleBudget = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleBudget = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleBudget = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleBudget = "sale_budget_" + dataItem.Sec + "_" + countSaleBudget;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                        @if (valSaleBudget != 0)
+                                                                        {
+                                                                            @valSaleBudget.ToString("N0")
+                                                                        }
+                                                                        <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />
+                                                                    </td>
+                                                                }
                                                             }
-                                                            else if (dataItem.Caption == "Actual")
-                                                            {
-                                                                double underActualAmt = 0;
-                                                                double underActualPerAmt = 0;
-                                                                double roundedNum = 0;
-                                                                int sizeUnderActual;
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "Actual")
+                                                    {
+                                                        double underActualAmt = 0;
+                                                        double underActualPerAmt = 0;
+                                                        double roundedNum = 0;
+                                                        int sizeUnderActual;
 
-                                                                underActualAmt = dataItem.Total_Caption - dataItem.Total_Budget;
-                                                                underActualPerAmt = (dataItem.Total_Caption / dataItem.Total_Budget) * 100;
+                                                        underActualAmt = dataItem.Total_Caption - dataItem.Total_Budget;
+                                                        underActualPerAmt = (dataItem.Total_Caption / dataItem.Total_Budget) * 100;
 
-                                                                @*Actual*@
-                                                                <tr style="white-space: nowrap;">
-                                                                    <td class="sticky-col first-col" style="vertical-align: middle; background-color: #ffffff; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Actual</b> </td>
-                                                                    <td class="vright fix-td-2" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 210px; z-index: 2;">
-                                                                        <b>@dataItem.Last_year.ToString("N0")</b>
-                                                                        <input type="hidden" class="last_year_actual" value="@dataItem.Last_year.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright fix-td-3" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 312px; z-index: 2;">
-                                                                        <b>@dataItem.Total_Caption.ToString("N0")</b>
-                                                                        <input type="hidden" class="total_actual" value="@dataItem.Total_Caption.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; min-width: 100px; vertical-align: middle;">
+                                                        @*Actual*@
+                                                        <tr style="white-space: nowrap;">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #ffffff; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Actual</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 210px; z-index: 2;">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_actual" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 312px; z-index: 2;">
+                                                                <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                <input type="hidden" class="total_actual" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px; vertical-align: middle;">
 
-                                                                        @if (underActualAmt != 0)
-                                                                        {
-                                                                            @underActualAmt.ToString("N0")
-                                                                        }
-                                                                         <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; min-width: 100px;">
-                                                                        @if (underActualPerAmt != 0 && !Double.IsNaN(underActualPerAmt) && dataItem.Total_Budget > 0)
-                                                                        {
-                                                                            sizeUnderActual = underActualPerAmt.ToString("N2").Length;
-                                                                            //@Math.Floor(underActualPerAmt * 100)/100;
-                                                                            roundedNum = Math.Floor(underActualPerAmt * 100) / 100;
-                                                                            @String.Concat(roundedNum, "%");
-                                                                        }
-                                                                        <input type="hidden" class="over_actual" value="@roundedNum" />
-                                                                    </td>
-                                                                    @{
-                                                                        int countSaleActual = 0;
-                                                                        string nameSaleActual = "";
-                                                                        foreach (string monthItemCur in @ViewBag.monthList)
-                                                                        {
-                                                                            string bgMonthCurrent = "";
-                                                                            if (formattedMonthInputCurrent == monthItemCur)
-                                                                            {
-                                                                                bgMonthCurrent = codeColorMonthCurrent;
-                                                                            }
-                                                                            countSaleActual++;
-                                                                            double valSaleActual = 0;
-
-                                                                            switch (monthItemCur)
-                                                                            {
-                                                                                case "01":
-                                                                                    valSaleActual = dataItem.M01;
-                                                                                    break;
-                                                                                case "02":
-                                                                                    valSaleActual = dataItem.M02;
-                                                                                    break;
-                                                                                case "03":
-                                                                                    valSaleActual = dataItem.M03;
-                                                                                    break;
-                                                                                case "04":
-                                                                                    valSaleActual = dataItem.M04;
-                                                                                    break;
-                                                                                case "05":
-                                                                                    valSaleActual = dataItem.M05;
-                                                                                    break;
-                                                                                case "06":
-                                                                                    valSaleActual = dataItem.M06;
-                                                                                    break;
-                                                                                case "07":
-                                                                                    valSaleActual = dataItem.M07;
-                                                                                    break;
-                                                                                case "08":
-                                                                                    valSaleActual = dataItem.M08;
-                                                                                    break;
-                                                                                case "09":
-                                                                                    valSaleActual = dataItem.M09;
-                                                                                    break;
-                                                                                case "10":
-                                                                                    valSaleActual = dataItem.M10;
-                                                                                    break;
-                                                                                case "11":
-                                                                                    valSaleActual = dataItem.M11;
-                                                                                    break;
-                                                                                case "12":
-                                                                                    valSaleActual = dataItem.M12;
-                                                                                    break;
-                                                                                default:
-                                                                                    valSaleActual = 0;
-                                                                                    break;
-                                                                            }
-
-                                                                            nameSaleActual = "sale_actual_" + dataItem.Sec + "_" + countSaleActual;
-                                                                            <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
-                                                                                @if (valSaleActual != 0)
-                                                                                {
-                                                                                    @valSaleActual.ToString("N0")
-                                                                                }
-                                                                                <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_actual_@countSaleActual @nameSaleActual" name="@nameSaleActual" id="sale_actual_@countSaleActual" value="@valSaleActual.ToString("N0")" />
-                                                                            </td>
-                                                                        }
+                                                                @if (underActualAmt != 0)
+                                                                {
+                                                                    @underActualAmt.ToString("N0")
+                                                                }
+                                                                <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                @if (underActualPerAmt != 0 && !Double.IsNaN(underActualPerAmt) && dataItem.Total_Budget > 0)
+                                                                {
+                                                                    sizeUnderActual = underActualPerAmt.ToString("N2").Length;
+                                                                    //@Math.Floor(underActualPerAmt * 100)/100;
+                                                                    roundedNum = Math.Floor(underActualPerAmt * 100) / 100;
+                                                                    @String.Concat(roundedNum, "%");
+                                                                }
+                                                                <input type="hidden" class="over_actual" value="@roundedNum" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleActual = 0;
+                                                                string nameSaleActual = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
                                                                     }
-                                                                </tr>
+                                                                    countSaleActual++;
+                                                                    double valSaleActual = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleActual = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleActual = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleActual = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleActual = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleActual = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleActual = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleActual = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleActual = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleActual = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleActual = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleActual = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleActual = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleActual = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleActual = "sale_actual_" + dataItem.Sec + "_" + countSaleActual;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                        @if (valSaleActual != 0)
+                                                                        {
+                                                                            @valSaleActual.ToString("N0")
+                                                                        }
+                                                                        <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_actual_@countSaleActual @nameSaleActual" name="@nameSaleActual" id="sale_actual_@countSaleActual" value="@valSaleActual.ToString("N0")" />
+                                                                    </td>
+                                                                }
                                                             }
-                                                            else if (dataItem.Caption == "FC")
-                                                            {
-                                                                @*Forecast*@
-                                                                <tr style="white-space: nowrap;" class="forecastTr">
-                                                                    <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Forecast</b> </td>
-                                                                    <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
-                                                                        <b>@dataItem.Last_year.ToString("N0")</b>
-                                                                        <input type="hidden" class="last_year_forecast" value="@dataItem.Last_year.ToString("N0")" />
-                                                                    </td>
-                                                                    @{
-                                                                        string classTotalForecast;
-                                                                        string inputTotalForecast;
-                                                                        classTotalForecast = "sum_total_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                        inputTotalForecast = "sum_total_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                    }
-                                                                    <td class="vright fix-td-3" style="vertical-align: middle; background-color: #d4ecee; vertical-align: middle; position: sticky; left: 312px; z-index: 3; ">
-                                                                        <span class="@classTotalForecast" style="font-weight: bold;">  @dataItem.Total_Caption.ToString("N0") </span>
-                                                                        <input type="hidden" class="@inputTotalForecast total_forecast" value="@dataItem.Total_Caption.ToString("N0")" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
-                                                                        <input type="hidden" class="under_forecast" value="0" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
-                                                                        <input type="hidden" class="over_forecast" value="0" />
-                                                                    </td>
-                                                                    @{
-                                                                        int countSaleForecast = 0;
-                                                                        string nameSaleForecast = "";
-                                                                        string checkboxForecast = "";
-                                                                        string idSaleForecast = "";
-                                                                        string classTotalSaleForecast = "";
-                                                                        foreach (string monthItemCur in @ViewBag.monthList)
-                                                                        {
-                                                                            string bgMonthCurrent = "";
-                                                                            if (formattedMonthInputCurrent == monthItemCur)
-                                                                            {
-                                                                                bgMonthCurrent = codeColorMonthCurrent;
-                                                                            }
-
-                                                                            countSaleForecast++;
-                                                                            double valSaleForecast = 0;
-
-                                                                            switch (monthItemCur)
-                                                                            {
-                                                                                case "01":
-                                                                                    valSaleForecast = dataItem.M01;
-                                                                                    break;
-                                                                                case "02":
-                                                                                    valSaleForecast = dataItem.M02;
-                                                                                    break;
-                                                                                case "03":
-                                                                                    valSaleForecast = dataItem.M03;
-                                                                                    break;
-                                                                                case "04":
-                                                                                    valSaleForecast = dataItem.M04;
-                                                                                    break;
-                                                                                case "05":
-                                                                                    valSaleForecast = dataItem.M05;
-                                                                                    break;
-                                                                                case "06":
-                                                                                    valSaleForecast = dataItem.M06;
-                                                                                    break;
-                                                                                case "07":
-                                                                                    valSaleForecast = dataItem.M07;
-                                                                                    break;
-                                                                                case "08":
-                                                                                    valSaleForecast = dataItem.M08;
-                                                                                    break;
-                                                                                case "09":
-                                                                                    valSaleForecast = dataItem.M09;
-                                                                                    break;
-                                                                                case "10":
-                                                                                    valSaleForecast = dataItem.M10;
-                                                                                    break;
-                                                                                case "11":
-                                                                                    valSaleForecast = dataItem.M11;
-                                                                                    break;
-                                                                                case "12":
-                                                                                    valSaleForecast = dataItem.M12;
-                                                                                    break;
-                                                                                default:
-                                                                                    valSaleForecast = 0;
-                                                                                    break;
-                                                                            }
-
-                                                                            nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
-                                                                            idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
-                                                                            classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                            checkboxForecast = "selectList_" + countSaleForecast;
-                                                                            <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
-                                                                                @*<input data-id="101" type="hidden" class="form-control vright @idSaleForecast" name="@nameSaleForecast" id="sale_budget_@countSaleForecast" value="" />*@
-                                                                                <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control dateCheck mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
-                                                                                <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
-                                                                            </td>
-                                                                        }
-                                                                    }
-                                                                </tr>
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "FC")
+                                                    {
+                                                        @*Forecast*@
+                                                        <tr style="white-space: nowrap;" class="forecastTr">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Forecast</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_forecast" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            @{
+                                                                string classTotalForecast;
+                                                                string inputTotalForecast;
+                                                                classTotalForecast = "sum_total_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                inputTotalForecast = "sum_total_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
                                                             }
-                                                            else if (dataItem.Caption == "Avg")
-                                                            {
-                                                                @*Forecast*@
-                                                                <tr style="white-space: nowrap;">
-                                                                    <td class="sticky-col first-col" style="vertical-align: middle; background-color: #cbead3; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Avg month</b> </td>
-                                                                    <td class="vright fix-td-2" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 210px; z-index: 2; font-weight: bold;">
-                                                                        <input type="hidden" class="last_year_forecast" value="0)" />
-                                                                    </td>
-                                                                    @{
-                                                                        string classTotalForecast;
-                                                                        string inputTotalForecast;
-                                                                        classTotalForecast = "sum_total_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                        inputTotalForecast = "sum_total_avg_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #d4ecee; vertical-align: middle; position: sticky; left: 312px; z-index: 3; ">
+                                                                <span class="@classTotalForecast" style="font-weight: bold;">  @dataItem.Total_Caption.ToString("N0") </span>
+                                                                <input type="hidden" class="@inputTotalForecast total_forecast" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                <input type="hidden" class="under_forecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                <input type="hidden" class="over_forecast" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleForecast = 0;
+                                                                string nameSaleForecast = "";
+                                                                string checkboxForecast = "";
+                                                                string idSaleForecast = "";
+                                                                string classTotalSaleForecast = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
                                                                     }
-                                                                    <td class="vright fix-td-3" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 312px; z-index: 3; font-weight: bold; ">
-                                                                        <span class="@classTotalForecast" style="font-weight: bold;"> </span>
-                                                                        <input type="hidden" class="@inputTotalForecast" value="0" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
-                                                                        <input type="hidden" class="under_forecast" value="0" />
-                                                                    </td>
-                                                                    <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
-                                                                        <input type="hidden" class="over_forecast" value="0" />
-                                                                    </td>
-                                                                    @{
-                                                                        int countSaleAvg = 0;
-                                                                        string nameSaleAvg = "";
-                                                                        string idSaleAvg = "";
-                                                                        string classTotalSaleAvg = "";
-                                                                        foreach (string monthItemCur in @ViewBag.monthList)
-                                                                        {
-                                                                            countSaleAvg++;
-                                                                            double valSaleAvg = 0;
 
-                                                                            switch (monthItemCur)
-                                                                            {
-                                                                                case "01":
-                                                                                    valSaleAvg = dataItem.Total_Budget / 12;
-                                                                                    break;
-                                                                                case "02":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - dataItem.M01) / 11;
-                                                                                    break;
-                                                                                case "03":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02)) / 10;
-                                                                                    break;
-                                                                                case "04":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03)) / 9;
-                                                                                    break;
-                                                                                case "05":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04)) / 8;
-                                                                                    break;
-                                                                                case "06":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05)) / 7;
-                                                                                    break;
-                                                                                case "07":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06)) / 6;
-                                                                                    break;
-                                                                                case "08":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07)) / 5;
-                                                                                    break;
-                                                                                case "09":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08)) / 4;
-                                                                                    break;
-                                                                                case "10":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09)) / 3;
-                                                                                    break;
-                                                                                case "11":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10)) / 2;
-                                                                                    break;
-                                                                                case "12":
-                                                                                    valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10 + dataItem.M11)) / 1;
-                                                                                    break;
-                                                                                default:
-                                                                                    valSaleAvg = 0;
-                                                                                    break;
-                                                                            }
+                                                                    countSaleForecast++;
+                                                                    double valSaleForecast = 0;
 
-                                                                            nameSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleAvg;
-                                                                            idSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                            classTotalSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
-                                                                            <td class="vright" style="vertical-align: middle; background-color: #cbead3;">
-                                                                                @if (valSaleAvg != 0 && valSaleAvg > 0)
-                                                                                {
-                                                                                    @valSaleAvg.ToString("N0")
-                                                                                }
-                                                                                @*<input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />*@
-                                                                                <input type="hidden" class="form-control vright @idSaleAvg" name="@nameSaleAvg" id="sum_avg_forecast_@countSaleAvg" value="@valSaleAvg.ToString("N0")" />
-                                                                            </td>
-                                                                        }
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleForecast = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleForecast = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleForecast = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleForecast = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleForecast = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleForecast = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleForecast = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleForecast = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleForecast = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleForecast = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleForecast = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleForecast = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleForecast = 0;
+                                                                            break;
                                                                     }
-                                                                </tr>
+
+                                                                    nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                    idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                    classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    checkboxForecast = "selectList_" + countSaleForecast;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
+                                                                        @*<input data-id="101" type="hidden" class="form-control vright @idSaleForecast" name="@nameSaleForecast" id="sale_budget_@countSaleForecast" value="" />*@
+                                                                        <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control dateCheck mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
+                                                                        <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
+                                                                    </td>
+                                                                }
                                                             }
-                                                    } @*end compare sec*@
-                                                } @*end compare cuskey*@ 
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "Avg")
+                                                    {
+                                                        @*Forecast*@
+                                                        <tr style="white-space: nowrap;">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #cbead3; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Avg month</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 210px; z-index: 2; font-weight: bold;">
+                                                                <input type="hidden" class="last_year_forecast" value="0)" />
+                                                            </td>
+                                                            @{
+                                                                string classTotalForecast;
+                                                                string inputTotalForecast;
+                                                                classTotalForecast = "sum_total_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                inputTotalForecast = "sum_total_avg_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                            }
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 312px; z-index: 3; font-weight: bold; ">
+                                                                <span class="@classTotalForecast" style="font-weight: bold;"> </span>
+                                                                <input type="hidden" class="@inputTotalForecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                <input type="hidden" class="under_forecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                <input type="hidden" class="over_forecast" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleAvg = 0;
+                                                                string nameSaleAvg = "";
+                                                                string idSaleAvg = "";
+                                                                string classTotalSaleAvg = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    countSaleAvg++;
+                                                                    double valSaleAvg = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleAvg = dataItem.Total_Budget / 12;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleAvg = (dataItem.Total_Budget - dataItem.M01) / 11;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02)) / 10;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03)) / 9;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04)) / 8;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05)) / 7;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06)) / 6;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07)) / 5;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08)) / 4;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09)) / 3;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10)) / 2;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10 + dataItem.M11)) / 1;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleAvg = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleAvg;
+                                                                    idSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    classTotalSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: #cbead3;">
+                                                                        @if (valSaleAvg != 0 && valSaleAvg > 0)
+                                                                        {
+                                                                            @valSaleAvg.ToString("N0")
+                                                                        }
+                                                                        @*<input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />*@
+                                                                        <input type="hidden" class="form-control vright @idSaleAvg" name="@nameSaleAvg" id="sum_avg_forecast_@countSaleAvg" value="@valSaleAvg.ToString("N0")" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                } @*end compare sec*@
+                                            } @*end compare cuskey*@
 
                                         </tbody>
                                     </table>
@@ -1587,9 +1587,9 @@ else
                     let year = $("#year option:selected").val();
                     let secValue = $(this).data("sec");
                     let noteVal;
-                    
+
                     $.ajax({
-                        url: '/ForecastMidMonthSale/GetNotebysec',
+                        url: hostName+'/ForecastMidMonthSale/GetNotebysec',
                         type: 'post',
                         data: {
                             MONTH_INPUT: monthSelect,
@@ -1655,7 +1655,7 @@ else
     //select by month Note
     function SelectMonthNote(sec, value) {
         $.ajax({
-            url: '/ForecastMidMonthSale/GetNotebysec',
+            url: hostName+'/ForecastMidMonthSale/GetNotebysec',
             type: 'post',
             data: {
                 MONTH_INPUT: ('0' + value).slice(-2),

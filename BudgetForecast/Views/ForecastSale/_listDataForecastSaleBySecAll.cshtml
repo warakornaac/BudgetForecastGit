@@ -253,7 +253,7 @@
             //console.log("=========================");
 
             $.ajax({
-                url: '/ForecastMidMonthSale/GetNotebysec',
+                url: hostName+'/ForecastMidMonthSale/GetNotebysec',
                 type: 'post',
                 data: {
                     MONTH_INPUT: monthSelect,
@@ -324,7 +324,7 @@
     //select by month Note
     function SelectMonthNote(sec, value) {
         $.ajax({
-            url: '/ForecastMidMonthSale/GetNotebysec',
+            url: hostName + '/ForecastMidMonthSale/GetNotebysec',
             type: 'post',
             data: {
                 MONTH_INPUT: ('0' + value).slice(-2),
