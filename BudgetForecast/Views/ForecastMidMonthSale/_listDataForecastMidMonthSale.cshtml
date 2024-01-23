@@ -1689,14 +1689,15 @@ else
             inputValue: $('.note_show_' + seccode).text(),
             inputAttributes: {
                 "aria-label": "Type your message here"
-            },
+                },
+                customClass: {
+                    textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
+                },
             showCancelButton: true,
             allowOutsideClick: false,
             confirmButtonText: "Save",
             cancelButtonText: "Cancel",
-            customClass: {
-                textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
-            }
+
         });
         if (text) {
             console.log(monthSelect);
@@ -1774,14 +1775,15 @@ else
                     inputAttributes: {
                         "aria-label": "Type your message here"
                     },
-                showCancelButton: true,
-                allowOutsideClick: false,
-                confirmButtonText: "Save",
-                    cancelButtonText: "Cancel",
                     customClass: {
                         textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
-                    }
-            });
+                    },
+                    showCancelButton: true,
+                    allowOutsideClick: false,
+                    confirmButtonText: "Save",
+                    cancelButtonText: "Cancel",
+
+                });
             if (text) {
                 console.log(monthSelect);
                  $.ajax({
