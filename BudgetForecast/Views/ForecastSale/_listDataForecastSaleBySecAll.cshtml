@@ -29,12 +29,13 @@
             {
                 string idNOTE = "note_show_all_" + dataItemBySec.Sec;
                 string secval = "sum_avg_forecast_" + dataItemBySec.Sec;
+                string btn_note = "note_all_btn_pic_" + dataItemBySec.Sec;
                 if (@dataItemBySec.Budget != 0 || dataItemBySec.Actual != 0 || dataItemBySec.FC != 0)
                 {
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_dec_@dataItemBySec.Sec">
                         <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                             <div class="card-body pb-0" style="margin-top: -10px;">
-                                <button class="btn btn-warning" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size:medium; display:inline-block; margin-bottom:8px;">  <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                <button class="btn btn-warning" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size: medium; display: inline-block; margin-bottom: 8px; height: 30px; width: 30px; padding: 0px;">  <i class="fa fa-plus" aria-hidden="true" id="@btn_note"></i></button>
                                 <h4 class="" style="font-weight: 700; display: inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                 <span class="text-c-blue"></span>
                                 <p class="note_show_all_@dataItemBySec.Sec @idNOTE d-inline-block text-truncate  btn" id="@idNOTE" style="max-width: 170px; font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@dataItemBySec.Sec');">  </p>
@@ -203,7 +204,13 @@
                                  $('.note_show_' + seccode).text(text);
                                  console.log("Success");
                                  console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+                                 //Change Icon
+                                 $('#note_btn_pic_' + seccode).removeClass("fa-plus");
+                                 $('#note_btn_pic_' + seccode).addClass("fa-pencil");
 
+                                 //Change Icon Sec all
+                                 $('#note_all_btn_pic_' + seccode).removeClass("fa-plus");
+                                 $('#note_all_btn_pic_' + seccode).addClass("fa-pencil");
                              } else {
                                  LoadingHide();
                                  Swal.close();
@@ -281,6 +288,10 @@
                             $('.note_show_all_' + secValue).html(noteVal);
                             $(this).val(noteVal);
                             console.log("Sec : " + secValue + " = " + noteVal);
+                            if (noteVal.trim() != "") {
+                                $('#note_all_btn_pic_' + secValue).removeClass("fa-plus");
+                                $('#note_all_btn_pic_' + secValue).addClass("fa-pencil");
+                            }
                         }
                     });
                 },
