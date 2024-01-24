@@ -15,7 +15,7 @@ function hideBodySec(sec) {
         $("#header_" + sec).toggleClass("fa-caret-up fa-caret-down");
         $("#body_" + sec).show('fast');
     } else {
-        $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");   
+        $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");
         $("#body_" + sec).hide('fast');
     }
 }
@@ -63,6 +63,10 @@ function hideHeader() {
 
 function searchForecast(e) {
     $("#slmCode").prop('disabled', false);
+    $("#flgShowCustomer2").removeClass("btn-light");
+    $("#flgShowCustomer2").addClass("btn-info");
+    $("#flgShowCustomer1").removeClass("btn-info");
+    $("#flgShowCustomer1").addClass("btn-light");
     //LoadingShow();
     var msg = '';
     var error = 0;

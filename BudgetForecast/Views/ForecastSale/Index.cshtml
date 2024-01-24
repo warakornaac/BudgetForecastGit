@@ -142,7 +142,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4 col-md-4">
+                <div class="col-md-3 col-sm-3 col-xs-4">
                     <div class="form-group">
                         <span> <i class="fa fa-usd"></i><b> VALUE:</b></span>
                         <br>
@@ -152,6 +152,22 @@
                             </label>
                             <label class="btn btn-light" id="flgBudget1">
                                 <input type="radio" name="flgBudget" value="0" autocomplete="off"> <b>NO</b>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-4">
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-4">
+                    <div class="form-group">
+                        <span> <i class="fa fa-eye"></i><b> EXPAND ALL:</b></span>
+                        <br>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-light" id="flgShowCustomer1">
+                                <input type="radio" name="flgShowCustomer" value="1" autocomplete="off"> <b>YES</b>
+                            </label>
+                            <label class="btn btn-info active" id="flgShowCustomer2">
+                                <input type="radio" name="flgShowCustomer" value="0" autocomplete="off" checked> <b>NO</b>
                             </label>
                         </div>
                     </div>
@@ -207,6 +223,60 @@
             $("#flgBudget1").removeClass("btn-danger");
             $("#flgBudget1").addClass("btn-light");
         });
-   });
+        //btn show input
+        $("#flgShowCustomer1").click(function () { //show
+            hideBodyAll('show');
+            $("#flgShowCustomer1").removeClass("btn-light");
+            $("#flgShowCustomer1").addClass("btn-info");
+            $("#flgShowCustomer2").removeClass("btn-info");
+            $("#flgShowCustomer2").addClass("btn-light");
+        });
+        $("#flgShowCustomer2").click(function () {//not show
+            hideBodyAll('hide');
+            $("#flgShowCustomer2").removeClass("btn-light");
+            $("#flgShowCustomer2").addClass("btn-info");
+            $("#flgShowCustomer1").removeClass("btn-info");
+            $("#flgShowCustomer1").addClass("btn-light");
+        });
+    });
+
+    //show hide customer btn showinput
+    function hideBodyAll(flag) {
+        var lengthForecast = $("[id*=sale_forecast_]").length;
+        if (lengthForecast > 0) {
+            if (flag == 'show') {
+                LoadingShow();
+                $("[id*=header_]").toggleClass("fa-caret-down fa-caret-up");
+                $("[id*=body_]").show();
+                //focus input
+                $("[id*=sale_forecast_]").focus();
+                $(".main-card-body").animate({ scrollTop: 0 }, "fast");
+                setTimeout(() => {
+                    LoadingHide();
+                }, "1000");
+            } else {
+                $("[id*=header_]").toggleClass("fa-caret-up fa-caret-down");
+                $("[id*=body_]").hide();
+            }
+        } else {
+            //ปุ่ม show input set "no"
+            setTimeout(() => {
+                $("#flgShowCustomer2").removeClass("btn-light");
+                $("#flgShowCustomer2").addClass("btn-info");
+                $("#flgShowCustomer1").removeClass("btn-info");
+                $("#flgShowCustomer1").addClass("btn-light");
+            }, "1000");
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่พบข้อมูล',
+                //html: 'ไม่พบข้อมูล',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ปิด',
+                allowOutsideClick: false,
+                focusConfirm: false,
+            });
+            return false;
+        }
+    }
 </script>
 @Scripts.Render("~/Scripts/scriptForecastSale.js")

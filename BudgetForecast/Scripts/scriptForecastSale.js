@@ -63,6 +63,10 @@ function hideHeader() {
 
 function searchForecast(e) {
     $("#slmCode").prop('disabled', false);
+    $("#flgShowCustomer2").removeClass("btn-light");
+    $("#flgShowCustomer2").addClass("btn-info");
+    $("#flgShowCustomer1").removeClass("btn-info");
+    $("#flgShowCustomer1").addClass("btn-light");
     //LoadingShow();
     var msg = '';
     var error = 0;
@@ -314,7 +318,7 @@ const sumSecByMonth = async (sec, month) => {
     //Budget, Actual, Forecast เป็น 0 ไม่แสดง
     //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
     if (sum_forecast_by_month == 0 && sum_budget_by_month == 0 && sum_actual_by_month == 0) {
-       $("#sum_by_sec_" + sec).css("display", "none");
+        $("#sum_by_sec_" + sec).css("display", "none");
     } else {
         $("#sum_by_sec_" + sec).css("display", "block");
     }
@@ -378,29 +382,29 @@ const sumAllSaleForecastByCaption = async (className) => {
 
 async function calculateForecastSale() {
     //if (countList > 0) {
-        $(".cardSummary").LoadingOverlay("show");
-        await sumSecAll();
-        await sumSaleForecastByCaption("sale_budget");
-        await sumSaleForecastByCaption("sale_actual");
-        await sumSaleForecastByCaption("sale_forecast");
+    $(".cardSummary").LoadingOverlay("show");
+    await sumSecAll();
+    await sumSaleForecastByCaption("sale_budget");
+    await sumSaleForecastByCaption("sale_actual");
+    await sumSaleForecastByCaption("sale_forecast");
 
-        //Summary by sec
-        await sumAllSaleForecastByCaption("last_year_budget");
-        await sumAllSaleForecastByCaption("total_budget");
-        await sumAllSaleForecastByCaption("under_budget");
-        await sumAllSaleForecastByCaption("over_budget");
+    //Summary by sec
+    await sumAllSaleForecastByCaption("last_year_budget");
+    await sumAllSaleForecastByCaption("total_budget");
+    await sumAllSaleForecastByCaption("under_budget");
+    await sumAllSaleForecastByCaption("over_budget");
 
-        await sumAllSaleForecastByCaption("last_year_actual");
-        await sumAllSaleForecastByCaption("total_actual");
-        await sumAllSaleForecastByCaption("under_actual");
-        await sumAllSaleForecastByCaption("over_actual");
+    await sumAllSaleForecastByCaption("last_year_actual");
+    await sumAllSaleForecastByCaption("total_actual");
+    await sumAllSaleForecastByCaption("under_actual");
+    await sumAllSaleForecastByCaption("over_actual");
 
-        await sumAllSaleForecastByCaption("last_year_forecast");
-        await sumAllSaleForecastByCaption("total_forecast");
-        await sumAllSaleForecastByCaption("under_forecast");
-        await sumAllSaleForecastByCaption("over_forecast");
+    await sumAllSaleForecastByCaption("last_year_forecast");
+    await sumAllSaleForecastByCaption("total_forecast");
+    await sumAllSaleForecastByCaption("under_forecast");
+    await sumAllSaleForecastByCaption("over_forecast");
 
-        $(".cardSummary").LoadingOverlay("hide");
+    $(".cardSummary").LoadingOverlay("hide");
     //}
 }
 $(document).ready(function () {
