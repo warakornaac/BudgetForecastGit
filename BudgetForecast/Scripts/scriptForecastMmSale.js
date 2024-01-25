@@ -278,12 +278,76 @@ const sumSecAll = async (month) => {
             sumSecByMonth(sec, month);
         }
     });
+    getnotefromMonthSelector();
     //hide icon
     setTimeout(() => {
         $(".iconLoading").html('');
     }, "1000");
 
 }
+//func Get Note
+function getnotefromMonthSelector() {
+    $('[id^="note_input_"]').each(function () {
+        let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
+        let slmCode = $("#slmCode option:selected").val();
+        let year = $("#year option:selected").val();
+        let secValue = $(this).data("sec");
+        //let noteVal;
+
+        $.ajax({
+            url: hostName + '/ForecastMidMonthSale/GetNotebysec',
+            type: 'post',
+            data: {
+                MONTH_INPUT: monthSelect,
+                SEC: secValue,
+                SLMCOD: slmCode,
+                YEAR: year
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //LoadingShow();
+                $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+                $('.note_show_' + secValue).hide();
+            },
+            success: function (data) {
+                $('[class^="note_show_"]').each(function () {
+                    //var secValue = $(this).data("sec");
+                    var noteVal = "";
+                    $.each(data, function (index, item) {
+                        noteVal = item.Note;
+                    });
+                    if (noteVal) {
+
+                        $('.note_show_' + secValue).html(noteVal);
+                        $(this).val(noteVal);
+                        console.log("Sec : " + secValue + " = " + noteVal);
+                        if (noteVal.trim() != "") {
+                            $('#note_btn_pic_' + secValue).removeClass("fa-plus");
+                            $('#note_btn_pic_' + secValue).addClass("fa-pencil");
+                        }
+                    }
+                    else {
+                        if (noteVal.trim() == "") {
+                            $('.note_show_' + secValue).text("");
+                            $(this).val("");
+                            $('#note_btn_pic_' + secValue).addClass("fa-plus");
+                            $('#note_btn_pic_' + secValue).removeClass("fa-pencil");
+                        }
+                    }
+                });
+            },
+            error: function () {
+                alert('Error fetching data.');
+                console.log("fail!!! ");
+            },
+            complete: function (res) {
+                //LoadingHide();
+                $(".iconLoading").html('');
+                $('.note_show_' + secValue).show();
+            }
+        });//Ajax
+    });//$Func
+}//func
 //sum sec by month
 const sumSecByMonth = async (sec, month) => {
     //sum sec forecast
