@@ -281,7 +281,6 @@ const sumSecAll = async (month) => {
         sec = $(this).val();
         if (sec != null) {
             sumSecByMonth(sec, month);
-
         }
     });
     getnotefromMonthSelector();
@@ -300,7 +299,6 @@ function getnotefromMonthSelector() {
         let year = $("#year option:selected").val();
         let secValue = $(this).data("sec");
         //let noteVal;
-
         $.ajax({
             url: hostName + '/ForecastMidMonthSale/GetNotebysec',
             type: 'post',

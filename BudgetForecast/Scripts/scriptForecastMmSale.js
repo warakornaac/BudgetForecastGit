@@ -293,7 +293,6 @@ function getnotefromMonthSelector() {
         let year = $("#year option:selected").val();
         let secValue = $(this).data("sec");
         //let noteVal;
-
         $.ajax({
             url: hostName + '/ForecastMidMonthSale/GetNotebysec',
             type: 'post',
@@ -348,6 +347,9 @@ function getnotefromMonthSelector() {
         });//Ajax
     });//$Func
 }//func
+
+
+
 //sum sec by month
 const sumSecByMonth = async (sec, month) => {
     //sum sec forecast

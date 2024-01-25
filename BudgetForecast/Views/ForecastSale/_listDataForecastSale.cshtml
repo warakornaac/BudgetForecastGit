@@ -851,6 +851,7 @@ else
                         <li class="nav-item">
                             <a class="nav-link secall" href="searchBySecAll" data-target="#searchBySecAll" data-toggle="tab">All Customer</a>
                         </li>
+                        <span class="text-center"> Month :  </span>
                         <span>
                             <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline; margin-left: 20px;">
                                 @for (var i = 0; i < @ViewBag.MonthYearList.Count; i++)
@@ -891,7 +892,6 @@ else
                                             </div>
                                             <div class="col-9 col-sm-6 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 text-left">
                                                 <span class="note_show_@secItem.SEC d-inline-block text-truncate btn col text-left p-0" id="@idNOTE" style=" font-size: medium; padding-bottom: 8px;" onclick="ShowNote('@secItem.SEC');">  </span>
-
                                             </div>
                                         </div>
 
@@ -1217,38 +1217,38 @@ else
         $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
         $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
      }
-    //sum avg
-    const sumAvgForecast = async (sec, cuscod) => {
-        let sum_total_avg_forecast_by_cuscod = 0;
-        await Promise.all($(".sum_avg_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
-            let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-            //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
-            forecast_sale_key = await getVowels(forecast_sale_key, 0);
-            sum_total_avg_forecast_by_cuscod += Number(forecast_sale_key);
-        }));
-        $('.sum_total_avg_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_avg_forecast_by_cuscod.toFixed(0)));
-    }
-    //for sum by sec
-    const sumSecAll = async (month) => {
-        $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
-        var sec;
-        var monthSelect;
-        var monthSelect = $("#month_sec option:selected").val();
-        if (month === undefined) {
-            month = monthSelect;
-        }
-        //sec all
-        $('.stkSecList_header').each(function () {
-            sec = $(this).val();
-            if (sec != null) {
-                sumSecByMonth(sec, month);
-            }
-        });
-        //hide icon
-        setTimeout(() => {
-            $(".iconLoading").html('');
-        }, "1000");
-    }
+    ////sum avg
+    //const sumAvgForecast = async (sec, cuscod) => {
+    //    let sum_total_avg_forecast_by_cuscod = 0;
+    //    await Promise.all($(".sum_avg_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+    //        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+    //        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+    //        sum_total_avg_forecast_by_cuscod += Number(forecast_sale_key);
+    //    }));
+    //    $('.sum_total_avg_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_avg_forecast_by_cuscod.toFixed(0)));
+    //}
+    ////for sum by sec
+    //const sumSecAll = async (month) => {
+    //    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+    //    var sec;
+    //    var monthSelect;
+    //    var monthSelect = $("#month_sec option:selected").val();
+    //    if (month === undefined) {
+    //        month = monthSelect;
+    //    }
+    //    //sec all
+    //    $('.stkSecList_header').each(function () {
+    //        sec = $(this).val();
+    //        if (sec != null) {
+    //            sumSecByMonth(sec, month);
+    //        }
+    //    });
+    //    //hide icon
+    //    setTimeout(() => {
+    //        $(".iconLoading").html('');
+    //    }, "1000");
+    //}
     //sum sec by month
     const sumSecByMonth = async (sec, month) => {
         //console.log("(sec, month = "+ sec + "/" + month);
@@ -1286,87 +1286,87 @@ else
             $("#sum_by_sec_" + sec).css("display", "block");
         }
     }
-    //sum all month
-    const sumSaleForecastByCaption = async (inputName) => {
-        //console.log("inputName = " + inputName);
-        for (let numMonth = 1; numMonth <= 12; numMonth++) {
-            let sum_by_caption = 0;
-            await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
-                let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-                val_by_caption = await getVowels(val_by_caption, 0);
-                sum_by_caption += Number(val_by_caption);
-                //console.log("sum_by_caption = " + sum_by_caption);
-            }));
-            if (sum_by_caption != null) {
-                $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
-            }
-        }
-    }
-    //sum all last year, total, under/over
-    const sumAllSaleForecastByCaption = async (className) => {
-        //console.log("className = " + className);
-        let sum_all_by_caption = 0;
-        let sum_total_actual_before = 0;
-        let sum_total_actual_after = 0;
-        let sum_total_budget_before = 0;
-        let sum_total_budget_after = 0;
-        if (className == "over_actual") {
-            sum_total_actual_before = $("#sum_total_actual").text();
-            let sum_total_actual_after = sum_total_actual_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
-            sum_total_actual_after = await getVowels(sum_total_actual_after, 0);
-            //console.log("sum_total_actual_after = " + sum_total_actual_after);
+    ////sum all month
+    //const sumSaleForecastByCaption = async (inputName) => {
+    //    //console.log("inputName = " + inputName);
+    //    for (let numMonth = 1; numMonth <= 12; numMonth++) {
+    //        let sum_by_caption = 0;
+    //        await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
+    //            let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //            val_by_caption = await getVowels(val_by_caption, 0);
+    //            sum_by_caption += Number(val_by_caption);
+    //            //console.log("sum_by_caption = " + sum_by_caption);
+    //        }));
+    //        if (sum_by_caption != null) {
+    //            $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
+    //        }
+    //    }
+    //}
+    ////sum all last year, total, under/over
+    //const sumAllSaleForecastByCaption = async (className) => {
+    //    //console.log("className = " + className);
+    //    let sum_all_by_caption = 0;
+    //    let sum_total_actual_before = 0;
+    //    let sum_total_actual_after = 0;
+    //    let sum_total_budget_before = 0;
+    //    let sum_total_budget_after = 0;
+    //    if (className == "over_actual") {
+    //        sum_total_actual_before = $("#sum_total_actual").text();
+    //        let sum_total_actual_after = sum_total_actual_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //        sum_total_actual_after = await getVowels(sum_total_actual_after, 0);
+    //        //console.log("sum_total_actual_after = " + sum_total_actual_after);
 
-            sum_total_budget_before = $("#sum_total_budget").text();
-            let sum_total_budget_after = sum_total_budget_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
-            sum_total_budget_after = await getVowels(sum_total_budget_after, 0);
-            //console.log("sum_total_budget_after = " + sum_total_budget_after);
+    //        sum_total_budget_before = $("#sum_total_budget").text();
+    //        let sum_total_budget_after = sum_total_budget_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //        sum_total_budget_after = await getVowels(sum_total_budget_after, 0);
+    //        //console.log("sum_total_budget_after = " + sum_total_budget_after);
 
-            if (sum_total_budget_after != 0 && sum_total_budget_after != null) {
-                sum_all_by_caption = (sum_total_actual_after / sum_total_budget_after) * 100;
-            }
-            sum_all_by_caption = Math.floor(sum_all_by_caption * 100) / 100;
-            sum_all_by_caption += "%";
-        } else {
-            await Promise.all($('.' + className).each(async function (i, obj) {
-                let val_all_by_caption = obj.value.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
-                val_all_by_caption = await getVowels(val_all_by_caption, 0);
-                sum_all_by_caption += Number(val_all_by_caption);
-                //console.log("val_all_by_caption = " + val_all_by_caption);
-            }));
+    //        if (sum_total_budget_after != 0 && sum_total_budget_after != null) {
+    //            sum_all_by_caption = (sum_total_actual_after / sum_total_budget_after) * 100;
+    //        }
+    //        sum_all_by_caption = Math.floor(sum_all_by_caption * 100) / 100;
+    //        sum_all_by_caption += "%";
+    //    } else {
+    //        await Promise.all($('.' + className).each(async function (i, obj) {
+    //            let val_all_by_caption = obj.value.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //            val_all_by_caption = await getVowels(val_all_by_caption, 0);
+    //            sum_all_by_caption += Number(val_all_by_caption);
+    //            //console.log("val_all_by_caption = " + val_all_by_caption);
+    //        }));
 
-            if (sum_all_by_caption != 0 && sum_all_by_caption != null && !isNaN(sum_all_by_caption)) {
-                sum_all_by_caption = sum_all_by_caption.toFixed(0)
-            }
-        }
-        $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
-    }
+    //        if (sum_all_by_caption != 0 && sum_all_by_caption != null && !isNaN(sum_all_by_caption)) {
+    //            sum_all_by_caption = sum_all_by_caption.toFixed(0)
+    //        }
+    //    }
+    //    $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
+    //}
 
-    async function calculateForecastSale() {
-        $(".cardSummary").LoadingOverlay("show");
-        await sumSecAll();
-        await sumSaleForecastByCaption("sale_budget");
-        await sumSaleForecastByCaption("sale_actual");
-        await sumSaleForecastByCaption("sale_forecast");
-        await sumSaleForecastByCaption("sale_avg");
+    //async function calculateForecastSale() {
+    //    $(".cardSummary").LoadingOverlay("show");
+    //    await sumSecAll();
+    //    await sumSaleForecastByCaption("sale_budget");
+    //    await sumSaleForecastByCaption("sale_actual");
+    //    await sumSaleForecastByCaption("sale_forecast");
+    //    await sumSaleForecastByCaption("sale_avg");
 
-        //Summary by sec
-        await sumAllSaleForecastByCaption("last_year_budget");
-        await sumAllSaleForecastByCaption("total_budget");
-        await sumAllSaleForecastByCaption("under_budget");
-        await sumAllSaleForecastByCaption("over_budget");
+    //    //Summary by sec
+    //    await sumAllSaleForecastByCaption("last_year_budget");
+    //    await sumAllSaleForecastByCaption("total_budget");
+    //    await sumAllSaleForecastByCaption("under_budget");
+    //    await sumAllSaleForecastByCaption("over_budget");
 
-        await sumAllSaleForecastByCaption("last_year_actual");
-        await sumAllSaleForecastByCaption("total_actual");
-        await sumAllSaleForecastByCaption("under_actual");
-        await sumAllSaleForecastByCaption("over_actual");
+    //    await sumAllSaleForecastByCaption("last_year_actual");
+    //    await sumAllSaleForecastByCaption("total_actual");
+    //    await sumAllSaleForecastByCaption("under_actual");
+    //    await sumAllSaleForecastByCaption("over_actual");
 
-        await sumAllSaleForecastByCaption("last_year_forecast");
-        await sumAllSaleForecastByCaption("total_forecast");
-        await sumAllSaleForecastByCaption("under_forecast");
-        await sumAllSaleForecastByCaption("over_forecast");
+    //    await sumAllSaleForecastByCaption("last_year_forecast");
+    //    await sumAllSaleForecastByCaption("total_forecast");
+    //    await sumAllSaleForecastByCaption("under_forecast");
+    //    await sumAllSaleForecastByCaption("over_forecast");
 
-        $(".cardSummary").LoadingOverlay("hide");
-    }
+    //    $(".cardSummary").LoadingOverlay("hide");
+    //}
 
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
