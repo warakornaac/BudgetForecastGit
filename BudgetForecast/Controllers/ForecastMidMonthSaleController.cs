@@ -83,7 +83,7 @@ namespace BudgetForecast.Controllers
                     command.Dispose();
 
                     //list month search
-                    command = new SqlCommand("P_Get_Month_Current", Connection);
+                    command = new SqlCommand("P_Get_Month_Current_Midmonth", Connection);
                     command.CommandType = CommandType.StoredProcedure;
                     SqlDataReader dr4 = command.ExecuteReader();
                     while (dr4.Read())
@@ -266,7 +266,7 @@ namespace BudgetForecast.Controllers
                     ViewBag.secAllArray = secListAll;
                 }
                 //list month search
-                var command = new SqlCommand("P_Get_Month_Current", Connection);
+                var command = new SqlCommand("P_Get_Month_Current_Midmonth", Connection);
                 command.CommandType = CommandType.StoredProcedure;
                 SqlDataReader dr4 = command.ExecuteReader();
                 while (dr4.Read())
@@ -390,7 +390,7 @@ namespace BudgetForecast.Controllers
                 //Note by Sec
 
                 //list month search
-                command = new SqlCommand("P_Get_Month_Current", Connection);
+                command = new SqlCommand("P_Get_Month_Current_Midmonth", Connection);
                 command.CommandType = CommandType.StoredProcedure;
                 SqlDataReader dr4 = command.ExecuteReader();
                 while (dr4.Read())
