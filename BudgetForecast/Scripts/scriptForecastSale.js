@@ -266,7 +266,7 @@ sumSaleForecast = async (_className, month, sec, cuscod) => {
 //for sum by sec
 const sumSecAll = async (month) => {
     var flagTabBySecAll = $("#flagTabBySecAll").val();
-    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+    // $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
     var sec;
     var monthSelect;
     var monthSelect = $("#month_sec option:selected").val();
@@ -285,9 +285,9 @@ const sumSecAll = async (month) => {
     });
     getnotefromMonthSelector();
     //hide icon
-    setTimeout(() => {
-        $(".iconLoading").html('');
-    }, "1000");
+    //setTimeout(() => {
+    //    $(".iconLoading").html('');
+    //}, "1000");
 
 }
 
@@ -297,7 +297,7 @@ function getnotefromMonthSelector() {
         let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
         let slmCode = $("#slmCode option:selected").val();
         let year = $("#year option:selected").val();
-        let secValue = $(this).data("sec");
+        let secValue = $(this).data('sec');
         //let noteVal;
         $.ajax({
             url: hostName + '/ForecastMidMonthSale/GetNotebysec',
@@ -311,7 +311,7 @@ function getnotefromMonthSelector() {
             dataType: 'json',
             beforeSend: function () {
                 //LoadingShow();
-                $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+                $(".iconLoading_" + secValue).html('<i class="fa fa-spinner fa-spin f-center"></i>');
                 $('.note_show_' + secValue).hide();
             },
             success: function (data) {
@@ -347,7 +347,7 @@ function getnotefromMonthSelector() {
             },
             complete: function (res) {
                 //LoadingHide();
-                $(".iconLoading").html('');
+                $(".iconLoading_" + secValue).html('');
                 $('.note_show_' + secValue).show();
             }
         });//Ajax
