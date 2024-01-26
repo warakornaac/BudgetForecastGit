@@ -21,7 +21,7 @@
     <link href="~/Content/uicons-thin-straight.css" rel="stylesheet" />
     @*<link href="~/Content/style_admin.css" rel="stylesheet" />*@
 
-    @{ 
+    @{
         var DayCurrent = DateTime.Now.Day;
     }
     <style>
@@ -69,18 +69,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "ForecastSale")">Forecast SALESMAN</a>
                     </li>
-                    if (DayCurrent >= 15)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index","ForecastMidMonthSale")">Forecast Mid Month </a>
-                        </li>
-                    }
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","ForecastMidMonthSale")">Forecast Mid Month </a>
+                    </li>
                 }
             </ul>
             <ul class="navbar-nav ml-auto">
                 @*<li class="nav-item">
-                    <a class="nav-link" href="">User AD (@Session["UserAD"] - @Session["UserType"])</a>
-                </li>*@
+                        <a class="nav-link" href="">User AD (@Session["UserAD"] - @Session["UserType"])</a>
+                    </li>*@
                 <li class="nav-item">
                     <a class="nav-link" href="#">บัญชีของคุณ &nbsp; <i class="fa fa-user-o"></i> @Session["UserID"]</a>
                 </li>

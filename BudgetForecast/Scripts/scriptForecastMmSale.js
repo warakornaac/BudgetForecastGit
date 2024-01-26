@@ -476,9 +476,9 @@ const sumRemainBycaption = async () => {
         if (sum_new_forecast > 0) {
             remain_res = sum_new_forecast - sum_actual;
         }
-        else if (sum_new_forecast <= 0) {
-            remain_res = sum_forecast - sum_actual;
-        }
+        //else if (sum_new_forecast <= 0) {
+        //    remain_res = sum_forecast - sum_actual;
+        //}
         else
             remain_res = sum_forecast - sum_actual;
 
