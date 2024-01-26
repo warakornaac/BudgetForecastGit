@@ -1106,6 +1106,7 @@ else
                         <li class="nav-item">
                             <a class="nav-link secall" href="searchBySecAll" data-target="#searchBySecAll" data-toggle="tab">All Customer</a>
                         </li>
+                        <span class="d-flex align-items-center"> Month :  </span>
                         <span>
                             <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline; margin-left: 20px;">
                                 @for (var i = 0; i < @ViewBag.MonthYearList.Count; i++)
