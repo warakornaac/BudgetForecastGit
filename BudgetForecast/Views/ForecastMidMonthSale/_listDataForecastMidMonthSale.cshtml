@@ -251,6 +251,12 @@
             max-width: 20.67%;
         }
     }
+
+    @@media (max-width: 574px) {
+        .summary-text {
+            display: none;
+        }
+    }
 </style>
 @if (((List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList).Count() == 0 || ViewBag.cusCodeList == null || ViewBag.cusNameList.Count == 0) //ไม่มีข้อมใน Fore_Month_slm
 {
@@ -957,7 +963,7 @@ else
                         </li>
                     </ul>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 text-right summary-text">
                     <h5 style="font-weight: bold;"> Summary by month </h5>
                 </div>
             </div>
@@ -1129,7 +1135,7 @@ else
                         @*</span>*@
                     </ul>
                 </div>
-                <div class="col-sm-4 text-right">
+                <div class="col-sm-4 text-right summary-text">
                     <h5 style="font-weight: bold;"> Summary by sec </h5>
                 </div>
             </div>
