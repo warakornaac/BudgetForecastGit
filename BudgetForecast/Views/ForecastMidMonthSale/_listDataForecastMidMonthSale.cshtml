@@ -1098,7 +1098,7 @@ else
     <div class="card" style="margin-top: 10px;">
         <div class="card-header bg-secondary text-white font-weight-bold" style="height: 54px;">
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-8 text-left">
                     <ul class="nav nav-tabs card-header-tabs float-xs-left font-weight-bold">
                         <li class="nav-item">
                             <a class="nav-link active" href="searchBySecSome" data-target="#searchBySecSome" data-toggle="tab">Some Customer</a>
@@ -1106,22 +1106,30 @@ else
                         <li class="nav-item">
                             <a class="nav-link secall" href="searchBySecAll" data-target="#searchBySecAll" data-toggle="tab">All Customer</a>
                         </li>
-                        <span class="d-flex align-items-center"> Month :  </span>
-                        <span>
-                            <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline; margin-left: 20px;">
-                                @for (var i = 0; i < @ViewBag.MonthYearList.Count; i++)
-                                {
-                                    var monthSplit = @ViewBag.MonthYearList[i].Text.Split('-');
-                                    <option value="@monthSplit[0]">@monthSplit[0]</option>
-                                }
-                            </select>
-                        </span>
+                        <li class="nav-item d-flex">
+                            <span class="d-flex align-items-center" style="display:inline-block;"> Month :  </span>
+                            <span>
+                                <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline-block; margin-left: 20px;">
+                                    @for (var i = 0; i < ViewBag.MonthYearList.Count; i++)
+                                    {
+                                        var monthSplit = ViewBag.MonthYearList[i].Text.Split('-');
+                                        if (monthSplit[0].ToString() != "0")
+                                        {
+                                            <option value="@monthSplit[0]">@monthSplit[0]</option>
+                                        }
+                                    }
+                                </select>
+                            </span>
+                        </li>
+
+
+
                         @*<span style="font-size: 1.25rem; width: 70%; justify-content: right; z-index: 10; display: flex; float: right;">*@
                         @*Summary by sec*@
                         @*</span>*@
                     </ul>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-4 text-right">
                     <h5 style="font-weight: bold;"> Summary by sec </h5>
                 </div>
             </div>
