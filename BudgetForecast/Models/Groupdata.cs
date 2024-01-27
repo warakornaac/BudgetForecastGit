@@ -295,5 +295,11 @@ namespace BudgetForecast.Models
         public string SLMCOD { get; set; }
         public string Note { get; set; }
     }
+    public class StarNoteViewModel
+    {
+        public string Cus { get; set; }
+        public string Note { get; set; }
+        public bool IsStar { get; set; }
+    }
 
 }

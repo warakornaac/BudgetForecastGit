@@ -45,8 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTheStar.cs" />
     <Compile Include="GetNoteForecastSale.cs" />
+    <Compile Include="GetNoteTheStar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveThestar.cs" />
     <Compile Include="SearchBudgetPm.cs" />
     <Compile Include="SearchBudgetSale.cs" />
     <Compile Include="SearchForecastPm.cs" />
@@ -58,6 +61,7 @@
     <Compile Include="UpdateForecastPm.cs" />
     <Compile Include="UpdateForecastSale.cs" />
     <Compile Include="UpdateNoteForecastSale.cs" />
+    <Compile Include="UpdateTheStarNote.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BudgetForecast.Library\BudgetForecast.Library.csproj">

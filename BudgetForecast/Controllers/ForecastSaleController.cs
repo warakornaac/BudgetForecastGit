@@ -15,6 +15,8 @@ using BudgetForecast.Library;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
+using My.Data;
+using System.Security.Cryptography;
 
 namespace BudgetForecast.Controllers
 {
@@ -187,6 +189,20 @@ namespace BudgetForecast.Controllers
                 {
 
                     string cusCodArr = String.Join(",", cusCode.Select(s => "'" + s + "'"));
+
+                    List<StarNoteViewModel> starnoteList = new List<StarNoteViewModel>();
+
+                    var TheStarNote = Utils.GetdataNote(year, cusCode);
+                    foreach (var entry in TheStarNote)
+                    {
+                        string cus = entry.Key;
+                        string note = entry.Value.Item1;
+                        bool isStar = entry.Value.Item2;
+
+                        // เพิ่มข้อมูลลงใน List<StarNoteViewModel>
+                        starnoteList.Add(new StarNoteViewModel { Cus = cus, Note = note, IsStar = isStar });
+                    }
+                    ViewBag.Starnote = starnoteList;
                     //SqlCommand cmd = new SqlCommand("select cus.CUSKEY, cus.CUSNAM from v_Fore_AllCusProvCuskey as cus where cus.CUSCOD in (" + cusCodArr + ") and cus.SLMCOD = '" + slmCode + "' group by cus.CUSKEY, cus.CUSNAM order by cus.CUSKEY", Connection);
 
                     //string txtSqlCus = string.Empty;
@@ -330,7 +346,8 @@ namespace BudgetForecast.Controllers
                 @ViewBag.secList,
                 @ViewBag.MonthYearList,
                 @ViewBag.cusNameList,
-                @ViewBag.secAllArray
+                @ViewBag.secAllArray,
+                @ViewBag.Starnote
             });
         }
         //search by month
@@ -457,5 +474,52 @@ namespace BudgetForecast.Controllers
             Connection.Close();
             return Json(CUSList, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult SaveTheStarNote(string USER, string YEAR, string CusKey, string Input)
+        {
+            var UpdateNoteTheStar = new List<StoreUpdateTheStarNote>();
+            try
+            {
+                UpdateNoteTheStar = new UpdateTheStarNote().Update(USER, YEAR, CusKey, Input);
+                return Json(new { status = "success", message = "Note updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddTheStar(string Year, string CusKey)
+        {
+            var Addthestar = new List<StoreAddTheStarModel>();
+            try
+            {
+                Addthestar = new AddTheStar().Add(Year, CusKey);
+                return Json(new { status = "success", message = "The Star updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+
+        }
+        [HttpPost]
+        public ActionResult RemoveTheStar(string Year, string CusKey)
+        {
+            var Addthestar = new List<StoreAddTheStarModel>();
+            try
+            {
+                Addthestar = new RemoveThestar().Remove(Year, CusKey);
+                return Json(new { status = "success", message = "The Star updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+
+        }
+
     }
 }

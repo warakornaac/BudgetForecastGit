@@ -202,10 +202,13 @@ namespace BudgetForecast.Library
 
 
         //get name month
-        public Array ListMonth(string language = "EN", string format = "S") {
+        public Array ListMonth(string language = "EN", string format = "S")
+        {
             var arrayMonth = new string[12];
-            if (language == "EN") {
-                if (format == "S") {
+            if (language == "EN")
+            {
+                if (format == "S")
+                {
                     arrayMonth = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                 }
             }
@@ -225,7 +228,8 @@ namespace BudgetForecast.Library
             string flagInput = "NO";
             string startDate = "";
             string endDate = "";
-            if (id != 0 && year != null) { 
+            if (id != 0 && year != null)
+            {
                 using (SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
                 {
                     Connection.Open();
@@ -254,6 +258,39 @@ namespace BudgetForecast.Library
                 }
             }
             return Tuple.Create(flagInput, startDate, endDate);
+        }
+
+        public static Dictionary<string, Tuple<string, bool>> GetdataNote(string year, string[] cuscod)
+        {
+            Dictionary<string, Tuple<string, bool>> resultDictionary = new Dictionary<string, Tuple<string, bool>>();
+            if (year != null && cuscod != null)
+            {
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString))
+                {
+                    conn.Open();
+                    foreach (var cus in cuscod)
+                    {
+                        var cmdSearch = new SqlCommand("P_Get_Note_TheStar_Dev", conn);
+
+                        cmdSearch.CommandType = CommandType.StoredProcedure;
+                        cmdSearch.Parameters.AddWithValue("@cuscod", cus);
+                        cmdSearch.Parameters.AddWithValue("@Year", year);
+                        SqlParameter p = new SqlParameter("@IsStar", SqlDbType.Bit);
+                        SqlParameter p2 = new SqlParameter("@Note", SqlDbType.NVarChar, 1000);
+                        p.Direction = ParameterDirection.Output;
+                        p2.Direction = ParameterDirection.Output;
+                        cmdSearch.Parameters.Add(p);
+                        cmdSearch.Parameters.Add(p2);
+                        int INSID = cmdSearch.ExecuteNonQuery();
+                        bool IsStar = Convert.ToBoolean(cmdSearch.Parameters["@IsStar"].Value);
+                        string Note = cmdSearch.Parameters["@Note"].Value.ToString();
+
+                        resultDictionary.Add(cus, Tuple.Create(Note, IsStar));
+                        cmdSearch.Dispose();
+                    }
+                }
+            }
+            return resultDictionary;
         }
     }
 }

@@ -46,16 +46,19 @@
   <ItemGroup>
     <Compile Include="GetNoteForecastSaleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreAddTheStarModel.cs" />
     <Compile Include="StoreSearchBudgetPmModel.cs" />
     <Compile Include="StoreSearchBudgetSaleModel.cs" />
     <Compile Include="StoreSearchForecastPmModel.cs" />
     <Compile Include="StoreSearchForecastSaleModel.cs" />
+    <Compile Include="StoreSearchTheStarForecastNote.cs" />
     <Compile Include="StoreUpdateBudgetPmModel.cs" />
     <Compile Include="StoreUpdateBudgetSaleModel.cs" />
     <Compile Include="StoreUpdateForecastMidmonthSaleModel.cs" />
     <Compile Include="StoreUpdateForecastPmModel.cs" />
     <Compile Include="StoreUpdateForecastSaleModel.cs" />
     <Compile Include="StoreUpdateNoteSaleModel.cs" />
+    <Compile Include="StoreUpdateTheStarNote.cs" />
     <Compile Include="UserAD.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
