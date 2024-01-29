@@ -289,21 +289,21 @@ else
                                     <div class="col-sm-12 d-inline-flex align-items-center">
                                         <i class="fa fa-university fa-lg"></i> CUSTOMER (@cusItem.CUSKEY/@cusItem.CUSNAM) &nbsp; &nbsp;||&nbsp;&nbsp;
 
-                                        <div class="form-check pl-0">
+                                        <div class="form-check pl-0" style="display: flex; align-items: center;">
                                             @{
                                                 var starnoteList = ViewBag.Starnote as List<BudgetForecast.Models.StarNoteViewModel>;
                                                 var StarCheck = starnoteList.Any(starNote => cusItem.CUSKEY == starNote.Cus && starNote.IsStar) ? "checked" : "";
                                             }
-                                            <input class="form-check-input_@cusItem.CUSKEY" data-cuscode="@cusItem.CUSKEY" type="checkbox" id="flexCheckStar" @StarCheck onchange="ShowStar('@cusItem.CUSKEY');">
-                                            <label class="form-check-label" for="flexCheckStar">
-                                                <i class="fa fa-star" aria-hidden="true" id="the_star_icon_@cusItem.CUSKEY"></i>
+                                            <input class="form-check-input_@cusItem.CUSKEY" data-cuscode="@cusItem.CUSKEY" style="width: 20px; height: 20px;" type="checkbox" id="flexCheckStar" @StarCheck onchange="ShowStar('@cusItem.CUSKEY');">
+                                            <label class="form-check-label" for="flexCheckStar" style="display:flex; align-items:center;">
+                                                <span>&nbsp;</span><i class="fa fa-star" aria-hidden="true" id="the_star_icon_@cusItem.CUSKEY" style="font-size: 20px;"></i>
                                             </label>
                                         </div>
 
                                         <div class="star_show_@cusItem.CUSKEY" style="display: flex; align-items: center;">
                                             &nbsp;&nbsp;|| &nbsp;
                                             <div class="btn-group">
-                                                <button class="btn btn-info" type="button" style="font-size: medium; display: inline-block;  " onclick="handleUpdateNoteTheStar('@cusItem.CUSKEY', event);"> <i class="fa fa-book" aria-hidden="true"></i></button>
+                                                <button class="btn btn-info" type="button" style="font-size: medium; display: inline-block;  " onclick="handleUpdateNoteTheStar('@cusItem.CUSKEY', event);"> <i class="fa fa-book" aria-hidden="true" style="font-size: 20px;"></i></button>
                                                 @foreach (var starNote in ViewBag.Starnote)
                                                 {
                                                     if (cusItem.CUSKEY == starNote.Cus)
