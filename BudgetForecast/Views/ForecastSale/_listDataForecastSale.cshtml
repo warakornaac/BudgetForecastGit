@@ -287,7 +287,8 @@ else
                             <div class="card-header bg-info text-white font-weight-bold" onclick="if(event.target.tagName !== 'INPUT') { hideBodySec('@cusItem.CUSKEY'); }" style="cursor: pointer;">
                                 <div class="row">
                                     <div class="col-sm-12 d-inline-flex align-items-center">
-                                        <i class="fa fa-university fa-lg"></i> CUSTOMER (@cusItem.CUSKEY/@cusItem.CUSNAM)||&nbsp;
+                                        <i class="fa fa-university fa-lg"></i> CUSTOMER (@cusItem.CUSKEY/@cusItem.CUSNAM) &nbsp; &nbsp;||&nbsp;&nbsp;
+
                                         <div class="form-check pl-0">
                                             @{
                                                 var starnoteList = ViewBag.Starnote as List<BudgetForecast.Models.StarNoteViewModel>;
@@ -295,22 +296,25 @@ else
                                             }
                                             <input class="form-check-input_@cusItem.CUSKEY" data-cuscode="@cusItem.CUSKEY" type="checkbox" id="flexCheckStar" @StarCheck onchange="ShowStar('@cusItem.CUSKEY');">
                                             <label class="form-check-label" for="flexCheckStar">
-                                                <i class="fa fa-star" aria-hidden="true"></i>The Star
+                                                <i class="fa fa-star" aria-hidden="true" id="the_star_icon_@cusItem.CUSKEY"></i>
                                             </label>
                                         </div>
-                                        &nbsp;|| &nbsp;
-                                        <div class="star_show_@cusItem.CUSKEY">
-                                            <button class="btn btn-warning" type="button" style="font-size: medium; display: inline-block; height: 30px; width: 30px; vertical-align: middle;" onclick="handleUpdateNoteTheStar('@cusItem.CUSKEY', event);"> <i class="fa fa-book" aria-hidden="true"></i></button>
-                                            @foreach (var starNote in ViewBag.Starnote)
-                                            {
-                                                if (cusItem.CUSKEY == starNote.Cus)
+
+                                        <div class="star_show_@cusItem.CUSKEY" style="display: flex; align-items: center;">
+                                            &nbsp;&nbsp;|| &nbsp;
+                                            <div class="btn-group">
+                                                <button class="btn btn-info" type="button" style="font-size: medium; display: inline-block;  " onclick="handleUpdateNoteTheStar('@cusItem.CUSKEY', event);"> <i class="fa fa-book" aria-hidden="true"></i></button>
+                                                @foreach (var starNote in ViewBag.Starnote)
                                                 {
-                                                    if (starNote.Note != null)
+                                                    if (cusItem.CUSKEY == starNote.Cus)
                                                     {
-                                                        @:&nbsp; &nbsp;<button class="note_star_show_@cusItem.CUSKEY d-inline-block text-truncate btn " type="button" style="max-width: 200px; font-size: medium;  padding-bottom: 8px; padding-left: 10px;" onclick="handleNoteClickBtn('@cusItem.CUSKEY', event);">@starNote.Note</button>
+                                                        if (starNote.Note != null)
+                                                        {
+                                                            @:&nbsp;<button class="note_star_show_@cusItem.CUSKEY d-inline-block text-truncate btn " type="button" style="max-width: 200px; font-size: medium;  padding-bottom: 8px; padding-left: 10px;" onclick="handleNoteClickBtn('@cusItem.CUSKEY', event);">@starNote.Note</button>
+                                                        }
                                                     }
                                                 }
-                                            }
+                                            </div>
                                         </div>
                                         <span class="ml-auto" style="float: right; position: relative;"><i id="header_@cusItem.CUSKEY" class="fa fa-caret-down fa-lg"></i></span>
                                     </div>
@@ -1740,9 +1744,12 @@ else
             let checked = $(this).prop('checked');
             if (checked) {
                 $('.star_show_' + cuskey).show();
+                $('#the_star_icon_' + cuskey).css('color', 'yellow');
             }
             else {
                 $('.star_show_' + cuskey).hide();
+                $('#the_star_icon_' + cuskey).css('color', 'white');
+
             }
         });
     })
@@ -1760,18 +1767,16 @@ else
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "Cancel!",
-                        text: "Add the star has been cancel.",
-                        icon: "info"
-                    });
+
                     $('.form-check-input_' + cuskey).prop('checked', false);
+                    $('#the_star_icon_' + cuskey).css('color', 'white');
 
                 } else {
                     console.log("Add : " + cuskey);
                     console.log("year : " + year);
                     AddTheStar(cuskey);
                     $('.form-check-input_' + cuskey).prop('checked', true);
+                    $('#the_star_icon_' + cuskey).css('color', 'yellow');
 
                 }
             });
@@ -1787,17 +1792,16 @@ else
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "Cancel!",
-                        text: "Delete the star has been cancel.",
-                        icon: "info"
-                    });
+
                     $('.form-check-input_' + cuskey).prop('checked', true);
                     $('.star_show_' + cuskey).show();
+                    $('#the_star_icon_' + cuskey).css('color', 'yellow');
                 } else {
 
                     $('.form-check-input_' + cuskey).prop('checked', false);
+                    $('#the_star_icon_' + cuskey).css('color', 'white');
                     DeleteTheStar(cuskey);
+
                 }
             });
         }
