@@ -295,7 +295,7 @@ else
                                                 var StarCheck = starnoteList.Any(starNote => cusItem.CUSKEY == starNote.Cus && starNote.IsStar) ? "checked" : "";
                                             }
                                             <input class="form-check-input_@cusItem.CUSKEY" data-cuscode="@cusItem.CUSKEY" style="width: 30px; height: 30px;" type="checkbox" id="flexCheckStar_@cusItem.CUSKEY" @StarCheck onchange="ShowStar('@cusItem.CUSKEY');">
-                                            <label class="form-check-label_@cusItem.CUSKEY" for="flexCheckStar_@cusItem.CUSKEY" style="display: flex; align-items: center; padding:0px; margin:0px">
+                                            <label class="form-check-label_@cusItem.CUSKEY" for="flexCheckStar_@cusItem.CUSKEY" style="display: flex; align-items: center; padding:0px; margin:0px" onclick="handleNoteTheStar('@cusItem.CUSKEY', event);">
                                                 <span>&nbsp;</span><i class="fa fa-star" aria-hidden="true" id="the_star_icon_@cusItem.CUSKEY" style="font-size: 30px;"></i>
                                             </label>
                                         </div>
@@ -1969,6 +1969,11 @@ else
         }
     }
 
+    function handleNoteTheStar(cusKey, event) {
+        if (!event.target.matches('.form-check-label_' + cusKey)) {
+            ShowStar(cusKey);
+        }
+    }
     function handleUpdateNoteTheStar(cusKey, event) {
         if (!event.target.matches('.form-check-input_' + cusKey)) {
             addsThestarNote(cusKey);
