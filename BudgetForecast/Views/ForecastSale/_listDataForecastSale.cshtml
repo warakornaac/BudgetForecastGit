@@ -1939,7 +1939,7 @@ else
             let MonthCurrent = (date.getMonth() + 1).toString().padStart(2, '0');
 
             Swal.fire({
-                title: "Customer Key : " + cuskey,
+                title: "Customer : " + cuskey,
                 html: '<textarea readonly disabled class="swal2-textarea popup-textarea-class popup-text-star-' + cuskey + '">' + NoteTextStar + '</textarea>',
                 confirmButtonText: "OK",
                 showCancelButton: false,
@@ -1973,7 +1973,7 @@ else
                 (async () => {
     const { value: text } = await Swal.fire({
         input: "textarea",
-        title: "Customer Key : " + cusKey,
+        title: "Customer : " + cusKey,
         inputPlaceholder: "Type your message here...",
         inputValue: $('.note_star_show_' + cusKey).text(),
         inputAttributes: {
@@ -2057,7 +2057,7 @@ else
                                 (async () => {
                             const { value: text } = await Swal.fire({
                                 input: "textarea",
-                                title: "Customer Key : " + cusKey,
+                                title: "Customer : " + cusKey,
                                 inputPlaceholder: "Type your message here...",
                                 inputAttributes: {
                                     "aria-label": "Type your message here"
