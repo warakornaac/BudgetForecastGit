@@ -150,7 +150,6 @@ namespace BudgetForecast.Controllers
                     ViewBag.year = year == null ? DateTime.Now.Year.ToString() : year;
                     ViewBag.stkSec = stkSec == null ? "[]" : "[\"" + string.Join("\",\"", stkSec.Select(x => x.ToString()).ToArray()) + "\"]";
                     ViewBag.flagSup = flagSup;
-
                     command.Dispose();
                     Connection.Close();
                 }
