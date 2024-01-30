@@ -1696,7 +1696,6 @@ else
     function ShowNote(sec) {
         var NoteText = $('.note_show_' + sec).html();
         if (NoteText.trim() != "") {
-
         Swal.fire({
             title: "Note Sec " + sec,
             html: '<textarea readonly disabled class="popup-textarea-class popup-text-' + sec + '">' + NoteText + '</textarea>',
@@ -1786,7 +1785,6 @@ else
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.dismiss === Swal.DismissReason.cancel) {
-
                     $('.form-check-input_' + cuskey).prop('checked', true);
                     $('.star_show_' + cuskey).show();
                     $('#the_star_icon_' + cuskey).css('color', 'yellow');
@@ -1827,7 +1825,6 @@ else
                 $('#the_star_icon_' + cuskey).css('color', 'yellow');
                 $('.note_star_show_' + cuskey).addClass("btn-info");
             } else {
-
                 Swal.close();
                 Swal.fire({
                     icon: 'error',
@@ -1980,11 +1977,11 @@ else
                 },
                 success: function (result) {
                     if (result.status == "success") {
-                        Swal.fire({
-                            title: "Delete the star success",
-                            //text: "That thing is still around?",
-                            icon: "success"
-                        });
+                        //Swal.fire({
+                        //    title: "Delete the star success",
+                        //
+                        //    icon: "success"
+                        //});
                         $('.star_show_' + cuskey).hide();
 
 
@@ -2105,11 +2102,10 @@ else
              },
              success: function (result) {
                  if (result.status == "success") {
-                     Swal.fire({
-                         title: "Saving Note success",
-                         //text: "That thing is still around?",
-                         icon: "success"
-                     });
+                     //Swal.fire({
+                     //    title: "Saving Note success",
+                     //    icon: "success"
+                     //});
                      $('.note_star_show_' + cusKey).removeClass("btn-info");
                      $('.note_star_show_' + cusKey).text(text);
                      console.log("Success");
@@ -2189,10 +2185,10 @@ else
                                 },
                                 success: function (result) {
                                     if (result.status == "success") {
-                                        Swal.fire({
-                                            title: "Saving Note Success",
-                                            icon: "success",
-                                        });
+                                        //Swal.fire({
+                                        //    title: "Saving Note Success",
+                                        //    icon: "success",
+                                        //});
                                         $('.note_star_show_' + cusKey).removeClass("btn-info");
                                         $('.note_star_show_' + cusKey).text(text);
                                         console.log("Success");
