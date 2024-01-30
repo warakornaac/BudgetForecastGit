@@ -24,8 +24,8 @@ namespace BudgetForecast.Data
 
 
 
-            var table = GetData(CmdStore("P_Remove_TheStar_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreAddTheStarModel>(GetData(CmdStore("P_Remove_TheStar_Dev", p)));
+            var table = GetData(CmdStore("P_Remove_TheStar", p));
+            return ConvertExtension.ConvertDataTable<StoreAddTheStarModel>(GetData(CmdStore("P_Remove_TheStar", p)));
         }
     }
 }

@@ -270,7 +270,7 @@ namespace BudgetForecast.Library
                     conn.Open();
                     foreach (var cus in cuscod)
                     {
-                        var cmdSearch = new SqlCommand("P_Get_Note_TheStar_Dev", conn);
+                        var cmdSearch = new SqlCommand("P_Get_Note_TheStar", conn);
 
                         cmdSearch.CommandType = CommandType.StoredProcedure;
                         cmdSearch.Parameters.AddWithValue("@cuscod", cus);

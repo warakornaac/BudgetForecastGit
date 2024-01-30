@@ -22,8 +22,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", YEAR);
             p.AddParams("@Sec", SEC);
 
-            var table = GetData(CmdStore("P_Get_Note_Sale_De", p));
-            return ConvertExtension.ConvertDataTable<GetNoteForecastSaleModel>(GetData(CmdStore("P_Get_Note_Sale_Dev", p)));
+            var table = GetData(CmdStore("P_Get_Note_Sale", p));
+            return ConvertExtension.ConvertDataTable<GetNoteForecastSaleModel>(GetData(CmdStore("P_Get_Note_Sale", p)));
 
         }
     }

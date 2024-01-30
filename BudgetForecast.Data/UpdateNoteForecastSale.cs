@@ -14,7 +14,7 @@ namespace BudgetForecast.Data
         public UpdateNoteForecastSale() : base(Utils.GetConfig("Lip_ConnectionString"))
         {
         }
-        public List<StoreUpdateNoteSaleModel> Update(string MONTH,string USER, string SEC, string YEAR, string SLMCOD, string INPUT)
+        public List<StoreUpdateNoteSaleModel> Update(string MONTH, string USER, string SEC, string YEAR, string SLMCOD, string INPUT)
         {
 
             var p = new SqlParameters();
@@ -27,8 +27,8 @@ namespace BudgetForecast.Data
 
             p.AddParams("@outGenstatus", "Y");
 
-            var table = GetData(CmdStore("P_Update_Note_Sale_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateNoteSaleModel>(GetData(CmdStore("P_Update_Note_Sale_Dev", p)));
-        }        
+            var table = GetData(CmdStore("P_Update_Note_Sale", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateNoteSaleModel>(GetData(CmdStore("P_Update_Note_Sale", p)));
+        }
     }
 }
