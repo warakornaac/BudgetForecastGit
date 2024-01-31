@@ -581,7 +581,7 @@ else
                                                             <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Forecast</b> </td>
                                                             <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
                                                                 <b>@dataItem.Last_year.ToString("N0")</b>
-                                                                <input type="hidden" class="last_year_forecast" value="@dataItem.Last_year.ToString("N0")" />
+                                                                <input type="hidden" class="last_year_forecastm" value="@dataItem.Last_year.ToString("N0")" />
                                                             </td>
                                                             @{
                                                                 string classTotalForecast;
@@ -594,10 +594,10 @@ else
                                                                 <input type="hidden" class="@inputTotalForecast total_forecastm" value="@dataItem.Total_Caption.ToString("N0")" />
                                                             </td>
                                                             <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
-                                                                <input type="hidden" class="under_forecast" value="0" />
+                                                                <input type="hidden" class="under_forecastm" value="0" />
                                                             </td>
                                                             <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
-                                                                <input type="hidden" class="over_forecast" value="0" />
+                                                                <input type="hidden" class="over_forecastm" value="0" />
                                                             </td>
                                                             @{
                                                                 int countSaleForecast = 0;
