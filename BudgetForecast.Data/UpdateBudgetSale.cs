@@ -24,10 +24,10 @@ namespace BudgetForecast.Data
             p.AddParams("@User", USER.ToTrim());
             p.AddParams("@F_slm", F_SLM.ToString().Replace(",", ""));
             p.AddParams("@Year", "");
-            p.AddParams("@outGenstatus", 'Y');
+            //p.AddParams("@outGenstatus", 'Y');
 
-            var table = GetData(CmdStore("P_Update_Budget_Sale", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetSaleModel>(GetData(CmdStore("P_Update_Budget_Sale", p)));
+            var table = GetData(CmdStore("P_Update_Budget_Sale_Dev", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetSaleModel>(GetData(CmdStore("P_Update_Budget_Sale_Dev", p)));
         }
     }
 }

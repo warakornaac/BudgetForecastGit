@@ -434,20 +434,20 @@ namespace BudgetForecast.Controllers
             });
         }
         //save
-        [HttpPost]
-        public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
-        {
-            var UpdateForecastSale = new List<StoreUpdateForecastMidmonthSaleModel>();
-            try
-            {
-                UpdateForecastSale = new UpdateForecastMidmonthSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
-                return Json(new { status = "success", message = "forecastSale updated" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { status = "error", message = ex.Message });
-            }
-        }
+        //[HttpPost]
+        //public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        //{
+        //    var UpdateForecastSale = new List<StoreUpdateForecastMidmonthSaleModel>();
+        //    try
+        //    {
+        //        UpdateForecastSale = new UpdateForecastMidmonthSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
+        //        return Json(new { status = "success", message = "forecastSale updated" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { status = "error", message = ex.Message });
+        //    }
+        //}
 
         //SaveNote
         [HttpPost]
@@ -536,6 +536,53 @@ namespace BudgetForecast.Controllers
             }
 
             return Json(Note, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //Save New Forecast
+        [HttpPost]
+        public ActionResult UpdateNewForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
+            string check_sta;
+            string sta = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = new SqlCommand("P_Update_NewForecast_Sale_Dev", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT);
+                    cmd.Parameters.AddWithValue("@User", USER);
+                    cmd.Parameters.AddWithValue("@Sec", SEC);
+                    cmd.Parameters.AddWithValue("@Cuscod", CUSCOD);
+                    cmd.Parameters.AddWithValue("@Year", YEAR);
+                    cmd.Parameters.AddWithValue("@Input", INPUT);
+
+
+                    int INSID = cmd.ExecuteNonQuery();
+                    check_sta = INSID.ToString();
+                    if (INSID > 0)
+                    {
+                        sta = "success";
+                    }
+                    else
+                    {
+                        sta = "unsuccess";
+                    }
+                    cmd.Dispose();
+                    conn.Close();
+                }
+                return Json(new { status = sta, message = "ForecastMidMonth updated" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+
         }
     }
 }

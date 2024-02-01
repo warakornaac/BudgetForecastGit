@@ -431,19 +431,64 @@ namespace BudgetForecast.Controllers
             });
         }
         //save
+        //[HttpPost]
+        //public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        //{
+        //    var UpdateForecastSale = new List<StoreUpdateForecastSaleModel>();
+        //    try
+        //    {
+        //        UpdateForecastSale = new UpdateForecastSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
+        //        return Json(new { status = "success", message = "forecastSale updated" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { status = "error", message = ex.Message });
+        //    }
+        //}
+
+        //Save Forecast check status 
         [HttpPost]
-        public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        public ActionResult UpdateForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
         {
-            var UpdateForecastSale = new List<StoreUpdateForecastSaleModel>();
+            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
+            string check_sta;
+            string sta = "";
             try
             {
-                UpdateForecastSale = new UpdateForecastSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
-                return Json(new { status = "success", message = "forecastSale updated" });
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = new SqlCommand("P_Update_Forecast_Sale_Dev", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT);
+                    cmd.Parameters.AddWithValue("@User", USER.ToTrim());
+                    cmd.Parameters.AddWithValue("@Sec", SEC.ToTrim());
+                    cmd.Parameters.AddWithValue("@Year", YEAR.ToTrim());
+                    cmd.Parameters.AddWithValue("@Cuscod", CUSCOD.ToTrim());
+                    cmd.Parameters.AddWithValue("@Input", INPUT.ToString().Replace(",", ""));
+
+
+                    int INSID = cmd.ExecuteNonQuery();
+                    check_sta = INSID.ToString();
+                    if (INSID > 0)
+                    {
+                        sta = "success";
+                    }
+                    else
+                    {
+                        sta = "unsuccess";
+                    }
+                    cmd.Dispose();
+                    conn.Close();
+                }
+                return Json(new { status = sta, message = "forecastSale updated" });
+
             }
             catch (Exception ex)
             {
                 return Json(new { status = "error", message = ex.Message });
             }
+
         }
         public JsonResult Getdatabyslm(string slmCode)
         {
