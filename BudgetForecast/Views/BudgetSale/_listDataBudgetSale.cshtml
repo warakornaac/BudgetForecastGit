@@ -151,7 +151,7 @@ else
                                         <td class="vcenter" style="vertical-align: middle; text-align: -webkit-center;">
                                             @{
                                                 nameFslm = "f_slm_" + @stkGroupItem.CUSGRP + "_" + @stkGroupItem.STKGRP;
-                                                <input data-stkgrp="@stkGroupItem.STKGRP" data-cuscod="@stkGroupItem.CUSGRP" data-cusname="@stkGroupItem.CUSNAM" type="text" class="form-control mask vright f_slm inputBudgetSale @nameFslm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 110px;" />
+                                                <input data-stkgrp="@stkGroupItem.STKGRP" data-cuscod="@stkGroupItem.CUSGRP" data-sec="@stkGroupItem.SEC" data-cusname="@stkGroupItem.CUSNAM" type="text" class="form-control mask vright f_slm inputBudgetSale @nameFslm" name="@nameFslm" id="@nameFslm" value="@stkGroupItem.F_Slm.ToString("N0")" onkeyup="return sumBudgetSale('f_slm');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 110px;" />
                                             }
                                         </td>
                                     </tr>
@@ -297,6 +297,7 @@ else
         var stkgrp = $(this).data('stkgrp');
         var cusCode = $(this).data('cuscod');
         var cusName = $(this).data('cusname');
+        var sec = $(this).data('sec');
         console.log("stkgrp = " + stkgrp + " - " + cusCode);
         if (cusCode != '' && stkgrp != '') {
             var inputValueOld = parseInt($("input[name=f_slm_" + cusCode + "_" + stkgrp + "]").val().replace(/\,/g, ''));
@@ -354,9 +355,9 @@ else
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
-                                    icon: 'error',
-                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveBudgetSale<br>',
-                                    html: 'ข้อมูลไม่ถูกส่งไปยังฐานข้อมูล',
+                                    icon: 'warning',
+                                    title: 'บันทึก Budget ไม่สำเร็จ',
+                                    html: 'ข้อมูล BudGet ไม่ถูกต้อง <br>' + 'Customer : ' + cusName + '<br> Sec : ' + sec + '<br> StkGroup : ' + stkgrp,
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,

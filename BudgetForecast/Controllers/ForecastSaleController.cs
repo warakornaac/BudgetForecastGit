@@ -478,8 +478,6 @@ namespace BudgetForecast.Controllers
                     {
                         sta = "unsuccess";
                     }
-                    cmd.Dispose();
-                    conn.Close();
                 }
                 return Json(new { status = sta, message = "forecastSale updated" });
 
