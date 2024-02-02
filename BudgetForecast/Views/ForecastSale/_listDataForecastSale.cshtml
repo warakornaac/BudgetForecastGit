@@ -987,7 +987,7 @@ else
                     $.ajax({
                         type: 'POST',
                         cache: false,
-                        url: '@Url.Action("UpdateForecast", "ForecastSale")',
+                        url: '@Url.Action("SaveForecast", "ForecastSale")',
                         data: JSON.stringify({
                             MONTH_INPUT: ('0' + monthInput).slice(-2),
                             USER: '@Session["UserID"]',
@@ -1061,6 +1061,7 @@ else
                                     animation: true,
                                     html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
                                 });
+<<<<<<< HEAD
                             }
                             else if (result.status == "unsuccess") {
                                 LoadingHide();
@@ -1076,6 +1077,9 @@ else
                                 });
                             }
                             else {
+=======
+                            } else {
+>>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({

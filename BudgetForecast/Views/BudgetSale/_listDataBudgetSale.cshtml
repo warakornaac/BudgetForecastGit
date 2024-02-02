@@ -350,11 +350,11 @@ else
                                     animation: true,
                                     html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + stkgrp + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
                                 });
-                            }
-                            else if (result.status == "unsuccess") {
+                            } else {
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
+<<<<<<< HEAD
                                     icon: 'warning',
                                     title: 'บันทึก Budget ไม่สำเร็จ',
                                     html: 'ข้อมูล BudGet ไม่ถูกต้อง <br>' + 'Customer : ' + cusName + '<br> Sec : ' + sec + '<br> StkGroup : ' + stkgrp,
@@ -370,6 +370,10 @@ else
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveBudgetSale<br>',
+=======
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+>>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
                                     html: result.message,
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
@@ -377,7 +381,6 @@ else
                                     focusConfirm: false,
                                 });
                             }
-
                         },
                         error: function (ex) {
                             //notify(ex, 'danger');

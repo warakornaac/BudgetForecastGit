@@ -23,8 +23,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Show_Flg", flg);
             p.AddParams("@Show_month", month);
 
-            var table = GetData(CmdStore("P_Search_Forecast_Sale_All_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreSearchForecastSaleModel>(GetData(CmdStore("P_Search_Forecast_Sale_All_Dev", p)));
+            var table = GetData(CmdStore("P_Search_Forecast_Sale_All", p));
+            return ConvertExtension.ConvertDataTable<StoreSearchForecastSaleModel>(GetData(CmdStore("P_Search_Forecast_Sale_All", p)));
         }
     }
 }
