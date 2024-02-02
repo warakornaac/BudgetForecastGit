@@ -1,0 +1,1922 @@
+﻿@using BudgetForecast.Model;
+@{
+    ViewBag.Title = "_listDataForcastPM";
+    var arrMonth = @ViewBag.monthList;
+    string codeColorMonthCurrent = "#f9ecdc";
+    int monthInputCurrent = 0;
+    string setHeight = "980px";
+    string setHeightCustomer = "920px";
+    string name1 = Environment.MachineName; //returns webserver
+    string name2 = System.Net.Dns.GetHostName(); //returns webserver
+                                                 // string name3 = System.Windows.Forms.SystemInformation.ComputerName; //returns webserver
+    string name4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME").ToString();//returns webserver
+    string hostingMachineName = System.Environment.MachineName;
+
+    var monthSplits = @ViewBag.MonthYearList[0].Text.Split('-');
+    monthInputCurrent = int.Parse(monthSplits[0]);
+    string formattedMonthInputCurrent = monthInputCurrent.ToString("00");
+}
+
+<style>
+    .tableFixHead thead {
+        position: sticky;
+        top: 0;
+        background: #87CEEB;
+    }
+
+    .tableFixHead {
+        overflow: auto;
+    }
+
+        .tableFixHead table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+    .input-onkey {
+        outline: none !important;
+        border: 2px solid #0014ff;
+        box-shadow: 0 0 20px #719ECE;
+    }
+
+    .input-onsave {
+        outline: none !important;
+        border: 2px solid #38bf28;
+        box-shadow: 0 0 20px #719ECE;
+    }
+
+    .panel.with-nav-tabs .panel-heading {
+        padding: 5px 5px 0 5px;
+    }
+
+    .panel.with-nav-tabs .nav-tabs {
+        border-bottom: none;
+    }
+
+    .panel.with-nav-tabs .nav-justified {
+        margin-bottom: -1px;
+    }
+    /********************************************************************/
+    /*** PANEL DEFAULT ***/
+    .with-nav-tabs.panel-default .nav-tabs > li > a,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+        color: #777;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > .open > a,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+            color: #777;
+            background-color: #ddd;
+            border-color: transparent;
+        }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+    .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+        color: #555;
+        background-color: #fff;
+        border-color: #ddd;
+        border-bottom-color: transparent;
+    }
+
+    .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+    }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+            color: #777;
+        }
+
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+            .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+                background-color: #ddd;
+            }
+
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+        .with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+            color: #fff;
+            background-color: #555;
+        }
+
+    a {
+        color: #ededed;
+        text-decoration: none;
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects;
+    }
+
+    .table-scroll tr td:first-child,
+    .table-scroll th:first-child {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: -5px;
+        z-index: 3;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:first-child {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:nth-child(2),
+    .table-scroll th:nth-child(2) {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: 114px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:nth-child(2) {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:nth-child(3),
+    .table-scroll th:nth-child(3) {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 210px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .table-scroll th:nth-child(3) {
+        z-index: 4;
+    }
+
+    .table-scroll tr td:last-child {
+        border-right: none;
+    }
+
+
+    .phone .table-scroll tr td,
+    .tablet .table-scroll tr td {
+        border-right: none;
+    }
+
+    /**/
+    .sticky-col {
+        position: -webkit-sticky;
+        position: sticky;
+        background-color: white;
+    }
+
+    .first-col {
+        width: 90px;
+        min-width: 90px;
+        max-width: 90px;
+        left: 0px;
+    }
+
+    .second-col {
+        width: 120px;
+        min-width: 120px;
+        max-width: 120px;
+        left: 114px;
+    }
+
+    .fix-td-2 {
+        position: -webkit-sticky;
+        position: sticky;
+        width: 120px;
+        left: 114px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .fix-td-3 {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 210px;
+        z-index: 3;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+
+    .fix-td-4 {
+        position: -webkit-sticky;
+        position: sticky;
+        left: 310px;
+        z-index: 2;
+        border-right: var(--border-size-s) solid var(--color-neutral-4);
+    }
+    /***/
+
+    .content .header {
+        /*  width: 100%;
+                height: 50px;*/
+        position: sticky;
+        top: 0;
+        width: 163%;
+    }
+
+    .col {
+        -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        /* flex-grow: 1; */
+        max-width: 100%;
+        padding: 0px 1px 0px 1px;
+    }
+
+    .tooltip bs-tooltip-bottom {
+        color: red;
+    }
+
+    @@media (min-width: 1450px) {
+        .col-xxl-2 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 20%;
+            flex: 1 0 19.67%;
+            max-width: 20.67%;
+        }
+    }
+
+    @@media (max-width: 574px) {
+        .summary-text {
+            display: none;
+        }
+    }
+</style>
+@if (((List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList).Count() == 0 || ViewBag.cusCodeList == null || ViewBag.cusNameList.Count == 0) //ไม่มีข้อมใน Fore_Month_slm
+{
+    <input type="hidden" id="countList" value="0" />
+    <div class="alert alert-danger text-center" style="font-size: 16px; font-weight: bold;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ไม่พบข้อมูล โปรดกำหนดเงื่อนไข แล้วกดปุ่ม "Search"</div>
+}
+else
+{
+    <input type="hidden" id="countList" value="1" />
+    <div class="card">
+        <form method="post" id="formInputForecastSale">
+            <div class="card-body p-2" style="height: auto; overflow-y: auto; max-height: @setHeight">
+                @{
+                    int rowSec = 0;
+                    int rowCuscod = 0;
+                    foreach (var secItem in ViewBag.secAllArray)
+                    {
+                        ++rowSec;
+                        <input type="hidden" name="stkSecList_header[]" class="stkSecList_header" value="@secItem.SEC" />
+                    }
+
+                    if (rowSec == 1)
+                    {
+                        setHeightCustomer = "265px";
+                    }
+                    else if (rowSec == 2)
+                    {
+                        setHeightCustomer = "500px";
+                    }
+
+                    foreach (var cusItem in ViewBag.cusNameList)
+                    {
+                        <input type="hidden" name="cuscodList_header[]" class="cuscodList_header" value="@cusItem.CUSKEY" />
+                        ++rowCuscod;
+                        if (rowCuscod > 1)
+                        {
+                            <hr>
+                        }
+                        <div class="card mb-12">
+                            <div class="card-header bg-info text-white font-weight-bold" onclick="if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'LABEL' && event.target.tagName !== 'I') { hideBodySec('@cusItem.CUSKEY'); }" style="cursor: pointer;">
+                                <div class="row">
+                                    <div class="col-sm-12 d-inline-flex align-items-center">
+                                        <i class="fa fa-university fa-lg"></i> CUSTOMER (@cusItem.CUSKEY/@cusItem.CUSNAM)  &nbsp;|&nbsp;
+
+                                        <div class="form-check" style="display: flex; align-items: center; padding-left:0px;">
+                                            @{
+                                                var starnoteList = ViewBag.Starnote as List<BudgetForecast.Models.StarNoteViewModel>;
+                                                var StarCheck = starnoteList.Any(starNote => cusItem.CUSKEY == starNote.Cus && starNote.IsStar) ? "checked" : "";
+                                            }
+                                            <input class="form-check-input_@cusItem.CUSKEY" data-cuscode="@cusItem.CUSKEY" style="width: 30px; height: 30px;" type="checkbox" id="flexCheckStar_@cusItem.CUSKEY" @StarCheck onchange="ShowStar('@cusItem.CUSKEY');">
+                                            <label class="form-check-label_@cusItem.CUSKEY" for="flexCheckStar_@cusItem.CUSKEY" style="display: flex; align-items: center; padding:0px; margin:0px" onclick="handleNoteTheStar('@cusItem.CUSKEY', event);">
+                                                <span>&nbsp;</span><i class="fa fa-star" aria-hidden="true" id="the_star_icon_@cusItem.CUSKEY" style="font-size: 30px;"></i>
+                                            </label>
+                                        </div>
+                                        <div class="star_show_@cusItem.CUSKEY" style="display: flex; align-items: center;">
+                                            &nbsp;| &nbsp;
+                                            <div class="btn-group">
+                                                <button class="btn btn-info" type="button" style="font-size: medium; display: inline-block;  " onclick="handleUpdateNoteTheStar('@cusItem.CUSKEY', event);"> <i class="fa fa-book" aria-hidden="true" style="font-size: 30px;"></i></button>
+                                                @foreach (var starNote in ViewBag.Starnote)
+                                                {
+                                                    if (cusItem.CUSKEY == starNote.Cus)
+                                                    {
+                                                        if (starNote.Note != null)
+                                                        {
+                                                            @:<button class="note_star_show_@cusItem.CUSKEY d-inline-block text-truncate btn" type="button" style="max-width: 200px; font-size: medium;  padding-bottom: 8px; padding-left: 10px;" onclick="handleNoteClickBtn('@cusItem.CUSKEY', event);">@starNote.Note</button>
+                                                        }
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <span class="ml-auto" style="float: right; position: relative;"><i id="header_@cusItem.CUSKEY" class="fa fa-caret-down fa-lg"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding: 0px 0px; display: none;" id="body_@cusItem.CUSKEY">
+                                <div class="table-responsive tableFixHead table-scroll" style="height: @setHeightCustomer;">
+                                    <table class="table table-scroll table-striped table-bordered nowrap table-hover" border="1">
+                                        <thead style="position: inherit;">
+                                            <tr style="white-space: nowrap;">
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 115px;">Month/Sec</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Type</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Last Year</th>
+                                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px; position: sticky; left: 310px; z-index: 4; ">Total</th>
+                                                <th rowspan="2" colspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 200px;">Under/Over</th>
+                                                <th colspan="12" align="center" class="vcenter" style="vertical-align: middle; position: sticky;"> 2023 </th>
+                                            </tr>
+                                            <tr>
+                                                @{
+                                                    foreach (var monthItemCur in @ViewBag.monthList)
+                                                    {
+                                                        string bgMonthCurrent = "";
+                                                        if (formattedMonthInputCurrent == monthItemCur)
+                                                        {
+                                                            bgMonthCurrent = codeColorMonthCurrent;
+                                                        }
+                                                        <th class="vcenter" align="center" style="font-weight: 700; min-width: 120px; position: sticky; top: 0; z-index: 1; background-color: @bgMonthCurrent"> @monthItemCur </th>
+                                                    }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @*@foreach (var secItem in ViewBag.secAllArray)
+                                                //{*@
+                                            @foreach (var dataItem in (List<StoreSearchForecastSaleModel>)ViewBag.stkGroupList)
+                                            {
+                                                if (dataItem.CUSKEY == cusItem.CUSKEY)
+                                                {
+
+                                                    if (dataItem.Caption == "Budget")
+                                                    {
+                                                        double underBudgetAmt = 0;
+                                                        double overBudgetAmt = 0;
+                                                        @*Budget*@
+                                                        <tr style="white-space: nowrap; border-top: 3px solid #5e6b89;">
+                                                            <td rowspan="4" class="vcenter" style="vertical-align: middle; background-color: #cbc7c7; cursor: pointer;" onclick="focusToForecast('@dataItem.Sec', '@cusItem.CUSKEY', '@monthInputCurrent');">
+                                                                <span class="badge badge-warning font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Sec </span>
+                                                                <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@dataItem.Sec | @dataItem.Secnam"> @dataItem.Secnam </span>
+                                                                <hr>
+                                                                <span class="badge badge-info font-weight-bold" style="font-size: 16px; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSKEY </span>
+                                                                <br> <span class="font-weight-bold" style="display: block; width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; color: #01018d; cursor: help;" data-toggle="tooltip" data-placement="right" title="@cusItem.CUSKEY | @cusItem.CUSNAM"> @cusItem.CUSNAM </span>
+                                                            </td>
+                                                            <td class="fix-td-2" style="vertical-align: middle; background-color: #f2f2f2; padding-left: 13px;"> <b>Budget</b> </td>
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #f2f2f2;">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_budget" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright fix-td-4" style="vertical-align: middle; background-color: #f2f2f2; position: -webkit-sticky; position: sticky; left: 310px; z-index: 2; border-right: var(--border-size-s) solid var(--color-neutral-4);">
+                                                                <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                <input type="hidden" class="total_budget" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                <input type="hidden" class="under_budget" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                <input type="hidden" class="over_budget" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleBudget = 0;
+                                                                string nameSaleBudget = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
+                                                                    }
+                                                                    countSaleBudget++;
+                                                                    double valSaleBudget = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleBudget = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleBudget = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleBudget = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleBudget = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleBudget = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleBudget = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleBudget = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleBudget = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleBudget = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleBudget = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleBudget = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleBudget = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleBudget = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleBudget = "sale_budget_" + dataItem.Sec + "_" + countSaleBudget;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                        @if (valSaleBudget != 0)
+                                                                        {
+                                                                            @valSaleBudget.ToString("N0")
+                                                                        }
+                                                                        <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "Actual")
+                                                    {
+                                                        double underActualAmt = 0;
+                                                        double underActualPerAmt = 0;
+                                                        double roundedNum = 0;
+                                                        int sizeUnderActual;
+
+                                                        underActualAmt = dataItem.Total_Caption - dataItem.Total_Budget;
+                                                        underActualPerAmt = (dataItem.Total_Caption / dataItem.Total_Budget) * 100;
+
+                                                        @*Actual*@
+                                                        <tr style="white-space: nowrap;">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #ffffff; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Actual</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 210px; z-index: 2;">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_actual" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #ffffff; position: sticky; left: 312px; z-index: 2;">
+                                                                <b>@dataItem.Total_Caption.ToString("N0")</b>
+                                                                <input type="hidden" class="total_actual" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px; vertical-align: middle;">
+
+                                                                @if (underActualAmt != 0)
+                                                                {
+                                                                    @underActualAmt.ToString("N0")
+                                                                }
+                                                                <input type="hidden" class="under_actual" value="@underActualAmt.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; min-width: 100px;">
+                                                                @if (underActualPerAmt != 0 && !Double.IsNaN(underActualPerAmt) && dataItem.Total_Budget > 0)
+                                                                {
+                                                                    sizeUnderActual = underActualPerAmt.ToString("N2").Length;
+                                                                    //@Math.Floor(underActualPerAmt * 100)/100;
+                                                                    roundedNum = Math.Floor(underActualPerAmt * 100) / 100;
+                                                                    @String.Concat(roundedNum, "%");
+                                                                }
+                                                                <input type="hidden" class="over_actual" value="@roundedNum" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleActual = 0;
+                                                                string nameSaleActual = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
+                                                                    }
+                                                                    countSaleActual++;
+                                                                    double valSaleActual = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleActual = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleActual = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleActual = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleActual = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleActual = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleActual = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleActual = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleActual = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleActual = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleActual = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleActual = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleActual = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleActual = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleActual = "sale_actual_" + dataItem.Sec + "_" + countSaleActual;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: @bgMonthCurrent">
+                                                                        @if (valSaleActual != 0)
+                                                                        {
+                                                                            @valSaleActual.ToString("N0")
+                                                                        }
+                                                                        <input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_actual_@countSaleActual @nameSaleActual" name="@nameSaleActual" id="sale_actual_@countSaleActual" value="@valSaleActual.ToString("N0")" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "FC")
+                                                    {
+                                                        @*Forecast*@
+                                                        <tr style="white-space: nowrap;" class="forecastTr">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #d4ecee; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Forecast</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #d4ecee; position: sticky; left: 210px; z-index: 2; ">
+                                                                <b>@dataItem.Last_year.ToString("N0")</b>
+                                                                <input type="hidden" class="last_year_forecast" value="@dataItem.Last_year.ToString("N0")" />
+                                                            </td>
+                                                            @{
+                                                                string classTotalForecast;
+                                                                string inputTotalForecast;
+                                                                classTotalForecast = "sum_total_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                inputTotalForecast = "sum_total_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                            }
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #d4ecee; vertical-align: middle; position: sticky; left: 312px; z-index: 3; ">
+                                                                <span class="@classTotalForecast" style="font-weight: bold;">  @dataItem.Total_Caption.ToString("N0") </span>
+                                                                <input type="hidden" class="@inputTotalForecast total_forecast" value="@dataItem.Total_Caption.ToString("N0")" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                <input type="hidden" class="under_forecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #d4ecee; min-width: 100px;">
+                                                                <input type="hidden" class="over_forecast" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleForecast = 0;
+                                                                string nameSaleForecast = "";
+                                                                string checkboxForecast = "";
+                                                                string idSaleForecast = "";
+                                                                string classTotalSaleForecast = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    string bgMonthCurrent = "";
+                                                                    if (formattedMonthInputCurrent == monthItemCur)
+                                                                    {
+                                                                        bgMonthCurrent = codeColorMonthCurrent;
+                                                                    }
+
+                                                                    countSaleForecast++;
+                                                                    double valSaleForecast = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleForecast = dataItem.M01;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleForecast = dataItem.M02;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleForecast = dataItem.M03;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleForecast = dataItem.M04;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleForecast = dataItem.M05;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleForecast = dataItem.M06;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleForecast = dataItem.M07;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleForecast = dataItem.M08;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleForecast = dataItem.M09;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleForecast = dataItem.M10;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleForecast = dataItem.M11;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleForecast = dataItem.M12;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleForecast = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleForecast = "sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                    idSaleForecast = "sale_forecast_" + dataItem.Sec + "_" + countSaleForecast;
+                                                                    classTotalSaleForecast = "sum_sale_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    checkboxForecast = "selectList_" + countSaleForecast;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: #d4ecee; background-color: @bgMonthCurrent">
+                                                                        @*<input data-id="101" type="hidden" class="form-control vright @idSaleForecast" name="@nameSaleForecast" id="sale_budget_@countSaleForecast" value="" />*@
+                                                                        <input data-sec="@dataItem.Sec" data-sum="@idSaleForecast" data-cuscode="@dataItem.CUSKEY" data-cusname="@dataItem.CUSNAM" data-month="@countSaleForecast" type="text" class="form-control dateCheck mask vright inputForecastSale @idSaleForecast sale_forecast_@countSaleForecast @classTotalSaleForecast" name="@nameSaleForecast" id="@idSaleForecast" value="@valSaleForecast.ToString("N0")" onkeyup="return sumSaleForecast(this.id, '@countSaleForecast', '@dataItem.Sec', '@dataItem.CUSKEY');" onkeypress="return validateFloatKeyPress(this,event);" onclick="this.select();" style="width: 120px;" data-toggle="" title="SEC(@dataItem.Sec) CUS(@dataItem.CUSKEY)" data-placement="bottom" />
+                                                                        <input type="checkbox" class="selectList" name="@nameSaleForecast" id="@nameSaleForecast" value="@nameSaleForecast" data-cuscode="@dataItem.CUSKEY" data-sec="@dataItem.Sec" data-month="@countSaleForecast" style="display: none;" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                    else if (dataItem.Caption == "Avg")
+                                                    {
+                                                        @*Forecast*@
+                                                        <tr style="white-space: nowrap;">
+                                                            <td class="sticky-col first-col" style="vertical-align: middle; background-color: #cbead3; position: sticky; width: 120px; left: 114px; z-index: 2; padding-left: 13px;"> <b>Avg month</b> </td>
+                                                            <td class="vright fix-td-2" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 210px; z-index: 2; font-weight: bold;">
+                                                                <input type="hidden" class="last_year_forecast" value="0)" />
+                                                            </td>
+                                                            @{
+                                                                string classTotalForecast;
+                                                                string inputTotalForecast;
+                                                                classTotalForecast = "sum_total_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                inputTotalForecast = "sum_total_avg_forecast_input_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                            }
+                                                            <td class="vright fix-td-3" style="vertical-align: middle; background-color: #cbead3; position: sticky; left: 312px; z-index: 3; font-weight: bold; ">
+                                                                <span class="@classTotalForecast" style="font-weight: bold;"> </span>
+                                                                <input type="hidden" class="@inputTotalForecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                <input type="hidden" class="under_forecast" value="0" />
+                                                            </td>
+                                                            <td class="vright" style="vertical-align: middle; background-color: #cbead3; min-width: 100px;">
+                                                                <input type="hidden" class="over_forecast" value="0" />
+                                                            </td>
+                                                            @{
+                                                                int countSaleAvg = 0;
+                                                                string nameSaleAvg = "";
+                                                                string idSaleAvg = "";
+                                                                string classTotalSaleAvg = "";
+                                                                foreach (string monthItemCur in @ViewBag.monthList)
+                                                                {
+                                                                    countSaleAvg++;
+                                                                    double valSaleAvg = 0;
+
+                                                                    switch (monthItemCur)
+                                                                    {
+                                                                        case "01":
+                                                                            valSaleAvg = dataItem.Total_Budget / 12;
+                                                                            break;
+                                                                        case "02":
+                                                                            valSaleAvg = (dataItem.Total_Budget - dataItem.M01) / 11;
+                                                                            break;
+                                                                        case "03":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02)) / 10;
+                                                                            break;
+                                                                        case "04":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03)) / 9;
+                                                                            break;
+                                                                        case "05":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04)) / 8;
+                                                                            break;
+                                                                        case "06":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05)) / 7;
+                                                                            break;
+                                                                        case "07":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06)) / 6;
+                                                                            break;
+                                                                        case "08":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07)) / 5;
+                                                                            break;
+                                                                        case "09":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08)) / 4;
+                                                                            break;
+                                                                        case "10":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09)) / 3;
+                                                                            break;
+                                                                        case "11":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10)) / 2;
+                                                                            break;
+                                                                        case "12":
+                                                                            valSaleAvg = (dataItem.Total_Budget - (dataItem.M01 + dataItem.M02 + dataItem.M03 + dataItem.M04 + dataItem.M05 + dataItem.M06 + dataItem.M07 + dataItem.M08 + dataItem.M09 + dataItem.M10 + dataItem.M11)) / 1;
+                                                                            break;
+                                                                        default:
+                                                                            valSaleAvg = 0;
+                                                                            break;
+                                                                    }
+
+                                                                    nameSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec + "_" + countSaleAvg;
+                                                                    idSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    classTotalSaleAvg = "sum_avg_forecast_" + dataItem.CUSKEY + "_" + dataItem.Sec;
+                                                                    <td class="vright" style="vertical-align: middle; background-color: #cbead3;">
+                                                                        @if (valSaleAvg != 0 && valSaleAvg > 0)
+                                                                        {
+                                                                            @valSaleAvg.ToString("N0")
+                                                                        }
+                                                                        @*<input data-id="@dataItem.Sec" type="hidden" class="form-control vright sale_budget_@countSaleBudget @nameSaleBudget" name="@nameSaleBudget" id="sale_budget_@countSaleBudget" value="@valSaleBudget.ToString("N0")" />*@
+                                                                        <input type="hidden" class="form-control vright @idSaleAvg" name="@nameSaleAvg" id="sum_avg_forecast_@countSaleAvg" value="@valSaleAvg.ToString("N0")" />
+                                                                    </td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                } @*end compare sec*@
+                                            } @*end compare cuskey*@
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <input type="hidden" name="rowCuscod" id="rowCuscod" value="@rowCuscod" />
+            </div>
+        </form>
+    </div>
+    //Summary by month v1
+    //end by month v1
+    //Summary by month v2
+    <div class="card" style="margin-top: 5px;">
+        <div class="card-header  bg-secondary text-white font-weight-bold" style="height: 54px;">
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-6 text-left">
+                    <ul class="nav nav-tabs card-header-tabs float-xs-left font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="searchByMonthSome" data-target="#searchByMonthSome" data-toggle="tab">Some Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="searchByMonthAll" data-target="#searchByMonthAll" data-toggle="tab">All Customer</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 text-right summary-text">
+                    <h5 style="font-weight: bold;"> Summary by month </h5>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-block tab-content">
+            <div id="searchByMonthSome" class="tab-pane fade active show">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered nowrap table-hover" border="1">
+                        <thead>
+                            <tr style="white-space: nowrap;">
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 210px;">Type</th>
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Last Year</th>
+                                <th rowspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 100px;">Total</th>
+                                <th rowspan="2" colspan="2" align="center" class="vcenter" style="vertical-align: middle; min-width: 190px;">Under/Over</th>
+                                <th colspan="12" align="center" class="vcenter" style="vertical-align: middle;"> 2023 </th>
+                            </tr>
+                            <tr>
+                                @{
+                                    foreach (var monthItemCur in @ViewBag.monthList)
+                                    {
+                                        string bgMonthCurrent = "";
+                                        if (formattedMonthInputCurrent == monthItemCur)
+                                        {
+                                            bgMonthCurrent = codeColorMonthCurrent;
+                                        }
+                                        <th class="vcenter" align="center" style="font-weight: 700; min-width: 130px; background-color: @bgMonthCurrent"> @monthItemCur </th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle;"> <b>Budget</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_last_year_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_total_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; min-width: 90px;"> <span class="" id="sum_under_budget" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; min-width: 90px;"> <span class="" id="sum_over_budget" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = codeColorMonthCurrent;
+                                    }
+                                    <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
+                                        <span class="" id="sum_sale_budget_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </td>
+                                }
+                            </tr>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle;"> <b>Actual</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_last_year_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_total_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_under_actual" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700;"> <span id="sum_over_actual" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = codeColorMonthCurrent;
+                                    }
+                                    <td class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent">
+                                        <span class="" id="sum_sale_actual_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </td>
+                                }
+                            </tr>
+                            <tr style="white-space: nowrap;">
+                                <td style="vertical-align: middle; background-color: #ccebedc9;"> <b>Forecast</b> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_last_year_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_total_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_under_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                <td class="vright" style="vertical-align: middle; font-weight: 700; background-color: #ccebedc9;"> <span id="sum_over_forecast" style="font-size: 16px;"> 0 </span> </td>
+                                @foreach (var monthItemCur in @ViewBag.monthList)
+                                {
+                                    string bgMonthCurrent = "#ccebedc9";
+                                    if (formattedMonthInputCurrent == monthItemCur)
+                                    {
+                                        bgMonthCurrent = "#f9ecdc";
+                                    }
+                                    <th class="vright" align="center" style="font-weight: 700; background-color: @bgMonthCurrent;">
+                                        <span class="" id="sum_sale_forecast_@monthItemCur.TrimStart('0')" style="font-size: 16px;"></span>
+                                    </th>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="searchByMonthAll" class="tab-pane fade">
+                <div id="showByMonthAll"></div>
+            </div>
+        </div>
+    </div>
+    //end by month v1
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-secondary text-white font-weight-bold" style="height: 54px;">
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-7 text-left">
+                    <ul class="nav nav-tabs card-header-tabs float-xs-left font-weight-bold">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="searchBySecSome" data-target="#searchBySecSome" data-toggle="tab">Some Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link secall" href="searchBySecAll" data-target="#searchBySecAll" data-toggle="tab">All Customer</a>
+                        </li>
+                        <li class="nav-item d-flex">
+                            <span class="d-flex align-items-center" style="display:inline-block;"> Month :  </span>
+                            <span>
+                                <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline-block; margin-left: 20px;">
+                                    @for (var i = 0; i < ViewBag.MonthYearList.Count; i++)
+                                    {
+                                        var monthSplit = ViewBag.MonthYearList[i].Text.Split('-');
+                                        if (monthSplit[0].ToString() != "0")
+                                        {
+                                            <option value="@monthSplit[0]">@monthSplit[0]</option>
+                                        }
+                                    }
+                                </select>
+                            </span>
+                        </li>
+                        @*<span style="font-size: 1.25rem; width: 70%; justify-content: right; z-index: 10; display: flex; float: right;">*@
+                        @*Summary by sec*@
+                        @*</span>*@
+                    </ul>
+                </div>
+                <div class="col-sm-5 text-right summary-text">
+                    <h5 style="font-weight: bold;"> Summary by sec </h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-block tab-content">
+            <div id="searchBySecSome" class="tab-pane fade active show">
+                <div class="row" style="padding-right: 17px; padding-left: 2px">
+                    @if (ViewBag.secArray != null)
+                    {
+                        foreach (var secItem in ViewBag.secAllArray)
+                        {
+                            string secval = "sum_avg_forecast_" + secItem.SEC;
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_sec_@secItem.SEC">
+                                <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
+                                    <div class="card-body pb-0" style="margin-top: -10px;">
+                                        <h4 class="" style="font-weight: 700; display: inline-block;">SEC @secItem.SEC <span class="iconLoading_@secItem.SEC"></span> </h4>
+                                        <span class="text-c-blue"></span>
+                                        <input type="hidden" class="form-control vright @secval" id="@secval" value="@secItem.SEC" />
+                                    </div>
+                                    <div class="card-footer bg-info text-white" style="padding-top: 1px; padding-bottom: 1px; padding-left: 6px; padding-right: 12px">
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_budget_@secItem.SEC" id="sum_sec_budget_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Budget</span>
+                                            </div>
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_actual_@secItem.SEC" id="sum_sec_actual_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Actual</span>
+                                            </div>
+                                            <div class="col">
+                                                <h4 class="m-0 text-white"> <span class="badge badge-light sum_sec_forecast_@secItem.SEC" id="sum_sec_forecast_@secItem.SEC" style="font-size: 16px; font-weight: 500;">0</span></h4>
+                                                <span>Forecast</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div id="searchBySecAll" class="tab-pane fade">
+                <div id="showBySecAll"></div>
+            </div>
+        </div>
+    </div>
+    //Summary by sec
+
+}
+<script defer>
+    //swal alert
+    var toastMixin = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        //title: 'General Title',
+        animation: false,
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 3300,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    $("[class*=sale_forecast_]").focusin(function () {
+        var cusCode = $(this).data('cuscode');
+        var cusName = $(this).data('cusname');
+        var sec = $(this).data('sec');
+        var month = $(this).data('month');
+        if (cusCode != '' && sec != '' && month != '') {
+            var inputValueOld = parseInt($("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val().replace(/\,/g, ''));
+            $(this).one('focusout', function () {
+                var inputValueNewNoReplace = $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val();
+                var inputValueNew = parseInt($("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val().replace(/\,/g, ''));
+                //console.log('inputValueOld = ' + inputValueOld + ' | ' + ' inputValueNew = ' + inputValueNew);
+                if (inputValueOld != inputValueNew) {
+                    //$("#flagAfterSave").val('N');
+                    $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveForecast", "ForecastSale")',
+                        data: JSON.stringify({
+                            MONTH_INPUT: ('0' + monthInput).slice(-2),
+                            USER: '@Session["UserID"]',
+                            SEC: sec,
+                            CUSCOD: cusCode,
+                            YEAR: year,
+                            INPUT: inputValueNew || 0
+                        }),
+                        dataType: 'json',
+                        traditional: true,
+                        contentType: "application/json; charset=utf-8",
+                        processData: false,
+                        beforeSend: function () {
+                            // LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result.status == "success") {
+                                $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").removeClass('input-onkey');
+                                $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").addClass('input-onsave');
+                                //disbled beforeunload
+                                $(window).unbind('beforeunload');
+                                calculateForecastSale();
+                                //save flagAfterSave = 'Y'
+                                $("#flagAfterSaveMonth").val('Y')
+                                $("#flagAfterSaveSec").val('Y')
+                                var flagAfterSaveMonth = $("#flagAfterSaveMonth").val();
+                                var flagAfterSaveSec = $("#flagAfterSaveSec").val();
+
+                                var flagReloadByMonth = $("#flagReloadByMonth").val();
+                                if (flagReloadByMonth == 'Y') {
+                                    $("#flagAfterSaveMonth").val('N');
+                                    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+                                }
+                                var flagReloadBySec = $("#flagReloadBySec").val();
+                                if (flagReloadBySec == 'Y') {
+                                    $("#flagAfterSaveSec").val('N');
+                                    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                                }
+                                //
+                                //$("#flagReloadByMonth").val('N');
+                                //$("#flagReloadBySec").val('N');
+                                //
+                                //reload summary by sec
+                                //getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+                                //$("#flagReloadByMonth").val('Y');
+                                ////sum by sec
+                                //timeout = setTimeout(function () {
+                                //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                                    //$("#flagReloadBySec").val('Y');
+                                //}, 3000);
+                                //Swal.close();
+                                //Swal.fire({
+                                //    //title: 'Saved successfully',
+                                //    html: '<div style="font-size: 22px; font-weight: bold;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
+                                //    icon: 'success',
+                                //    confirmButtonColor: '#3085d6',
+                                //    confirmButtonText: 'Close',
+                                //    //allowOutsideClick: false,
+                                //    focusConfirm: false,
+                                //    timer: 2500,
+                                //    timerProgressBar: true,
+                                //    animation: true,
+                                //    position: 'top-right',
+                                //    showConfirmButton: false,
+                                //    onClose: () => {
+                                //        $(window).unbind('beforeunload');
+                                //        $("#slmCode").prop('disabled', false)
+                                //    }
+                                //});
+                                toastMixin.fire({
+                                    animation: true,
+                                    html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
+                                });
+                            } else {
+                                LoadingHide();
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+                                    html: result.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            //LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ระบบทำงานผิดพลาด()',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale' + error + '<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+                }
+            });
+        }
+    });
+
+    //search by month
+    var slmCode = $("#slmCode option:selected").val();
+    var cusCodeAll = $("#cusCodeAll_header").val();
+    var stkSec = $("#stkSec").val();
+    var prodMgr = $("#prodMgr option:selected").val();
+    var year = $("#year option:selected").val();
+    var monthSelect = $("#month_sec option:selected").val(); //เดือนที่ต้องการดูข้อมูล
+    $('.nav li a').click(function () {
+        //console.log('11');
+        var page = $(this).attr("href");
+        var flagReloadBySec = $("#flagReloadBySec").val();
+        var flagReloadByMonth = $("#flagReloadByMonth").val();
+
+        var flagAfterSaveMonth = $("#flagAfterSaveMonth").val();
+        var flagAfterSaveSec = $("#flagAfterSaveSec").val();
+        if (page == 'searchByMonthSome') {
+            $("#flagReloadByMonth").val('N');
+        } else if (page == 'searchByMonthAll') { //หน้า sum by month all
+            $("#flagReloadByMonth").val('Y'); //reload && flagAfterSaveMonth == 'Y'
+            if (flagReloadByMonth == 'N') {
+                $("#flagAfterSaveMonth").val('N');
+                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
+            }
+        } else if (page == 'searchBySecSome') {
+            $("#flagReloadBySec").val('N');
+            //$("#flagTabBySecAll").val('N');
+        } else if (page == 'searchBySecAll') {
+            $("#flagTabBySecAll").val('Y'); //active tab
+            $("#flagReloadBySec").val('Y'); //reload
+            //ถ้าไม่เคยโหลดให้โหลด&&
+            if (flagReloadBySec == 'N') { //flagAfterSaveSec == 'Y'
+                $("#flagAfterSaveSec").val('N');
+                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+            }
+        }
+    });
+
+    function focusToForecast(sec, cusCode, month) {
+        var textbox = $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]");
+        textbox.focus();
+        textbox.select();
+    }
+
+    function getDataForecastByMonth(slmCode, cusCode, stkSec, prodMgr, year, flg, month) {
+        var divShow = "";
+        if (flg == 1) {//main
+            divShow = "showDataInput";
+        } else if (flg == 2) { //sum by month
+            divShow = "showByMonthAll";
+        } else if (flg == 3) { //sum by sec
+            divShow = "showBySecAll";
+        }
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("SearchForecastByAllCustomer", "ForecastSale")',
+            data: {
+                slmCode: slmCode,
+                cusCode: cusCode,
+                stkSec: 'ALL',
+                prodMgr: prodMgr,
+                year: year,
+                flg: flg,
+                month: month
+            },
+            dataType: 'html',
+            cache: false,
+            Async: true,
+            beforeSend: function () {
+                $('#' + divShow).empty();
+                $('#' + divShow).html('<div style="padding: 30px; font-size: 18px;"> <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i> กำลังโหลดข้อมูล... </div>')
+            },
+            success: function (res) {
+                //LoadingHide();
+                $('#' + divShow).empty();
+                $('#' + divShow).html(res);
+            }
+        });
+    }
+
+    setTimeout(function () {
+    var countList = $("#countList").val() || 0;
+    //console.log("countList = " + countList);
+    //if (countList > 0) { //มี่รายการค้นหา
+    //    //มีข้อมูลเปิดปุ่มบันทึก
+    //    $("#btnSaveForecastSale").css("display", "block");
+    //    $('#formInputForecastSale').data('serialize', $('#formInputForecastSale').serialize()); // On load save form current
+    //    $(window).bind('beforeunload', function (e) {
+    //        if ($('#formInputForecastSale').serialize() != $('#formInputForecastSale').data('serialize')) {
+    //            delayHide();
+    //            return true;
+    //        } else {
+    //            e = null;
+    //        }
+    //    });
+    //} else {
+    //    $("#btnSaveForecastSale").css("display", "none");
+    //}
+
+    //
+    function delayHide() {
+        timeout = setTimeout(function () {
+            LoadingHide();
+        }, 3000);
+    }
+
+    ////event input
+    //$(".inputForecastSale").on("change paste keyup", function () {
+    //    let nameInput = $(this).attr("name");
+    //    let dataMonthInput = $(this).attr("data-month");
+    //    let monthInputCurrent = $("#monthInputCurrent").val();
+    //    if (nameInput != "") {
+    //        $("input[name=" + nameInput + "]").prop('checked', true);
+    //        //เพิ่มสี input
+    //        $("input[name=" + nameInput + "]").removeClass('input-onsave');
+    //        $("input[name=" + nameInput + "]").addClass('input-onkey');
+    //        //$('.defaultInput').removeClass('error');
+    //    }
+    //});
+
+    //hide/show tab
+    function hideBodySec(sec) {
+        var x = document.getElementById("body_" + sec);
+        if (x.style.display === "none") {
+            $("#header_" + sec).toggleClass("fa-caret-down fa-caret-up");
+            $("#body_" + sec).show();
+        } else {
+            $("#header_" + sec).toggleClass("fa-caret-up fa-caret-down");
+            $("#body_" + sec).hide();
+        }
+    }
+
+    //sumSaleForecast = async (_className, month, sec, cuscod) => {
+    //    var monthSelect = $("#month_sec option:selected").val();
+    //    let sum_total_forecast_by_cuscod = 0;
+    //    await Promise.all($(".sum_sale_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+    //        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+    //        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+    //        sum_total_forecast_by_cuscod += Number(forecast_sale_key);
+    //    }));
+    //    $('.sum_total_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+    //    $('.sum_total_forecast_input_' + cuscod + "_" + sec).val(numberWithCommas(sum_total_forecast_by_cuscod.toFixed(0)));
+    // }
+    ////sum avg
+    //const sumAvgForecast = async (sec, cuscod) => {
+    //    let sum_total_avg_forecast_by_cuscod = 0;
+    //    await Promise.all($(".sum_avg_forecast_" + cuscod + "_" + sec).each(async function (i, obj) {
+    //        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        //console.log("sum_total_forecast_by_cuscod = " + forecast_sale_key);
+    //        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+    //        sum_total_avg_forecast_by_cuscod += Number(forecast_sale_key);
+    //    }));
+    //    $('.sum_total_avg_forecast_' + cuscod + "_" + sec).text(numberWithCommas(sum_total_avg_forecast_by_cuscod.toFixed(0)));
+    //}
+    ////for sum by sec
+    //const sumSecAll = async (month) => {
+    //    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+    //    var sec;
+    //    var monthSelect;
+    //    var monthSelect = $("#month_sec option:selected").val();
+    //    if (month === undefined) {
+    //        month = monthSelect;
+    //    }
+    //    //sec all
+    //    $('.stkSecList_header').each(function () {
+    //        sec = $(this).val();
+    //        if (sec != null) {
+    //            sumSecByMonth(sec, month);
+    //        }
+    //    });
+    //    //hide icon
+    //    setTimeout(() => {
+    //        $(".iconLoading").html('');
+    //    }, "1000");
+    //}
+    //sum sec by month
+    //const sumSecByMonth = async (sec, month) => {
+    //    //console.log("(sec, month = "+ sec + "/" + month);
+    //    //sum sec forecast
+    //    let sum_forecast_by_month = 0;
+    //    await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
+    //        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        forecast_sale_key = await getVowels(forecast_sale_key, 0);
+    //        console.log("forecast_sale_key = " + forecast_sale_key);
+    //        sum_forecast_by_month += Number(forecast_sale_key);
+    //    }));
+    //    $('.sum_sec_forecast_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
+    //    //sum sec budget
+    //    let sum_budget_by_month = 0;
+    //    await Promise.all($(".sale_budget_" + sec + "_" + month).each(async function (i, obj) {
+    //        let budget_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        budget_sale_key = await getVowels(budget_sale_key, 0);
+    //        sum_budget_by_month += Number(budget_sale_key);
+    //    }));
+    //    $('.sum_sec_budget_' + sec).text(numberWithCommas(sum_budget_by_month.toFixed(0)));
+    //    //sum sec actual
+    //    let sum_actual_by_month = 0;
+    //    await Promise.all($(".sale_actual_" + sec + "_" + month).each(async function (i, obj) {
+    //        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //        actual_sale_key = await getVowels(actual_sale_key, 0);
+    //        sum_actual_by_month += Number(actual_sale_key);
+    //    }));
+    //    $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
+    //    //Budget, Actual, Forecast เป็น 0 ไม่แสดง
+    //    //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
+
+    //    if (sum_forecast_by_month == 0 || (sum_budget_by_month == 0 && sum_actual_by_month == 0)) {
+    //        $("#sum_by_sec_" + sec).css("display", "none");
+    //    } else {
+    //        $("#sum_by_sec_" + sec).css("display", "block");
+    //    }
+    //}
+    ////sum all month
+    //const sumSaleForecastByCaption = async (inputName) => {
+    //    //console.log("inputName = " + inputName);
+    //    for (let numMonth = 1; numMonth <= 12; numMonth++) {
+    //        let sum_by_caption = 0;
+    //        await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
+    //            let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+    //            val_by_caption = await getVowels(val_by_caption, 0);
+    //            sum_by_caption += Number(val_by_caption);
+    //            //console.log("sum_by_caption = " + sum_by_caption);
+    //        }));
+    //        if (sum_by_caption != null) {
+    //            $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
+    //        }
+    //    }
+    //}
+    ////sum all last year, total, under/over
+    //const sumAllSaleForecastByCaption = async (className) => {
+    //    //console.log("className = " + className);
+    //    let sum_all_by_caption = 0;
+    //    let sum_total_actual_before = 0;
+    //    let sum_total_actual_after = 0;
+    //    let sum_total_budget_before = 0;
+    //    let sum_total_budget_after = 0;
+    //    if (className == "over_actual") {
+    //        sum_total_actual_before = $("#sum_total_actual").text();
+    //        let sum_total_actual_after = sum_total_actual_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //        sum_total_actual_after = await getVowels(sum_total_actual_after, 0);
+    //        //console.log("sum_total_actual_after = " + sum_total_actual_after);
+
+    //        sum_total_budget_before = $("#sum_total_budget").text();
+    //        let sum_total_budget_after = sum_total_budget_before.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //        sum_total_budget_after = await getVowels(sum_total_budget_after, 0);
+    //        //console.log("sum_total_budget_after = " + sum_total_budget_after);
+
+    //        if (sum_total_budget_after != 0 && sum_total_budget_after != null) {
+    //            sum_all_by_caption = (sum_total_actual_after / sum_total_budget_after) * 100;
+    //        }
+    //        sum_all_by_caption = Math.floor(sum_all_by_caption * 100) / 100;
+    //        sum_all_by_caption += "%";
+    //    } else {
+    //        await Promise.all($('.' + className).each(async function (i, obj) {
+    //            let val_all_by_caption = obj.value.toString().replace(/([[\]{}()*+?\\^$|%,])/g, '');
+    //            val_all_by_caption = await getVowels(val_all_by_caption, 0);
+    //            sum_all_by_caption += Number(val_all_by_caption);
+    //            //console.log("val_all_by_caption = " + val_all_by_caption);
+    //        }));
+
+    //        if (sum_all_by_caption != 0 && sum_all_by_caption != null && !isNaN(sum_all_by_caption)) {
+    //            sum_all_by_caption = sum_all_by_caption.toFixed(0)
+    //        }
+    //    }
+    //    $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
+    //}
+
+    //async function calculateForecastSale() {
+    //    $(".cardSummary").LoadingOverlay("show");
+    //    await sumSecAll();
+    //    await sumSaleForecastByCaption("sale_budget");
+    //    await sumSaleForecastByCaption("sale_actual");
+    //    await sumSaleForecastByCaption("sale_forecast");
+    //    await sumSaleForecastByCaption("sale_avg");
+
+    //    //Summary by sec
+    //    await sumAllSaleForecastByCaption("last_year_budget");
+    //    await sumAllSaleForecastByCaption("total_budget");
+    //    await sumAllSaleForecastByCaption("under_budget");
+    //    await sumAllSaleForecastByCaption("over_budget");
+
+    //    await sumAllSaleForecastByCaption("last_year_actual");
+    //    await sumAllSaleForecastByCaption("total_actual");
+    //    await sumAllSaleForecastByCaption("under_actual");
+    //    await sumAllSaleForecastByCaption("over_actual");
+
+    //    await sumAllSaleForecastByCaption("last_year_forecast");
+    //    await sumAllSaleForecastByCaption("total_forecast");
+    //    await sumAllSaleForecastByCaption("under_forecast");
+    //    await sumAllSaleForecastByCaption("over_forecast");
+
+    //    $(".cardSummary").LoadingOverlay("hide");
+    //}
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip-input"]').tooltip({
+            'trigger': 'focus',
+        });
+
+        calculateForecastSale();
+        //flagInput = เลยเวลาคีย์แล้ว
+        let flagInput = $("#flagInput").val();
+        if (flagInput == 'NO') {
+            $(window).unbind('beforeunload');
+            $(".mask").prop('disabled', true);
+        }
+        $("[class*=sale_forecast_]").prop('disabled', true);
+        if (monthInput != "") { //กรอกได้เฉพาะเดือนปัจจุบันเท่านั้น
+            $(".sale_forecast_" + monthInput).attr("disabled", false);
+            $("input[data-month='" + monthInput + "']").prop("disabled", false)
+        }
+
+        if (userType == 3) {
+            $("#slmCode").prop('disabled', true);
+        }
+
+        $('input.mask').keyup(function (event) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) {
+                event.preventDefault();
+            }
+            var $this = $(this);
+            var num = $this.val().replace(/,/gi, "").split("").reverse().join("");
+            var num2 = RemoveRougeChar(num.replace(/(.{3})/g, "$1,").split("").reverse().join(""));
+            //console.log(num2);
+            // the following line has been simplified. Revision history contains original.
+            $this.val(num2);
+        });
+    });
+
+ }, 2000);
+
+
+
+
+    $(document).ready(function () {
+        $('[class^="form-check-input_"]').each(function () {
+            let cuskey = $(this).data("cuscode");
+            let checked = $(this).prop('checked');
+            let NoteText = $('.note_star_show_' + cuskey).html();
+            if (checked) {
+                $('.star_show_' + cuskey).show();
+                console.log("Note : "+NoteText);
+                $('#the_star_icon_' + cuskey).css('color', 'yellow');
+                if (NoteText.trim() === "") {
+                    $('.note_star_show_' + cuskey).addClass("btn-info");
+                }
+            }
+            else {
+                $('.star_show_' + cuskey).hide();
+                $('#the_star_icon_' + cuskey).css('color', 'white');
+
+            }
+        });
+    })
+    //Note TheStar The Star widget
+    function ShowStar(cuskey) {
+        var isChecked = $('.form-check-input_' + cuskey).prop('checked');
+        console.log(isChecked);
+        if (isChecked) {
+            AddTheStar(cuskey);
+        }
+        else {
+            Swal.fire({
+                title: "Are you sure to delete the star?",
+                /*text: "You won't be able to revert this!",*/
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+                    $('.form-check-input_' + cuskey).prop('checked', true);
+                    $('.star_show_' + cuskey).show();
+                    $('#the_star_icon_' + cuskey).css('color', 'yellow');
+                } else {
+
+                    $('.form-check-input_' + cuskey).prop('checked', false);
+                    $('#the_star_icon_' + cuskey).css('color', 'white');
+
+                    DeleteTheStar(cuskey);
+                    $('.note_star_show_' + cuskey).text(" ");
+                }
+            });
+        }
+    }
+    //Add The Star Empty
+    function ThestarEmp(cuskey){
+        console.log("Create is called for cuskey: " + cuskey);
+        let year = $("#year option:selected").val();
+        $.ajax({
+        type: 'POST',
+        cache: false,
+        url: '@Url.Action("AddTheStar", "ForecastSale")',
+        data: JSON.stringify({
+            Year: year,
+            CusKey: cuskey
+        }),
+        dataType: 'json',
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        processData: false,
+        beforeSend: function () {
+            // LoadingShow();
+        },
+        success: function (result) {
+            if (result.status == "success") {
+                $('.form-check-input_' + cuskey).prop('checked', true);
+                $('.star_show_' + cuskey).show();
+                $('#the_star_icon_' + cuskey).css('color', 'yellow');
+                $('.note_star_show_' + cuskey).addClass("btn-info");
+            } else {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>Delete The star<br>',
+                    html: result.message,
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false,
+                });
+            }
+        },
+        error: function (ex) {
+            //notify(ex, 'danger');
+        },
+        complete: function (res) {
+            //LoadingHide();
+        }
+    }).fail(function (error) {
+        LoadingHide();
+        Swal.close();
+        Swal.fire({
+            icon: 'error',
+            title: 'ระบบทำงานผิดพลาด()',
+            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>Delete TheStar' + error + '<br><br>',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'ปิด',
+            allowOutsideClick: false,
+            focusConfirm: false,
+        });
+    });
+    }
+    //Add The Star
+    function AddTheStar(cuskey) {
+    (async () => {
+        const swalResult = await Swal.fire({
+            input: "textarea",
+            title: "Customer : " + cuskey,
+            inputPlaceholder: "Type your message here...",
+            inputValue: $('.note_star_show_' + cuskey).text(),
+            inputAttributes: {
+                "aria-label": "Type your message here"
+            },
+            customClass: {
+                textarea: 'custom-textarea-class' // กำหนดคลาส CSS ของ textarea
+            },
+            showCancelButton: true,
+            allowOutsideClick: false,
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            focusCancel: true,
+        });
+
+        if (swalResult.dismiss === Swal.DismissReason.cancel) {
+            $('.form-check-input_' + cuskey).prop('checked', false);
+            $('#the_star_icon_' + cuskey).css('color', 'white');
+        }
+        else if (swalResult.value.trim() == "") {
+            ThestarEmp(cuskey);
+        }
+        else if (swalResult.value) {
+            const text = swalResult.value;
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
+                data: JSON.stringify({
+                    USER: '@Session["UserID"]',
+                    YEAR: year,
+                    CusKey: cuskey,
+                    Input: text
+                }),
+                dataType: 'json',
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                processData: false,
+                beforeSend: function () {
+                    // LoadingShow();
+                },
+                success: function (result) {
+                    if (result.status == "success") {
+
+                        $('.star_show_' + cuskey).show();
+                        $('#the_star_icon_' + cuskey).css('color', 'yellow');
+                        if (text.trim() != "") {
+                            $('.note_star_show_' + cuskey).text(text);
+                            $('.note_star_show_' + cuskey).removeClass("btn-info");
+                        }
+                        else {
+                            $('.note_star_show_' + cuskey).text(" ");
+                            $('.note_star_show_' + cuskey).addClass("btn-info");
+                        }
+
+                        console.log("Success");
+                        console.log("CUS : " + cuskey + "Year : " + year);
+                    } else {
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                            html: result.message,
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    }
+                },
+                error: function (ex) {
+                    //notify(ex, 'danger');
+                },
+                complete: function (res) {
+                    LoadingHide();
+                }
+            }).fail(function (error) {
+                LoadingHide();
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false,
+                });
+            });
+        }
+    })();
+}
+    //Delete The Star
+    function DeleteTheStar(cuskey) {
+        console.log("ลบ is called for cuskey: " + cuskey);
+        let year = $("#year option:selected").val();
+                $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '@Url.Action("RemoveTheStar", "ForecastSale")',
+                data: JSON.stringify({
+                    Year: year,
+                    CusKey: cuskey
+                }),
+                dataType: 'json',
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                processData: false,
+                beforeSend: function () {
+                    // LoadingShow();
+                },
+                success: function (result) {
+                    if (result.status == "success") {
+                        //Swal.fire({
+                        //    title: "Delete the star success",
+                        //
+                        //    icon: "success"
+                        //});
+                        $('.star_show_' + cuskey).hide();
+
+
+                    } else {
+
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>Delete The star<br>',
+                            html: result.message,
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    }
+                },
+                error: function (ex) {
+                    //notify(ex, 'danger');
+                },
+                complete: function (res) {
+                    //LoadingHide();
+                }
+            }).fail(function (error) {
+                LoadingHide();
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>Delete TheStar' + error + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false,
+                });
+            });
+    }
+
+    //Show Note
+    function ShowNoteThestar(cuskey) {
+        var NoteTextStar = $('.note_star_show_' + cuskey).html();
+        if (NoteTextStar.trim() !== "") {
+            const date = new Date();
+            let MonthCurrent = (date.getMonth() + 1).toString().padStart(2, '0');
+
+            Swal.fire({
+                title: "Customer : " + cuskey,
+                html: '<textarea readonly disabled class="swal2-textarea popup-textarea-class popup-text-star-' + cuskey + '">' + NoteTextStar + '</textarea>',
+                confirmButtonText: "OK",
+                showCancelButton: false,
+                customClass: {
+                    textarea: 'popup-textarea-class'
+                },
+            });
+        }
+    }
+
+    function handleNoteTheStar(cusKey, event) {
+        if (!event.target.matches('.form-check-label_' + cusKey)) {
+            ShowStar(cusKey);
+        }
+    }
+    function handleUpdateNoteTheStar(cusKey, event) {
+        if (!event.target.matches('.form-check-input_' + cusKey)) {
+            addsThestarNote(cusKey);
+        }
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    function handleNoteClickBtn(cusKey, event) {
+        if (!event.target.matches('.form-check-input_' + cusKey)) {
+            ShowNoteThestar(cusKey);
+        }
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    //update TheStarNote
+    function addsThestarNote(cusKey) {
+    var NoteText = $('.note_star_show_' + cusKey).html().trim();
+    if (NoteText != "") {
+                (async () => {
+    const { value: text } = await Swal.fire({
+        input: "textarea",
+        title: "Customer : " + cusKey,
+        inputPlaceholder: "Type your message here...",
+        inputValue: $('.note_star_show_' + cusKey).text(),
+        inputAttributes: {
+            "aria-label": "Type your message here"
+        },
+        customClass: {
+            textarea: 'custom-textarea-class'
+        },
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Save",
+        cancelButtonText: "Cancel",
+
+    });
+            if (text) {
+         $.ajax({
+             type: 'POST',
+             cache: false,
+             url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
+             data: JSON.stringify({
+                 USER: '@Session["UserID"]',
+                 YEAR: year,
+                 CusKey: cusKey,
+                 Input: text
+             }),
+             dataType: 'json',
+             traditional: true,
+             contentType: "application/json; charset=utf-8",
+             processData: false,
+             beforeSend: function () {
+                 // LoadingShow();
+             },
+             success: function (result) {
+                 if (result.status == "success") {
+                     //Swal.fire({
+                     //    title: "Saving Note success",
+                     //    icon: "success"
+                     //});
+                     $('.note_star_show_' + cusKey).removeClass("btn-info");
+                     $('.note_star_show_' + cusKey).text(text);
+                     console.log("Success");
+                     console.log("CUS : " + cusKey + "Year : " + year );
+
+                 } else {
+                     LoadingHide();
+                     Swal.close();
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                         html: result.message,
+                         confirmButtonColor: '#d33',
+                         confirmButtonText: 'ปิด',
+                         allowOutsideClick: false,
+                         focusConfirm: false,
+                     });
+                 }
+             },
+                             error: function (ex) {
+                                 //notify(ex, 'danger');
+                             },
+                             complete: function (res) {
+                                 LoadingHide();
+                             }
+                         }).fail(function (error) {
+                             LoadingHide();
+                             Swal.close();
+                             Swal.fire({
+                                 icon: 'error',
+                                 title: 'ระบบทำงานผิดพลาด()',
+                                 html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                                 confirmButtonColor: '#d33',
+                                 confirmButtonText: 'ปิด',
+                                 allowOutsideClick: false,
+                                 focusConfirm: false,
+                             });
+                         });
+                    }
+                    })();
+                   }
+                    else {
+                                (async () => {
+                            const { value: text } = await Swal.fire({
+                                input: "textarea",
+                                title: "Customer : " + cusKey,
+                                inputPlaceholder: "Type your message here...",
+                                inputAttributes: {
+                                    "aria-label": "Type your message here"
+                                },
+                                customClass: {
+                                    textarea: 'custom-textarea-class'
+                                },
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            confirmButtonText: "Save",
+                             cancelButtonText: "Cancel",
+                        });
+                        if (text) {
+
+                            $.ajax({
+                            type: 'POST',
+                            cache: false,
+                            url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
+                            data: JSON.stringify({
+                                USER: '@Session["UserID"]',
+                                YEAR: year,
+                                CusKey: cusKey,
+                                Input: text
+                            }),
+                            dataType: 'json',
+                            traditional: true,
+                            contentType: "application/json; charset=utf-8",
+                            processData: false,
+                                beforeSend: function () {
+                                    //LoadingShow();
+                                },
+                                success: function (result) {
+                                    if (result.status == "success") {
+                                        //Swal.fire({
+                                        //    title: "Saving Note Success",
+                                        //    icon: "success",
+                                        //});
+                                        $('.note_star_show_' + cusKey).removeClass("btn-info");
+                                        $('.note_star_show_' + cusKey).text(text);
+                                        console.log("Success");
+                                        console.log("Kus : " + cusKey + "Year : " + year);
+                                    } else {
+                                        //LoadingHide();
+                                        Swal.close();
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                                            html: result.message,
+                                            confirmButtonColor: '#d33',
+                                            confirmButtonText: 'ปิด',
+                                            allowOutsideClick: false,
+                                            focusConfirm: false,
+                                        });
+                                    }
+                                },
+                                error: function (ex) {
+                                    //notify(ex, 'danger');
+                                },
+                                complete: function (res) {
+                                    //LoadingHide();
+                                }
+                            }).fail(function (error) {
+                                LoadingHide();
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'ระบบทำงานผิดพลาด()',
+                                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            });
+                        }
+                    })();
+                    }
+                }
+
+</script>

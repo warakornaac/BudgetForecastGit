@@ -15,6 +15,11 @@
     monthInputCurrent = int.Parse(monthSplits[0]);
     string formattedMonthInputCurrent = monthInputCurrent.ToString("00");
 }
+
+<style>
+    /* Sweet al 2 */
+
+</style>
 @*Summary by month*@
 <div class="card mb-12">
     <div class="row" style="padding-right: 17px; padding-left: 2px">
@@ -22,13 +27,16 @@
         {
             foreach (var dataItemBySec in (List<StoreSearchForecastSaleModel>)ViewBag.sumByMonth)
             {
+                string secval = "sum_avg_forecast_" + dataItemBySec.Sec;
                 if (@dataItemBySec.Budget != 0 || dataItemBySec.Actual != 0 || dataItemBySec.FC != 0)
                 {
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_dec_@dataItemBySec.Sec">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3" style="padding-top: 5px; display: block; padding-right: 0px" id="sum_by_dec_@dataItemBySec.Sec">
                         <div class="card support-bar overflow-hidden" style="background-color: whitesmoke; width: 100%;">
                             <div class="card-body pb-0" style="margin-top: -10px;">
-                                <h4 class="" style="font-weight: 700;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
+                                <h4 class="" style="font-weight: 700; display: inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                 <span class="text-c-blue"></span>
+                                <input type="hidden" class="form-control vright @secval" id="@secval" value="@dataItemBySec.Sec" />
+                                @*<input data-sec="@dataItemBySec.Sec" class="note_input_all_@dataItemBySec.Sec" id="note_input_all_@dataItemBySec.Sec" type="hidden" />*@
                             </div>
                             <div class="card-footer bg-info text-white" style="padding-top: 1px; padding-bottom: 1px; padding-left: 6px; padding-right: 12px">
                                 <div class="row text-center">
