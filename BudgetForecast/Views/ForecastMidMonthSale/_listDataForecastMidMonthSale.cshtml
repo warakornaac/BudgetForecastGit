@@ -1287,9 +1287,9 @@ else
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
-                                    icon: 'warning',
-                                    title: 'บันทึก New Forecast ไม่สำเร็จ',
-                                    html: 'ไม่พบข้อมูล Forecast<br> Customer : ' + cusName + '<br>SEC : ' + sec + '<br>Month : ' + ('0' + monthInput).slice(-2) + '<br>',
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+                                    html: '<span>ข้อมูลไม่ถูกส่งไปยังฐานข้อมูล </span>',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
@@ -1304,7 +1304,7 @@ else
                                 Swal.close();
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNewForecastSale<br>',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
                                     html: result.message,
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',

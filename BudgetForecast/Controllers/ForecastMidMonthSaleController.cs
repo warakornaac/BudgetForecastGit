@@ -573,8 +573,10 @@ namespace BudgetForecast.Controllers
                     {
                         sta = "unsuccess";
                     }
+                    cmd.Dispose();
+                    conn.Close();
                 }
-                return Json(new { status = sta, message = "new forecast updated" });
+                return Json(new { status = sta, message = "ForecastMidMonth updated" });
 
             }
             catch (Exception ex)
