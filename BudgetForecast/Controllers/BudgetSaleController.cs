@@ -263,6 +263,50 @@ namespace BudgetForecast.Controllers
                 return Json(new { status = "error", message = ex.Message });
             }
         }
+
+        //NEW SAVE BG
+        //Save Budget check status 
+        //[HttpPost]
+        //public ActionResult SaveBudget(string USER, string CUSCODE, string STKGRP, double F_SLM)
+        //{
+        //    var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
+        //    string check_sta;
+        //    string sta = "";
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            var cmd = new SqlCommand("P_Update_Budget_Sale_Dev", conn);
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@Cuscode", CUSCODE.ToTrim());
+        //            cmd.Parameters.AddWithValue("@Stkgrp", STKGRP.ToTrim());
+        //            cmd.Parameters.AddWithValue("@User", USER.ToTrim());
+        //            cmd.Parameters.AddWithValue("@F_slm", F_SLM.ToString().Replace(",", ""));
+        //            cmd.Parameters.AddWithValue("@Year", "");
+
+
+        //            int INSID = cmd.ExecuteNonQuery();
+        //            check_sta = INSID.ToString();
+        //            if (INSID > 0)
+        //            {
+        //                sta = "success";
+        //            }
+        //            else
+        //            {
+        //                sta = "unsuccess";
+        //            }
+        //        }
+
+        //        return Json(new { status = sta, message = "budgetSale updated" });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { status = "error", message = ex.Message });
+        //    }
+        //}
+
         public JsonResult Getdatabyslm(string slmCode)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
@@ -321,6 +365,7 @@ namespace BudgetForecast.Controllers
         {
             string[] prodCodeArr; 
             string secCodeArr = string.Empty; 
+            //string[] prodCodeArr;
             List<STKGRPList> STKGRPList = new List<STKGRPList>();
             SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
             Connection.Open();
@@ -336,7 +381,6 @@ namespace BudgetForecast.Controllers
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@prodCode", string.Join(",", prodCode));
             command.Parameters.AddWithValue("@secCode", string.Join(",", secCode));
-
             SqlDataReader rec = command.ExecuteReader();
             while (rec.Read())
             {

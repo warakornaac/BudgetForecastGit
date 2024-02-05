@@ -14,5 +14,6 @@ namespace BudgetForecast.Model
         public string CUSCOD { get; set; }
         public string YEAR { get; set; }
         public double INPUT { get; set; }
+        public string SLMCOD { get; set; }
     }
 }
