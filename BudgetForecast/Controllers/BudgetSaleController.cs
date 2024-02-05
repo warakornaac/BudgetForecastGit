@@ -251,62 +251,65 @@ namespace BudgetForecast.Controllers
                 @ViewBag.secList,
             });
         }
+        [HttpPost]
+        public ActionResult SaveBudget(string USER, string CUSCODE, string STKGRP, double F_SLM)
+        {
+            var UpdateBudgetSale = new List<StoreUpdateBudgetSaleModel>();
+            try
+            {
+                UpdateBudgetSale = new UpdateBudgetSale().Update(USER, CUSCODE, STKGRP, F_SLM);
+                return Json(new { status = "success", message = "budgetSale updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+        }
+
+
+
+        //NEW SAVE BG
+        //Save Budget check status 
         //[HttpPost]
         //public ActionResult SaveBudget(string USER, string CUSCODE, string STKGRP, double F_SLM)
         //{
-        //    var UpdateBudgetSale = new List<StoreUpdateBudgetSaleModel>();
+        //    var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
+        //    string check_sta;
+        //    string sta = "";
         //    try
         //    {
-        //        UpdateBudgetSale = new UpdateBudgetSale().Update(USER, CUSCODE, STKGRP, F_SLM);
-        //        return Json(new { status = "success", message = "budgetSale updated" });
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            var cmd = new SqlCommand("P_Update_Budget_Sale_Dev", conn);
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@Cuscode", CUSCODE.ToTrim());
+        //            cmd.Parameters.AddWithValue("@Stkgrp", STKGRP.ToTrim());
+        //            cmd.Parameters.AddWithValue("@User", USER.ToTrim());
+        //            cmd.Parameters.AddWithValue("@F_slm", F_SLM.ToString().Replace(",", ""));
+        //            cmd.Parameters.AddWithValue("@Year", "");
+
+
+        //            int INSID = cmd.ExecuteNonQuery();
+        //            check_sta = INSID.ToString();
+        //            if (INSID > 0)
+        //            {
+        //                sta = "success";
+        //            }
+        //            else
+        //            {
+        //                sta = "unsuccess";
+        //            }
+        //        }
+
+        //        return Json(new { status = sta, message = "budgetSale updated" });
+
         //    }
         //    catch (Exception ex)
         //    {
         //        return Json(new { status = "error", message = ex.Message });
         //    }
         //}
-        //Save Budget check status 
-        [HttpPost]
-        public ActionResult SaveBudget(string USER, string CUSCODE, string STKGRP, double F_SLM)
-        {
-            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
-            string check_sta;
-            string sta = "";
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    var cmd = new SqlCommand("P_Update_Budget_Sale_Dev", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Cuscode", CUSCODE.ToTrim());
-                    cmd.Parameters.AddWithValue("@Stkgrp", STKGRP.ToTrim());
-                    cmd.Parameters.AddWithValue("@User", USER.ToTrim());
-                    cmd.Parameters.AddWithValue("@F_slm", F_SLM.ToString().Replace(",", ""));
-                    cmd.Parameters.AddWithValue("@Year", "");
-
-
-                    int INSID = cmd.ExecuteNonQuery();
-                    check_sta = INSID.ToString();
-                    if (INSID > 0)
-                    {
-                        sta = "success";
-                    }
-                    else
-                    {
-                        sta = "unsuccess";
-                    }
-                }
-
-                return Json(new { status = sta, message = "budgetSale updated" });
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new { status = "error", message = ex.Message });
-            }
-
-        }
 
 
         public JsonResult Getdatabyslm(string slmCode)
@@ -368,7 +371,7 @@ namespace BudgetForecast.Controllers
         }
         public JsonResult GetStkgrp(string[] prodCode, string[] secCode)
         {
-            string[] prodCodeArr;
+            //string[] prodCodeArr;
             string secCodeArr = string.Empty;
             List<STKGRPList> STKGRPList = new List<STKGRPList>();
             SqlConnection Connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString);
@@ -385,7 +388,6 @@ namespace BudgetForecast.Controllers
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@prodCode", string.Join(",", prodCode));
             command.Parameters.AddWithValue("@secCode", string.Join(",", secCode));
-
             SqlDataReader rec = command.ExecuteReader();
             while (rec.Read())
             {

@@ -14,7 +14,7 @@ namespace BudgetForecast.Data
         public UpdateForecastSale() : base(Utils.GetConfig("Lip_ConnectionString"))
         {
         }
-        public List<StoreUpdateForecastSaleModel> Update(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        public List<StoreUpdateForecastSaleModel> Update(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
         {
             var p = new SqlParameters();
             p.AddParams("@MONTH_INPUT", MONTH_INPUT);
@@ -23,6 +23,7 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", YEAR.ToTrim());
             p.AddParams("@Cuscod", CUSCOD.ToTrim());
             p.AddParams("@Input", INPUT.ToString().Replace(",", ""));
+            p.AddParams("@Slmcod", SLMCOD.ToTrim());
 
             //p.AddParams("@outGenstatus", 'Y');
 

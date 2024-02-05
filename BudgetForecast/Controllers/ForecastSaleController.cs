@@ -448,7 +448,7 @@ namespace BudgetForecast.Controllers
 
         //Save Forecast check status 
         [HttpPost]
-        public ActionResult UpdateForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        public ActionResult UpdateForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
             string check_sta;
@@ -466,6 +466,7 @@ namespace BudgetForecast.Controllers
                     cmd.Parameters.AddWithValue("@Year", YEAR.ToTrim());
                     cmd.Parameters.AddWithValue("@Cuscod", CUSCOD.ToTrim());
                     cmd.Parameters.AddWithValue("@Input", INPUT.ToString().Replace(",", ""));
+                    cmd.Parameters.AddWithValue("@Slmcod", SLMCOD.ToTrim());
 
 
                     int INSID = cmd.ExecuteNonQuery();

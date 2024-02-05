@@ -994,7 +994,8 @@ else
                             SEC: sec,
                             CUSCOD: cusCode,
                             YEAR: year,
-                            INPUT: inputValueNew || 0
+                            INPUT: inputValueNew || 0,
+                            SLMCOD: slmCode
                         }),
                         dataType: 'json',
                         traditional: true,
@@ -1026,37 +1027,6 @@ else
                                     $("#flagAfterSaveSec").val('N');
                                     getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
                                 }
-                                //
-                                //$("#flagReloadByMonth").val('N');
-                                //$("#flagReloadBySec").val('N');
-                                //
-                                //reload summary by sec
-                                //getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 2, 0)
-                                //$("#flagReloadByMonth").val('Y');
-                                ////sum by sec
-                                //timeout = setTimeout(function () {
-                                //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
-                                    //$("#flagReloadBySec").val('Y');
-                                //}, 3000);
-                                //Swal.close();
-                                //Swal.fire({
-                                //    //title: 'Saved successfully',
-                                //    html: '<div style="font-size: 22px; font-weight: bold;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
-                                //    icon: 'success',
-                                //    confirmButtonColor: '#3085d6',
-                                //    confirmButtonText: 'Close',
-                                //    //allowOutsideClick: false,
-                                //    focusConfirm: false,
-                                //    timer: 2500,
-                                //    timerProgressBar: true,
-                                //    animation: true,
-                                //    position: 'top-right',
-                                //    showConfirmButton: false,
-                                //    onClose: () => {
-                                //        $(window).unbind('beforeunload');
-                                //        $("#slmCode").prop('disabled', false)
-                                //    }
-                                //});
                                 toastMixin.fire({
                                     animation: true,
                                     html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
@@ -1067,8 +1037,8 @@ else
                                 Swal.close();
                                 Swal.fire({
                                     icon: 'warning',
-                                    title: 'บันทึก Forecast ไม่สำเร็จ',
-                                    html: 'ข้อมูลผิดพลาด Forecast<br> Customer : ' + cusName + '<br>SEC : ' + sec + '<br>Month : ' + ('0' + monthInput).slice(-2) + '<br>',
+                                    title: 'กรุณาติดต่อแผนกไอที<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>',
+                                    html: 'ไม่พบข้อมูลของ <br> Customer : ' + cusName + '<br>SEC : ' + sec + '<br>Month : ' + ('0' + monthInput).slice(-2) + '<br>',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
