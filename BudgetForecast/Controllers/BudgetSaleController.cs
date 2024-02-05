@@ -265,7 +265,6 @@ namespace BudgetForecast.Controllers
                 return Json(new { status = "error", message = ex.Message });
             }
         }
-<<<<<<< HEAD
 
 
 
@@ -313,8 +312,6 @@ namespace BudgetForecast.Controllers
         //}
 
 
-=======
->>>>>>> f2df0eb8922abb3fc8a31b65b803f1a767c8db6a
         public JsonResult Getdatabyslm(string slmCode)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;

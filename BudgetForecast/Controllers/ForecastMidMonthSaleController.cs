@@ -537,7 +537,6 @@ namespace BudgetForecast.Controllers
 
             return Json(Note, JsonRequestBehavior.AllowGet);
         }
-<<<<<<< HEAD
 
 
 
@@ -585,7 +584,5 @@ namespace BudgetForecast.Controllers
             }
 
         }
-=======
->>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
     }
 }

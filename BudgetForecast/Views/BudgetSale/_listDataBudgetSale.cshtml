@@ -353,33 +353,13 @@ else
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
-<<<<<<< HEAD
-<<<<<<< HEAD
                                     icon: 'warning',
                                     title: 'บันทึก Budget ไม่สำเร็จ',
                                     html: 'ข้อมูล BudGet ไม่ถูกต้อง <br>' + 'Customer : ' + cusName + '<br> Sec : ' + sec + '<br> StkGroup : ' + stkgrp,
-=======
+
                                     icon: 'error',
                                     title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveBudgetSale<br>',
-                                    html: 'ข้อมูลไม่ถูกส่งไปยังฐานข้อมูล',
->>>>>>> parent of a372f68 ([bin & Controller & View ] update new Logic input for Test)
-                                    confirmButtonColor: '#d33',
-                                    confirmButtonText: 'ปิด',
-                                    allowOutsideClick: false,
-                                    focusConfirm: false,
-                                });
-                            }
-                            else {
-                                LoadingHide();
-                                Swal.close();
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveBudgetSale<br>',
-=======
-                                    icon: 'error',
-                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
->>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
-                                    html: result.message,
+                                    html: 'ไม่พบข้อมูล',
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
