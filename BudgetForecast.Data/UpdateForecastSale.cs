@@ -25,9 +25,10 @@ namespace BudgetForecast.Data
             p.AddParams("@Input", INPUT.ToString().Replace(",", ""));
             p.AddParams("@Slmcod", SLMCOD.ToTrim());
 
-            p.AddParams("@outGenstatus", 'Y');
+            //p.AddParams("@outGenstatus", 'Y');
 
             var table = GetData(CmdStore("P_Update_Forecast_Sale", p));
+            //int row = ExecuteNoneQuery(p);
             return ConvertExtension.ConvertDataTable<StoreUpdateForecastSaleModel>(GetData(CmdStore("P_Update_Forecast_Sale", p)));
         }
     }
