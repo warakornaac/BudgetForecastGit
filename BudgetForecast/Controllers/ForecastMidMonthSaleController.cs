@@ -434,20 +434,20 @@ namespace BudgetForecast.Controllers
             });
         }
         //save
-        //[HttpPost]
-        //public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
-        //{
-        //    var UpdateForecastSale = new List<StoreUpdateForecastMidmonthSaleModel>();
-        //    try
-        //    {
-        //        UpdateForecastSale = new UpdateForecastMidmonthSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
-        //        return Json(new { status = "success", message = "forecastSale updated" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { status = "error", message = ex.Message });
-        //    }
-        //}
+        [HttpPost]
+        public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        {
+            var UpdateForecastSale = new List<StoreUpdateForecastMidmonthSaleModel>();
+            try
+            {
+                UpdateForecastSale = new UpdateForecastMidmonthSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
+                return Json(new { status = "success", message = "forecastSale updated" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = ex.Message });
+            }
+        }
 
         //SaveNote
         [HttpPost]
@@ -537,6 +537,7 @@ namespace BudgetForecast.Controllers
 
             return Json(Note, JsonRequestBehavior.AllowGet);
         }
+<<<<<<< HEAD
 
 
 
@@ -572,8 +573,10 @@ namespace BudgetForecast.Controllers
                     {
                         sta = "unsuccess";
                     }
+                    cmd.Dispose();
+                    conn.Close();
                 }
-                return Json(new { status = sta, message = "new forecast updated" });
+                return Json(new { status = sta, message = "ForecastMidMonth updated" });
 
             }
             catch (Exception ex)
@@ -582,5 +585,7 @@ namespace BudgetForecast.Controllers
             }
 
         }
+=======
+>>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
     }
 }

@@ -233,30 +233,14 @@
 <script>
     $(document).ready(function () {
         $('[id^="sum_input_all_forecastm_"]').each(function () {
-            //let month = $(this).data('month');
-            //let sum_actual = $("#sum_input_all_actual_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
-            //sum_actual = Number(sum_actual);
-            //let sum_new_forecast = $("#sum_input_all_forecast_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
-            //sum_new_forecast = Number(sum_new_forecast);
-            //let sum_forecast = $(this).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
-            //sum_forecast = Number(sum_forecast);
-            //let remain_res = 0;
-
             let month = $(this).data('month');
             let sum_actual = $("#sum_input_all_actual_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
             sum_actual = Number(sum_actual);
-            console.log("sum_actual:", sum_actual);
-
             let sum_new_forecast = $("#sum_input_all_forecast_" + month).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
             sum_new_forecast = Number(sum_new_forecast);
-            console.log("sum_new_forecast:", sum_new_forecast);
-
             let sum_forecast = $(this).val().replace(/([-[\]{}()*+?\\^$|%,])/g, '') || 0;
             sum_forecast = Number(sum_forecast);
-            console.log("sum_forecast:", sum_forecast);
-
             let remain_res = 0;
-
 
             //console.log("++++++++++++++++++++++++");
             //console.log(sum_actual);

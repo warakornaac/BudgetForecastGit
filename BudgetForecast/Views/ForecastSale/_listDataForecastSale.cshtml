@@ -987,7 +987,7 @@ else
                     $.ajax({
                         type: 'POST',
                         cache: false,
-                        url: '@Url.Action("UpdateForecast", "ForecastSale")',
+                        url: '@Url.Action("SaveForecast", "ForecastSale")',
                         data: JSON.stringify({
                             MONTH_INPUT: ('0' + monthInput).slice(-2),
                             USER: '@Session["UserID"]',
@@ -1031,14 +1031,21 @@ else
                                     animation: true,
                                     html: '<div style="font-size: 20px; font-weight: bold; padding-left: 5px;">' + sec + ' | ' + cusName + ' | ' + inputValueNewNoReplace + '</div>',
                                 });
+<<<<<<< HEAD
                             }
                             else if (result.status == "unsuccess") {
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
+<<<<<<< HEAD
                                     icon: 'warning',
                                     title: 'กรุณาติดต่อแผนกไอที<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>',
                                     html: 'ไม่พบข้อมูลของ <br> Customer : ' + cusName + '<br>SEC : ' + sec + '<br>Month : ' + ('0' + monthInput).slice(-2) + '<br>',
+=======
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
+                                    html: '<span>ข้อมูลไม่ถูกส่งไปยังฐานข้อมูล </span>',
+>>>>>>> f2df0eb8922abb3fc8a31b65b803f1a767c8db6a
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
@@ -1046,6 +1053,9 @@ else
                                 });
                             }
                             else {
+=======
+                            } else {
+>>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({

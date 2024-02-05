@@ -25,8 +25,10 @@ namespace BudgetForecast.Data
             p.AddParams("@Cuscod", CUSCOD.ToTrim());
             p.AddParams("@Input", INPUT.ToString().Replace(",", ""));
 
-            //int ex = ExecuteNoneQuery(CmdStore("P_Update_NewForecast_Sale_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateForecastMidmonthSaleModel>(GetData(CmdStore("P_Update_NewForecast_Sale_Dev", p)));
+            p.AddParams("@outGenstatus", "Y");
+
+            var table = GetData(CmdStore("P_Update_NewForecast_Sale", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateForecastMidmonthSaleModel>(GetData(CmdStore("P_Update_NewForecast_Sale", p)));
         }
     }
 }
