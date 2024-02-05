@@ -1037,14 +1037,9 @@ else
                                 LoadingHide();
                                 Swal.close();
                                 Swal.fire({
-
                                     icon: 'warning',
-                                    title: 'กรุณาติดต่อแผนกไอที<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>',
-                                    html: 'ไม่พบข้อมูลของ <br> Customer : ' + cusName + '<br>SEC : ' + sec + '<br>Month : ' + ('0' + monthInput).slice(-2) + '<br>',
-
-                                    icon: 'error',
-                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveForecastSale<br>',
-                                    html: '<span>ข้อมูลไม่ถูกส่งไปยังฐานข้อมูล </span>',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNewForecastSale<br>',
+                                    html: 'ไม่พบข้อมูล <br> Customer : ' + cusName + '<br> SEC : ' + sec + '<br> Month : ' + ('0' + monthInput).slice(-2),
                                     confirmButtonColor: '#d33',
                                     confirmButtonText: 'ปิด',
                                     allowOutsideClick: false,
