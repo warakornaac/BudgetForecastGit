@@ -26,8 +26,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", Year.ToTrim());
             p.AddParams("@Sec", string.Join(",", Sec));
 
-            var table = GetData(CmdStore("P_Search_Forecast_PM_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreSearchForecastPmModel>(GetData(CmdStore("P_Search_Forecast_PM_Dev", p)));
+            var table = GetData(CmdStore("P_Search_Forecast_PM", p));
+            return ConvertExtension.ConvertDataTable<StoreSearchForecastPmModel>(GetData(CmdStore("P_Search_Forecast_PM", p)));
         }
     }
 }

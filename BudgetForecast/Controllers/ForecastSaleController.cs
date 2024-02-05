@@ -432,15 +432,16 @@ namespace BudgetForecast.Controllers
         }
         //save
         [HttpPost]
-        public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
+<<<<<<< HEAD
+        public ActionResult UpdateForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
+=======
+        public ActionResult SaveForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+>>>>>>> f2df0eb8922abb3fc8a31b65b803f1a767c8db6a
         {
             var UpdateForecastSale = new List<StoreUpdateForecastSaleModel>();
-            var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
-            string check_sta;
-            string sta = "";
             try
             {
-
+<<<<<<< HEAD
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
@@ -469,6 +470,11 @@ namespace BudgetForecast.Controllers
                     conn.Close();
                 }
                 return Json(new { status = sta, message = "forecastSale updated" });
+
+=======
+                UpdateForecastSale = new UpdateForecastSale().Update(MONTH_INPUT, USER, SEC, YEAR, CUSCOD, INPUT);
+                return Json(new { status = "success", message = "forecastSale updated" });
+>>>>>>> parent of 2a90efc ([bin & controller & view data] SaveForecast Test New Logic)
             }
             catch (Exception ex)
             {
