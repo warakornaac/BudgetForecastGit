@@ -40,8 +40,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", "2024");
             p.AddParams("@Figure_Flg", flgBudget);
 
-            var table = GetData(CmdStore("P_Search_Budget_Sale", p));
-            return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale", p)));
+            var table = GetData(CmdStore("P_Search_Budget_Sale_Dev", p));
+            return ConvertExtension.ConvertDataTable<StoreSearchBudgetSaleModel>(GetData(CmdStore("P_Search_Budget_Sale_Dev", p)));
         }
     }
 }
