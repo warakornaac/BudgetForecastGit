@@ -65,7 +65,8 @@ namespace BudgetForecast.Controllers
                 string DepartmentAd = dirEntry.Properties["Department"].Value.ToString();
 
                 Connection.Open();
-                if (result == null) {
+                if (result == null)
+                {
                     if (IsValid(User.ToTrim(), Password.ToTrim()))
                     {
                         FormsAuthentication.SetAuthCookie(User.ToTrim(), false);
@@ -75,13 +76,16 @@ namespace BudgetForecast.Controllers
                     {
                         ModelState.AddModelError("", "Login details are wrong.");
                     }
-                } else {
+                }
+                else
+                { //มีใน AD จะไม่เช็ค password UsrTbl_Budget
                     this.Session["UserAD"] = "YES";
                     string txtSql = "";
                     txtSql = "SELECT Usr.UsrTyp, Ad.Department, Ad.SLMCOD " +
                         "FROM UsrTbl_Budget Usr " +
                         "INNER JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
-                        "WHERE UsrID =N'" + User.ToTrim() + "'";
+                        "WHERE UsrID =N'" + User.ToTrim() + "'" +
+                        "AND Usr.Password is null";
                     SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
                     SqlDataReader revcus = cmdcus.ExecuteReader();
                     //มีใน UsrTbl_Budget
@@ -107,7 +111,7 @@ namespace BudgetForecast.Controllers
                             sessionId = sessionId.Substring(sessionId.Length - 24);
                             this.Session["ID"] = sessionId;
                         }
-                        else 
+                        else
                         {
                             ModelState.AddModelError("", "You don't have permission, Please contact admin");
                         }
