@@ -1115,7 +1115,7 @@ else
                         <li class="nav-item d-flex">
                             <span class="d-flex align-items-center" style="display:inline-block;"> Month :  </span>
                             <span>
-                                <select onchange="sumSecAll(this.value);" class="form-control" id="month_sec" name="month_sec" style="display: inline-block; margin-left: 20px;">
+                                <select onchange="sumSecAll(this.value); getNotefromMonthSelector();" class="form-control" id="month_sec" name="month_sec" style="display: inline-block; margin-left: 20px;">
                                     @for (var i = 0; i < ViewBag.MonthYearList.Count; i++)
                                     {
                                         var monthSplit = ViewBag.MonthYearList[i].Text.Split('-');
@@ -1558,10 +1558,6 @@ else
     }, 2000);
 
 
-
-
-
-
     //Pop Up Note Sec
     function addsecNote(seccode) {
         var NoteText = $('.note_show_' + seccode).html().trim();
@@ -1730,150 +1726,7 @@ else
                 })();
                 }
     }
-    ////func Get Note
-    //function getnotefromMonthSelector(){
-
-    //        $('[id^="note_input_"]').each(function () {
-    //            let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
-    //            let slmCode = $("#slmCode option:selected").val();
-    //            let year = $("#year option:selected").val();
-    //            let secValue = $(this).data("sec");
-    //            //let noteVal;
-
-    //            $.ajax({
-    //                url: hostName + '/ForecastMidMonthSale/GetNotebysec',
-    //                type: 'post',
-    //                data: {
-    //                    MONTH_INPUT: monthSelect,
-    //                    SEC: secValue,
-    //                    SLMCOD: slmCode,
-    //                    YEAR: year
-    //                },
-    //                dataType: 'json',
-    //                beforeSend: function () {
-    //                    //LoadingShow();
-    //                },
-    //                success: function (data) {
-    //                    $('[class^="note_show_"]').each(function () {
-    //                        //var secValue = $(this).data("sec");
-    //                        var noteVal = "";
-    //                        $.each(data, function (index, item) {
-    //                            noteVal = item.Note;
-    //                        });
-    //                        if (noteVal) {
-    //                            $('.note_show_' + secValue).html(noteVal);
-    //                            $(this).val(noteVal);
-    //                            console.log("Sec : " + secValue + " = " + noteVal);
-    //                            if (noteVal.trim() != "") {
-    //                                $('#note_btn_pic_' + secValue).removeClass("fa-plus");
-    //                                $('#note_btn_pic_' + secValue).addClass("fa-pencil");
-    //                            }
-    //                        }
-    //                    });
-    //                },
-
-    //                error: function () {
-    //                    alert('Error fetching data.');
-    //                    console.log("fail!!! ");
-    //                },
-    //                complete: function (res) {
-    //                   //LoadingHide();
-    //                }
-    //            });//Ajax
-    //        });//$Func
-    //}//func
-
-
-
-    //        $(document).ready(function () {
-    //            $('[id^="note_input_"]').each(function () {
-    //                let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
-    //                let slmCode = $("#slmCode option:selected").val();
-    //                let year = $("#year option:selected").val();
-    //                let secValue = $(this).data("sec");
-    //                //let noteVal;
-
-    //                $.ajax({
-    //                    url: hostName +'/ForecastMidMonthSale/GetNotebysec',
-    //                    type: 'post',
-    //                    data: {
-    //                        MONTH_INPUT: monthSelect,
-    //                        SEC: secValue,
-    //                        SLMCOD: slmCode,
-    //                        YEAR: year
-    //                    },
-    //                    dataType: 'json',
-    //                    beforeSend: function () {
-    //                         LoadingShow();
-    //                    },
-    //                    success: function (data) {
-    //                        $('[class^="note_show_"]').each(function () {
-    //                            //var secValue = $(this).data("sec");
-    //                            var noteVal = "";
-    //                            $.each(data, function (index, item) {
-    //                                noteVal = item.Note;
-    //                            });
-    //                            if (noteVal) {
-    //                                $('.note_show_' + secValue).html(noteVal);
-    //                                $(this).val(noteVal);
-    //                                console.log("Sec : " + secValue + " = " + noteVal);
-    //                                if (noteVal.trim() != "") {
-    //                                    $('#note_btn_pic_' + secValue).removeClass("fa-plus");
-    //                                    $('#note_btn_pic_' + secValue).addClass("fa-pencil");
-    //                                }
-    //                            }
-    //                        });
-    //                    },
-
-    //                    error: function () {
-    //                        alert('Error fetching data.');
-    //                        console.log("fail!!! " );
-    //                    },
-    //                    complete: function (res) {
-    //                        LoadingHide();
-    //                    }
-    //         });//Ajax
-    //    });//$Func
-    //});//Doccu
-
-    $(document).ready(async function () {
-        async function getNoteAndSet(secValue) {
-            let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
-            let slmCode = $("#slmCode option:selected").val();
-            let year = $("#year option:selected").val();
-
-            try {
-                $('.iconLoading').html('<i class="fa fa-spinner fa-spin f-center"></i>');
-                const data = await $.ajax({
-                    url: '/ForecastMidMonthSale/GetNotebysec',
-                    type: 'post',
-                    data: {
-                        MONTH_INPUT: monthSelect,
-                        SEC: secValue,
-                        SLMCOD: slmCode,
-                        YEAR: year
-                    },
-                    dataType: 'json'
-                });
-
-                const noteVal = data.length > 0 ? data[0].Note : "";
-                $('.note_show_' + secValue).html(noteVal);
-                $('[class^="note_show_"]').val(noteVal);
-                console.log("Sec : " + secValue + " = " + noteVal);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-            finally {
-                $('#iconload_' + secValue).html('');
-            }
-        }
-
-        // Loop ทุก element ที่มี id เริ่มต้นด้วย 'note_input_'
-        $('[id^="note_input_"]').each(function () {
-            let secValue = $(this).data("sec");
-            getNoteAndSet(secValue);
-        });
-    });
+    // $(document).ready(function () {
     //Show Note
     function ShowNote(sec) {
         var NoteText = $('.note_show_' + sec).html();
@@ -1896,47 +1749,6 @@ else
                 },
             });
         }
-    }
-
-    //select by month Note
-    function SelectMonthNote(sec, value) {
-        $.ajax({
-            url: hostName + '/ForecastMidMonthSale/GetNotebysec',
-            type: 'post',
-            data: {
-                MONTH_INPUT: ('0' + value).slice(-2),
-                SEC: sec,
-                SLMCOD: slmCode,
-                YEAR: year
-            },
-            dataType: 'json',
-            beforeSend: function () {
-                LoadingShow();
-            },
-            success: function (data) {
-                var NoteText = "";
-                $.each(data, function (index, item) {
-                    NoteText = item.Note;
-                });
-                $('.popup-text-' + sec).val(NoteText);
-
-                //console.log("log M = " + value);
-                //console.log("log Y = " + year);
-                //console.log("log slm = " + slmCode);
-                //console.log("log sec " + sec);
-                //console.log("=========================");
-                //console.log("Log data = " + NoteText);
-            },
-
-            error: function () {
-                alert('Error fetching data.');
-                console.log("fail!!! ");
-            },
-            complete: function (res) {
-                LoadingHide();
-
-            }
-        });//Ajax
     }
 </script>
 <style>

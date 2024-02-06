@@ -115,6 +115,7 @@ function searchForecast(e) {
     } else {
         //main input
         getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, 1, flgBudget);
+
         $("#flagReloadByMonth").val('N');
         $("#flagReloadBySec").val('N');
     }
@@ -151,6 +152,9 @@ function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg, flgBu
         success: function (res) {
             LoadingHide();
             $('#' + divShow).html(res);
+            //get note
+            getNotefromMonthSelector();
+            //alert("Note 2");
         }
     });
 }
@@ -278,7 +282,7 @@ const sumSecAll = async (month) => {
             sumSecByMonth(sec, month);
         }
     });
-    getnotefromMonthSelector();
+
     //hide icon
     //setTimeout(() => {
     //    $(".iconLoading").html('');
@@ -286,66 +290,69 @@ const sumSecAll = async (month) => {
 
 }
 //func Get Note
-function getnotefromMonthSelector() {
-    $('[id^="note_input_"]').each(function () {
-        let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
-        let slmCode = $("#slmCode option:selected").val();
-        let year = $("#year option:selected").val();
-        let secValue = $(this).data('sec');
-        //let noteVal;
-        $.ajax({
-            url: hostName + '/ForecastMidMonthSale/GetNotebysec',
-            type: 'post',
-            data: {
-                MONTH_INPUT: monthSelect,
-                SEC: secValue,
-                SLMCOD: slmCode,
-                YEAR: year
-            },
-            dataType: 'json',
-            beforeSend: function () {
-                //LoadingShow();
-                $(".iconLoading_" + secValue).html('<i class="fa fa-spinner fa-spin f-center"></i>');
-                $('.note_show_' + secValue).hide();
-            },
-            success: function (data) {
-                $('[class^="note_show_"]').each(function () {
-                    //var secValue = $(this).data("sec");
-                    var noteVal = "";
-                    $.each(data, function (index, item) {
-                        noteVal = item.Note;
-                    });
-                    if (noteVal) {
+function getNotefromMonthSelector() {
+    setTimeout(function () {
+        $('[id^="note_input_"]').each(function () {
+            let monthSelect = $("#month_sec option:selected").val().padStart(2, '0');
+            let slmCode = $("#slmCode option:selected").val();
+            let year = $("#year option:selected").val();
+            let secValue = $(this).data('sec');
+            console.log("NOTE 2");
+            //let noteVal;
+            $.ajax({
+                url: hostName + '/ForecastMidMonthSale/GetNotebysec',
+                type: 'post',
+                data: {
+                    MONTH_INPUT: monthSelect,
+                    SEC: secValue,
+                    SLMCOD: slmCode,
+                    YEAR: year
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    //LoadingShow();
+                    $(".iconLoading_" + secValue).html('<i class="fa fa-spinner fa-spin f-center"></i>');
+                    $('.note_show_' + secValue).hide();
+                },
+                success: function (data) {
+                    $('[class^="note_show_"]').each(function () {
+                        //var secValue = $(this).data("sec");
+                        var noteVal = "";
+                        $.each(data, function (index, item) {
+                            noteVal = item.Note;
+                        });
+                        if (noteVal) {
 
-                        $('.note_show_' + secValue).html(noteVal);
-                        $(this).val(noteVal);
-                        console.log("Sec : " + secValue + " = " + noteVal);
-                        if (noteVal.trim() != "") {
-                            $('#note_btn_pic_' + secValue).removeClass("fa-plus");
-                            $('#note_btn_pic_' + secValue).addClass("fa-pencil");
+                            $('.note_show_' + secValue).html(noteVal);
+                            $(this).val(noteVal);
+                            console.log("Sec : " + secValue + " = " + noteVal);
+                            if (noteVal.trim() != "") {
+                                $('#note_btn_pic_' + secValue).removeClass("fa-plus");
+                                $('#note_btn_pic_' + secValue).addClass("fa-pencil");
+                            }
                         }
-                    }
-                    else {
-                        if (noteVal.trim() == "") {
-                            $('.note_show_' + secValue).text("");
-                            $(this).val("");
-                            $('#note_btn_pic_' + secValue).addClass("fa-plus");
-                            $('#note_btn_pic_' + secValue).removeClass("fa-pencil");
+                        else {
+                            if (noteVal.trim() == "") {
+                                $('.note_show_' + secValue).text("");
+                                $(this).val("");
+                                $('#note_btn_pic_' + secValue).addClass("fa-plus");
+                                $('#note_btn_pic_' + secValue).removeClass("fa-pencil");
+                            }
                         }
-                    }
-                });
-            },
-            error: function () {
-                alert('Error fetching data.');
-                console.log("fail!!! ");
-            },
-            complete: function (res) {
-                //LoadingHide();
-                $(".iconLoading_" + secValue).html('');
-                $('.note_show_' + secValue).show();
-            }
-        });//Ajax
-    });//$Func
+                    });
+                },
+                error: function () {
+                    alert('Error fetching data.');
+                    console.log("fail!!! ");
+                },
+                complete: function (res) {
+                    //LoadingHide();
+                    $(".iconLoading_" + secValue).html('');
+                    $('.note_show_' + secValue).show();
+                }
+            });//ajax
+        });//$func
+    }, 500);//settime
 }//func
 
 
@@ -482,29 +489,11 @@ const sumRemainBycaption = async () => {
         else
             remain_res = sum_forecast - sum_actual;
 
-        console.log("REsult : " + sum_new_forecast + " month : " + month);
+        //console.log("REsult : " + sum_new_forecast + " month : " + month);
         $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
     })
 }
 
-const sumRemainByMonthAll = async () => {
-    //$('[id^="sum_input_all_forecastm_"]').each(function () {
-    //    let month = $(this).data('month');
-    //    let sum_actual = $("#sum_input_all_actual_" + month).val();
-    //    let sum_new_forecast = $("#sum_input_all_forecast_" + month).val();
-    //    let sum_forecast = $(this).val();
-    //    let remain_res = 0;
-
-    //    if (sum_new_forecast > 0) {
-    //        remain_res = sum_new_forecast - sum_actual;
-    //    }
-    //    else {
-    //        remain_res = sum_forecast - sum_actual;
-    //    }
-    //    console.log("REsult : " + sum_new_forecast + " month : " + month);
-    //    $("#sum_sale_remain_all_" + month).text(numberWithCommas(remain_res.toFixed(0)));
-    //})
-}
 async function calculateForecastSale() {
     //if (countList > 0) {
     $(".cardSummary").LoadingOverlay("show");
