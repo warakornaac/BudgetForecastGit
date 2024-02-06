@@ -1577,7 +1577,7 @@ else
     function addsThestarNote(cusKey) {
     var NoteText = $('.note_star_show_' + cusKey).html().trim();
     if (NoteText != "") {
-                (async () => {
+    (async () => {
     const { value: text } = await Swal.fire({
         input: "textarea",
         title: "Customer : " + cusKey,
@@ -1595,71 +1595,138 @@ else
         cancelButtonText: "Cancel",
 
     });
-            if (text) {
-         $.ajax({
-             type: 'POST',
-             cache: false,
-             url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
-             data: JSON.stringify({
-                 USER: '@Session["UserID"]',
-                 YEAR: year,
-                 CusKey: cusKey,
-                 Input: text
-             }),
-             dataType: 'json',
-             traditional: true,
-             contentType: "application/json; charset=utf-8",
-             processData: false,
-             beforeSend: function () {
-                 // LoadingShow();
-             },
-             success: function (result) {
-                 if (result.status == "success") {
-                     //Swal.fire({
-                     //    title: "Saving Note success",
-                     //    icon: "success"
-                     //});
-                     $('.note_star_show_' + cusKey).removeClass("btn-info");
-                     $('.note_star_show_' + cusKey).text(text);
-                     console.log("Success");
-                     console.log("CUS : " + cusKey + "Year : " + year );
+        if (text) {
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
+                data: JSON.stringify({
+                    USER: '@Session["UserID"]',
+                    YEAR: year,
+                    CusKey: cusKey,
+                    Input: text
+                }),
+                dataType: 'json',
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                processData: false,
+                beforeSend: function () {
+                    // LoadingShow();
+                },
+                success: function (result) {
+                    if (result.status == "success") {
+                        //Swal.fire({
+                        //    title: "Saving Note success",
+                        //    icon: "success"
+                        //});
+                        $('.note_star_show_' + cusKey).removeClass("btn-info");
+                        $('.note_star_show_' + cusKey).text(text);
+                        console.log("Success");
+                        console.log("CUS : " + cusKey + "Year : " + year);
 
-                 } else {
-                     LoadingHide();
-                     Swal.close();
-                     Swal.fire({
-                         icon: 'error',
-                         title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
-                         html: result.message,
-                         confirmButtonColor: '#d33',
-                         confirmButtonText: 'ปิด',
-                         allowOutsideClick: false,
-                         focusConfirm: false,
-                     });
-                 }
-             },
-                             error: function (ex) {
-                                 //notify(ex, 'danger');
-                             },
-                             complete: function (res) {
-                                 LoadingHide();
-                             }
-                         }).fail(function (error) {
-                             LoadingHide();
-                             Swal.close();
-                             Swal.fire({
-                                 icon: 'error',
-                                 title: 'ระบบทำงานผิดพลาด()',
-                                 html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
-                                 confirmButtonColor: '#d33',
-                                 confirmButtonText: 'ปิด',
-                                 allowOutsideClick: false,
-                                 focusConfirm: false,
-                             });
-                         });
+                    } else {
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                            html: result.message,
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
                     }
+                },
+                error: function (ex) {
+                    //notify(ex, 'danger');
+                },
+                complete: function (res) {
+                    LoadingHide();
+                }
+            }).fail(function (error) {
+                LoadingHide();
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ระบบทำงานผิดพลาด()',
+                    html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'ปิด',
+                    allowOutsideClick: false,
+                    focusConfirm: false,
+                });
+            });
+        }
+        else {
+            $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveTheStarNote", "ForecastSale")',
+                        data: JSON.stringify({
+                            USER: '@Session["UserID"]',
+                            YEAR: year,
+                            CusKey: cusKey,
+                            Input: " "
+                        }),
+                        dataType: 'json',
+                        traditional: true,
+                        contentType: "application/json; charset=utf-8",
+                        processData: false,
+                        beforeSend: function () {
+                            // LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result.status == "success") {
+                                //Swal.fire({
+                                //    title: "Saving Note success",
+                                //    icon: "success"
+                                //});
+                                $('.note_star_show_' + cusKey).addClass("btn-info");
+                                $('.note_star_show_' + cusKey).text("");
+                                console.log("Success");
+                                console.log("CUS : " + cusKey + "Year : " + year);
+
+                            } else {
+                                LoadingHide();
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                                    html: result.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ระบบทำงานผิดพลาด()',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+        }
                     })();
-                   }
+    }//text != null
+
+
+
+
                     else {
                                 (async () => {
                             const { value: text } = await Swal.fire({
@@ -1698,10 +1765,6 @@ else
                                 },
                                 success: function (result) {
                                     if (result.status == "success") {
-                                        //Swal.fire({
-                                        //    title: "Saving Note Success",
-                                        //    icon: "success",
-                                        //});
                                         $('.note_star_show_' + cusKey).removeClass("btn-info");
                                         $('.note_star_show_' + cusKey).text(text);
                                         console.log("Success");
