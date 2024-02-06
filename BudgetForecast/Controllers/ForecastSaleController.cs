@@ -534,12 +534,12 @@ namespace BudgetForecast.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddTheStar(string Year, string CusKey)
+        public ActionResult AddTheStar(string Year, string CusKey, string USER)
         {
             var Addthestar = new List<StoreAddTheStarModel>();
             try
             {
-                Addthestar = new AddTheStar().Add(Year, CusKey);
+                Addthestar = new AddTheStar().Add(Year, CusKey, USER);
                 return Json(new { status = "success", message = "The Star updated" });
             }
             catch (Exception ex)
