@@ -39,4 +39,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 # Config
-#/BudgetForecastGit/Web.config
+BudgetForecastGit/Web.config
+
+.vs
