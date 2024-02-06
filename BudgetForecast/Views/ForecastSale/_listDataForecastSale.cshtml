@@ -1320,7 +1320,8 @@ else
         url: '@Url.Action("AddTheStar", "ForecastSale")',
         data: JSON.stringify({
             Year: year,
-            CusKey: cuskey
+            CusKey: cuskey,
+            USER :'@Session["UserID"]'
         }),
         dataType: 'json',
         traditional: true,
@@ -1339,13 +1340,14 @@ else
                 Swal.close();
                 Swal.fire({
                     icon: 'error',
-                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>Delete The star<br>',
+                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>The star<br>',
                     html: result.message,
                     confirmButtonColor: '#d33',
                     confirmButtonText: 'ปิด',
                     allowOutsideClick: false,
                     focusConfirm: false,
                 });
+                $('.form-check-input_' + cuskey).prop('checked', false);
             }
         },
         error: function (ex) {

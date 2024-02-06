@@ -10,5 +10,6 @@ namespace BudgetForecast.Model
     {
         public string year { get; set; }
         public string CusKey { get; set; }
+        public string USER { get; set; }
     }
 }

@@ -14,12 +14,13 @@ namespace BudgetForecast.Data
         public AddTheStar() : base(Utils.GetConfig("Lip_ConnectionString"))
         {
         }
-        public List<StoreAddTheStarModel> Add(string year, string CusKey)
+        public List<StoreAddTheStarModel> Add(string year, string CusKey, string USER)
         {
 
             var p = new SqlParameters();
             p.AddParams("@year", year.ToTrim());
             p.AddParams("@CusKey", CusKey.ToTrim());
+            p.AddParams("@User", USER.ToTrim());
             p.AddParams("@outGenstatus", "Y");
 
 
