@@ -1678,15 +1678,10 @@ else
                         },
                         success: function (result) {
                             if (result.status == "success") {
-                                //Swal.fire({
-                                //    title: "Saving Note success",
-                                //    icon: "success"
-                                //});
                                 $('.note_star_show_' + cusKey).addClass("btn-info");
                                 $('.note_star_show_' + cusKey).text("");
                                 console.log("Success");
                                 console.log("CUS : " + cusKey + "Year : " + year);
-
                             } else {
                                 LoadingHide();
                                 Swal.close();

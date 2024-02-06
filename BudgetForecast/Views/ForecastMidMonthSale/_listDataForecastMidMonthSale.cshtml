@@ -1580,67 +1580,129 @@ else
                     cancelButtonText: "Cancel",
 
                 });
-                if (text) {
-                    console.log(monthSelect);
-                     $.ajax({
-                         type: 'POST',
-                         cache: false,
-                         url: '@Url.Action("SaveNote", "ForecastMidMonthSale")',
-                         data: JSON.stringify({
-                             MONTH: ('0' + monthSelect).slice(-2),
-                             USER: '@Session["UserID"]',
-                             SEC: seccode,
-                             YEAR: year,
-                             SLMCOD: slmCode,
-                             INPUT: text
-                         }),
-                         dataType: 'json',
-                         traditional: true,
-                         contentType: "application/json; charset=utf-8",
-                         processData: false,
-                         beforeSend: function () {
-                             // LoadingShow();
-                         },
-                         success: function (result) {
-                             if (result.status == "success") {
-                                 $('.note_show_' + seccode).text(text);
-                                 console.log("Success");
-                                 console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+                     if (text) {
+                         console.log(monthSelect);
+                         $.ajax({
+                             type: 'POST',
+                             cache: false,
+                             url: '@Url.Action("SaveNote", "ForecastMidMonthSale")',
+                             data: JSON.stringify({
+                                 MONTH: ('0' + monthSelect).slice(-2),
+                                 USER: '@Session["UserID"]',
+                                 SEC: seccode,
+                                 YEAR: year,
+                                 SLMCOD: slmCode,
+                                 INPUT: text
+                             }),
+                             dataType: 'json',
+                             traditional: true,
+                             contentType: "application/json; charset=utf-8",
+                             processData: false,
+                             beforeSend: function () {
+                                 // LoadingShow();
+                             },
+                             success: function (result) {
+                                 if (result.status == "success") {
+                                     $('.note_show_' + seccode).text(text);
+                                     console.log("Success");
+                                     console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
 
-                             } else {
-                                 LoadingHide();
-                                 Swal.close();
-                                 Swal.fire({
-                                     icon: 'error',
-                                     title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
-                                     html: result.message,
-                                     confirmButtonColor: '#d33',
-                                     confirmButtonText: 'ปิด',
-                                     allowOutsideClick: false,
-                                     focusConfirm: false,
-                                 });
-                             }
-                         },
-                                         error: function (ex) {
-                                             //notify(ex, 'danger');
-                                         },
-                                         complete: function (res) {
-                                             //LoadingHide();
-                                         }
-                                     }).fail(function (error) {
-                                         LoadingHide();
-                                         Swal.close();
-                                         Swal.fire({
-                                             icon: 'error',
-                                             title: 'ระบบทำงานผิดพลาด()',
-                                             html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
-                                             confirmButtonColor: '#d33',
-                                             confirmButtonText: 'ปิด',
-                                             allowOutsideClick: false,
-                                             focusConfirm: false,
-                                         });
+                                 } else {
+                                     LoadingHide();
+                                     Swal.close();
+                                     Swal.fire({
+                                         icon: 'error',
+                                         title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                                         html: result.message,
+                                         confirmButtonColor: '#d33',
+                                         confirmButtonText: 'ปิด',
+                                         allowOutsideClick: false,
+                                         focusConfirm: false,
                                      });
-                                }
+                                 }
+                             },
+                             error: function (ex) {
+                                 //notify(ex, 'danger');
+                             },
+                             complete: function (res) {
+                                 //LoadingHide();
+                             }
+                         }).fail(function (error) {
+                             LoadingHide();
+                             Swal.close();
+                             Swal.fire({
+                                 icon: 'error',
+                                 title: 'ระบบทำงานผิดพลาด()',
+                                 html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                                 confirmButtonColor: '#d33',
+                                 confirmButtonText: 'ปิด',
+                                 allowOutsideClick: false,
+                                 focusConfirm: false,
+                             });
+                         });
+                     }
+                     else {
+                         $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: '@Url.Action("SaveNote", "ForecastMidMonthSale")',
+                        data: JSON.stringify({
+                            MONTH: ('0' + monthSelect).slice(-2),
+                            USER: '@Session["UserID"]',
+                            SEC: seccode,
+                            YEAR: year,
+                            SLMCOD: slmCode,
+                            INPUT: " "
+                        }),
+                        dataType: 'json',
+                        traditional: true,
+                        contentType: "application/json; charset=utf-8",
+                        processData: false,
+                        beforeSend: function () {
+                            // LoadingShow();
+                        },
+                        success: function (result) {
+                            if (result.status == "success") {
+                                $('.note_show_' + seccode).text(" ");
+                                console.log("Success");
+                                console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+                                $('#note_btn_pic_' + seccode).addClass("fa-plus");
+                                $('#note_btn_pic_' + seccode).removeClass("fa-pencil");
+
+                            } else {
+                                LoadingHide();
+                                Swal.close();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote<br>',
+                                    html: result.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'ปิด',
+                                    allowOutsideClick: false,
+                                    focusConfirm: false,
+                                });
+                            }
+                        },
+                        error: function (ex) {
+                            //notify(ex, 'danger');
+                        },
+                        complete: function (res) {
+                            //LoadingHide();
+                        }
+                    }).fail(function (error) {
+                        LoadingHide();
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ระบบทำงานผิดพลาด()',
+                            html: 'กรุณาแจ้งผู้ดูแลระบบ<br>โดยการแคปหน้าจอและก๊อปปี้ Error ด่านล่างนี้<br>saveNote' + error + '<br><br>',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'ปิด',
+                            allowOutsideClick: false,
+                            focusConfirm: false,
+                        });
+                    });
+                     }
                                 })();
                         }
                 else {
