@@ -43,3 +43,5 @@ BudgetForecastGit/Web.config
 
 .vs/
 /.vs
+/.vs/BudgetForecast/config/applicationhost.config
+/.vs/BudgetForecast/config/applicationhost.config
