@@ -41,5 +41,5 @@ $RECYCLE.BIN/
 # Config
 BudgetForecastGit/Web.config
 
+# Visual Studio 2015 cache/options directory
 .vs/
-/.vs
