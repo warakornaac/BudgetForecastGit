@@ -41,4 +41,5 @@ $RECYCLE.BIN/
 # Config
 BudgetForecastGit/Web.config
 
-.vs
+.vs/
+/.vs
