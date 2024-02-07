@@ -114,7 +114,7 @@ function searchForecast(e) {
     } else {
         //main input
         getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, 1, flgBudget);
-
+        calculateForecastSale();
         $("#flagReloadByMonth").val('N');
         $("#flagReloadBySec").val('N');
     }
@@ -321,7 +321,6 @@ function getNotefromMonthSelector() {
                             noteVal = item.Note;
                         });
                         if (noteVal) {
-
                             $('.note_show_' + secValue).html(noteVal);
                             $(this).val(noteVal);
                             console.log("Sec : " + secValue + " = " + noteVal);
@@ -470,29 +469,68 @@ const sumAllSaleForecastByCaption = async (className) => {
     $('#sum_' + className).text(numberWithCommas(sum_all_by_caption));
 }
 
+const sumRemainAllmonth = async (month) => {
+    var sum_actual = $("#sum_input_sale_actual_" + month).val() || 0;
+    var sum_new_forecast = $("#sum_input_sale_forecast_" + month).val() || 0;
+    var sum_forecast = $('#sum_input_sale_forecastm_' + month).val() || 0;
+    var remain_res = 0;
+
+    if (sum_new_forecast > 0)
+        remain_res = sum_new_forecast - sum_actual;
+    else
+        remain_res = sum_forecast - sum_actual;
+
+    console.log("Remain Sum : " + month);
+    console.log("actual Sum : " + sum_actual);
+    console.log("forecast Sum : " + sum_forecast);
+    console.log("new Forecast Sum : " + sum_new_forecast);
+    console.log("remain_res Sum : " + remain_res);
+
+
+    $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
+}
 //sum by month remain
 const sumRemainBycaption = async () => {
-    $('[id^="sum_input_sale_forecastm_"]').each(function () {
-        let month = $(this).data('month');
+    const inputs = $('[id^="sum_input_sale_forecastm_"]');
+    for (let i = 0; i < inputs.length; i++) {
+        let month = $(inputs[i]).data('month');
         let sum_actual = $("#sum_input_sale_actual_" + month).val() || 0;
         let sum_new_forecast = $("#sum_input_sale_forecast_" + month).val() || 0;
-        let sum_forecast = $(this).val() || 0;
+        let sum_forecast = $(inputs[i]).val() || 0;
         let remain_res = 0;
 
-        if (sum_new_forecast > 0) {
+        if (sum_new_forecast > 0)
             remain_res = sum_new_forecast - sum_actual;
-        }
-        //else if (sum_new_forecast <= 0) {
-        //    remain_res = sum_forecast - sum_actual;
-        //}
         else
             remain_res = sum_forecast - sum_actual;
-
-        //console.log("REsult : " + sum_new_forecast + " month : " + month);
         $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
-    })
-}
+    }
 
+    //$('[id^="sum_input_sale_forecastm_"]').each(function () {
+    //    let month = $(this).data('month');
+    //    let sum_actual = $("#sum_input_sale_actual_" + month).val() || 0;
+    //    let sum_new_forecast = $("#sum_input_sale_forecast_" + month).val() || 0;
+    //    let sum_forecast = $(this).val() || 0;
+    //    let remain_res = 0;
+
+    //    if (sum_new_forecast > 0) {
+    //        remain_res = sum_new_forecast - sum_actual;
+    //    }
+    //    else
+    //        remain_res = sum_forecast - sum_actual;
+
+
+    //    $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
+    //})
+}
+async function calculateForecastAllRemain(month) {
+    await sumSaleForecastByCaption("sale_actual");
+    await sumSaleForecastByCaption("sale_forecast");
+    await sumSaleForecastByCaption("sale_forecastm");
+
+    await sumAllSaleForecastByCaption("total_forecast");
+    await sumRemainAllmonth(month)
+}
 async function calculateForecastSale() {
     //if (countList > 0) {
     $(".cardSummary").LoadingOverlay("show");

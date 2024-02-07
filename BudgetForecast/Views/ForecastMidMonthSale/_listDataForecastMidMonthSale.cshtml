@@ -14,10 +14,10 @@
 
     //double ActualCal = 0;
     double ResaultRemain = 0;
-    double[] ActualCal = new double[12];
-    double[] foreCastCal = new double[12];
-    double[] NFcC = new double[12];
-    double avg_show = 0;
+    int[] ActualCal = new int[12];
+    int[] foreCastCal = new int[12];
+    int[] NFcC = new int[12];
+    //double avg_show = 0;
 
     var monthSplits = @ViewBag.MonthYearList[0].Text.Split('-');
     monthInputCurrent = int.Parse(monthSplits[0]);
@@ -504,51 +504,51 @@ else
                                                                     {
                                                                         case "01":
                                                                             valSaleActual = dataItem.M01;
-                                                                            ActualCal[0] = valSaleActual;
+                                                                            ActualCal[0] = (int)valSaleActual;
                                                                             break;
                                                                         case "02":
                                                                             valSaleActual = dataItem.M02;
-                                                                            ActualCal[1] = valSaleActual;
+                                                                            ActualCal[1] = (int)valSaleActual;
                                                                             break;
                                                                         case "03":
                                                                             valSaleActual = dataItem.M03;
-                                                                            ActualCal[2] = valSaleActual;
+                                                                            ActualCal[2] = (int)valSaleActual;
                                                                             break;
                                                                         case "04":
                                                                             valSaleActual = dataItem.M04;
-                                                                            ActualCal[3] = valSaleActual;
+                                                                            ActualCal[3] = (int)valSaleActual;
                                                                             break;
                                                                         case "05":
                                                                             valSaleActual = dataItem.M05;
-                                                                            ActualCal[4] = valSaleActual;
+                                                                            ActualCal[4] = (int)valSaleActual;
                                                                             break;
                                                                         case "06":
                                                                             valSaleActual = dataItem.M06;
-                                                                            ActualCal[5] = valSaleActual;
+                                                                            ActualCal[5] = (int)valSaleActual;
                                                                             break;
                                                                         case "07":
                                                                             valSaleActual = dataItem.M07;
-                                                                            ActualCal[6] = valSaleActual;
+                                                                            ActualCal[6] = (int)valSaleActual;
                                                                             break;
                                                                         case "08":
                                                                             valSaleActual = dataItem.M08;
-                                                                            ActualCal[7] = valSaleActual;
+                                                                            ActualCal[7] = (int)valSaleActual;
                                                                             break;
                                                                         case "09":
                                                                             valSaleActual = dataItem.M09;
-                                                                            ActualCal[8] = valSaleActual;
+                                                                            ActualCal[8] = (int)valSaleActual;
                                                                             break;
                                                                         case "10":
                                                                             valSaleActual = dataItem.M10;
-                                                                            ActualCal[9] = valSaleActual;
+                                                                            ActualCal[9] = (int)valSaleActual;
                                                                             break;
                                                                         case "11":
                                                                             valSaleActual = dataItem.M11;
-                                                                            ActualCal[10] = valSaleActual;
+                                                                            ActualCal[10] = (int)valSaleActual;
                                                                             break;
                                                                         case "12":
                                                                             valSaleActual = dataItem.M12;
-                                                                            ActualCal[11] = valSaleActual;
+                                                                            ActualCal[11] = (int)valSaleActual;
                                                                             break;
                                                                         default:
                                                                             valSaleActual = 0;
@@ -624,51 +624,51 @@ else
                                                                     {
                                                                         case "01":
                                                                             valSaleForecast = dataItem.M01;
-                                                                            foreCastCal[0] = valSaleForecast;
+                                                                            foreCastCal[0] = (int)valSaleForecast;
                                                                             break;
                                                                         case "02":
                                                                             valSaleForecast = dataItem.M02;
-                                                                            foreCastCal[1] = valSaleForecast;
+                                                                            foreCastCal[1] = (int)valSaleForecast;
                                                                             break;
                                                                         case "03":
                                                                             valSaleForecast = dataItem.M03;
-                                                                            foreCastCal[2] = valSaleForecast;
+                                                                            foreCastCal[2] = (int)valSaleForecast;
                                                                             break;
                                                                         case "04":
                                                                             valSaleForecast = dataItem.M04;
-                                                                            foreCastCal[3] = valSaleForecast;
+                                                                            foreCastCal[3] = (int)valSaleForecast;
                                                                             break;
                                                                         case "05":
                                                                             valSaleForecast = dataItem.M05;
-                                                                            foreCastCal[4] = valSaleForecast;
+                                                                            foreCastCal[4] = (int)valSaleForecast;
                                                                             break;
                                                                         case "06":
                                                                             valSaleForecast = dataItem.M06;
-                                                                            foreCastCal[5] = valSaleForecast;
+                                                                            foreCastCal[5] = (int)valSaleForecast;
                                                                             break;
                                                                         case "07":
                                                                             valSaleForecast = dataItem.M07;
-                                                                            foreCastCal[6] = valSaleForecast;
+                                                                            foreCastCal[6] = (int)valSaleForecast;
                                                                             break;
                                                                         case "08":
                                                                             valSaleForecast = dataItem.M08;
-                                                                            foreCastCal[7] = valSaleForecast;
+                                                                            foreCastCal[7] = (int)valSaleForecast;
                                                                             break;
                                                                         case "09":
                                                                             valSaleForecast = dataItem.M09;
-                                                                            foreCastCal[8] = valSaleForecast;
+                                                                            foreCastCal[8] = (int)valSaleForecast;
                                                                             break;
                                                                         case "10":
                                                                             valSaleForecast = dataItem.M10;
-                                                                            foreCastCal[9] = valSaleForecast;
+                                                                            foreCastCal[9] = (int)valSaleForecast;
                                                                             break;
                                                                         case "11":
                                                                             valSaleForecast = dataItem.M11;
-                                                                            foreCastCal[10] = valSaleForecast;
+                                                                            foreCastCal[10] = (int)valSaleForecast;
                                                                             break;
                                                                         case "12":
                                                                             valSaleForecast = dataItem.M12;
-                                                                            foreCastCal[11] = valSaleForecast;
+                                                                            foreCastCal[11] = (int)valSaleForecast;
                                                                             break;
                                                                         default:
                                                                             valSaleForecast = 0;
@@ -741,59 +741,59 @@ else
                                                                     {
                                                                         case "01":
                                                                             valSaleForecast = dataItem.M01;
-                                                                            NFcC[0] = valSaleForecast;
+                                                                            NFcC[0] = (int)valSaleForecast;
                                                                             break;
                                                                         case "02":
                                                                             valSaleForecast = dataItem.M02;
-                                                                            NFcC[1] = valSaleForecast;
+                                                                            NFcC[1] = (int)valSaleForecast;
                                                                             break;
 
                                                                         case "03":
                                                                             valSaleForecast = dataItem.M03;
-                                                                            NFcC[2] = valSaleForecast;
+                                                                            NFcC[2] = (int)valSaleForecast;
                                                                             break;
                                                                         case "04":
                                                                             valSaleForecast = dataItem.M04;
-                                                                            NFcC[3] = valSaleForecast;
+                                                                            NFcC[3] = (int)valSaleForecast;
                                                                             break;
                                                                         case "05":
                                                                             valSaleForecast = dataItem.M05;
-                                                                            NFcC[4] = valSaleForecast;
+                                                                            NFcC[4] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "06":
                                                                             valSaleForecast = dataItem.M06;
-                                                                            NFcC[5] = valSaleForecast;
+                                                                            NFcC[5] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "07":
                                                                             valSaleForecast = dataItem.M07;
-                                                                            NFcC[6] = valSaleForecast;
+                                                                            NFcC[6] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "08":
                                                                             valSaleForecast = dataItem.M08;
-                                                                            NFcC[7] = valSaleForecast;
+                                                                            NFcC[7] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "09":
                                                                             valSaleForecast = dataItem.M09;
-                                                                            NFcC[8] = valSaleForecast;
+                                                                            NFcC[8] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "10":
                                                                             valSaleForecast = dataItem.M10;
-                                                                            NFcC[9] = valSaleForecast;
+                                                                            NFcC[9] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "11":
                                                                             valSaleForecast = dataItem.M11;
-                                                                            NFcC[10] = valSaleForecast;
+                                                                            NFcC[10] = (int)valSaleForecast;
 
                                                                             break;
                                                                         case "12":
                                                                             valSaleForecast = dataItem.M12;
-                                                                            NFcC[11] = valSaleForecast;
+                                                                            NFcC[11] = (int)valSaleForecast;
 
                                                                             break;
                                                                         default:
@@ -1212,16 +1212,16 @@ else
     var toastMixin = Swal.mixin({
         toast: true,
         icon: 'success',
-        //title: 'General Title',
         animation: false,
         position: 'top-right',
         showConfirmButton: false,
         timer: 3300,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
+        timerProgressBar: true
+        //didOpen: (toast) => {
+        //  toast.addEventListener('mouseenter', Swal.stopTimer)
+        //    toast.addEventListener('mouseleave', Swal.resumeTimer)
+
+        //}
     });
 
     $("[class*=sale_forecast_]").focusin(function () {
@@ -1265,7 +1265,7 @@ else
                                 $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").addClass('input-onsave');
                                 //disbled beforeunload
                                 $(window).unbind('beforeunload');
-                                calculateForecastSale();
+                                calculateForecastAllRemain(month);
                                 //save flagAfterSave = 'Y'
                                 $("#flagAfterSaveMonth").val('Y')
                                 $("#flagAfterSaveSec").val('Y')
