@@ -1,5 +1,4 @@
 ﻿//console.log("hostName = " + hostName);
-
 var flagSup = $("#flagSup").val();
 
 function linkTo(link) {
