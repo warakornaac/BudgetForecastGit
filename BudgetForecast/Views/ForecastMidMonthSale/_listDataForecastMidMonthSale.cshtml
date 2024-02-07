@@ -1229,6 +1229,7 @@ else
         var cusName = $(this).data('cusname');
         var sec = $(this).data('sec');
         var month = $(this).data('month');
+        var slmCode = $("#slmCode option:selected").val();
         if (cusCode != '' && sec != '' && month != '') {
             var inputValueOld = parseInt($("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").val().replace(/\,/g, ''));
             $(this).one('focusout', function () {
@@ -1247,7 +1248,9 @@ else
                             SEC: sec,
                             CUSCOD: cusCode,
                             YEAR: year,
-                            INPUT: inputValueNew || 0
+                            INPUT: inputValueNew || 0,
+                            SLMCOD: slmCode
+
                         }),
                         dataType: 'json',
                         traditional: true,

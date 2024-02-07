@@ -15,7 +15,7 @@ namespace BudgetForecast.Data
         {
 
         }
-        public List<StoreUpdateForecastMidmonthSaleModel> Update(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        public List<StoreUpdateForecastMidmonthSaleModel> Update(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
         {
             var p = new SqlParameters();
             p.AddParams("@MONTH_INPUT", MONTH_INPUT);
@@ -24,6 +24,8 @@ namespace BudgetForecast.Data
             p.AddParams("@year", YEAR.ToTrim());
             p.AddParams("@Cuscod", CUSCOD.ToTrim());
             p.AddParams("@Input", INPUT.ToString().Replace(",", ""));
+            p.AddParams("@Slmcod", SLMCOD.ToTrim());
+
 
             //int ex = ExecuteNoneQuery(CmdStore("P_Update_NewForecast_Sale_Dev", p));
             return ConvertExtension.ConvertDataTable<StoreUpdateForecastMidmonthSaleModel>(GetData(CmdStore("P_Update_NewForecast_Sale_Dev", p)));

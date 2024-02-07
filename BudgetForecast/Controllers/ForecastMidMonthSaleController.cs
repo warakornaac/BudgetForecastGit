@@ -542,7 +542,7 @@ namespace BudgetForecast.Controllers
 
         //Save New Forecast
         [HttpPost]
-        public ActionResult UpdateNewForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT)
+        public ActionResult UpdateNewForecast(string MONTH_INPUT, string USER, string SEC, string YEAR, string CUSCOD, double INPUT, string SLMCOD)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Lip_ConnectionString"].ConnectionString;
             string check_sta;
@@ -554,12 +554,13 @@ namespace BudgetForecast.Controllers
                     conn.Open();
                     var cmd = new SqlCommand("P_Update_NewForecast_Sale_Dev", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT);
-                    cmd.Parameters.AddWithValue("@User", USER);
-                    cmd.Parameters.AddWithValue("@Sec", SEC);
-                    cmd.Parameters.AddWithValue("@Cuscod", CUSCOD);
-                    cmd.Parameters.AddWithValue("@Year", YEAR);
+                    cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT.ToTrim());
+                    cmd.Parameters.AddWithValue("@User", USER.ToTrim());
+                    cmd.Parameters.AddWithValue("@Sec", SEC.ToTrim());
+                    cmd.Parameters.AddWithValue("@Cuscod", CUSCOD.ToTrim());
+                    cmd.Parameters.AddWithValue("@Year", YEAR.ToTrim());
                     cmd.Parameters.AddWithValue("@Input", INPUT);
+                    cmd.Parameters.AddWithValue("@Slmcod", SLMCOD.ToTrim());
 
 
                     int INSID = cmd.ExecuteNonQuery();
@@ -574,7 +575,6 @@ namespace BudgetForecast.Controllers
                     }
                 }
                 return Json(new { status = sta, message = "new forecast updated" });
-
             }
             catch (Exception ex)
             {
