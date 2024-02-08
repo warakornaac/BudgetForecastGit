@@ -1265,7 +1265,7 @@ else
                                 $("input[name=sale_forecast_" + cusCode + "_" + sec + "_" + month + "]").addClass('input-onsave');
                                 //disbled beforeunload
                                 $(window).unbind('beforeunload');
-                                calculateForecastAllRemain(month);
+                                calculateForecastAllRemain(month,sec);
                                 //save flagAfterSave = 'Y'
                                 $("#flagAfterSaveMonth").val('Y')
                                 $("#flagAfterSaveSec").val('Y')

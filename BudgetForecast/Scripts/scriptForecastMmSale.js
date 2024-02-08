@@ -279,6 +279,7 @@ const sumSecAll = async (month) => {
         sec = $(this).val();
         if (sec != null) {
             sumSecByMonth(sec, month);
+            sumSecByMonthNewForecast(sec, month);
         }
     });
 
@@ -353,7 +354,16 @@ function getNotefromMonthSelector() {
     }, 500);//settime
 }//func
 
-
+const sumSecByMonthNewForecast = async (sec, month) => {
+    //sum sec New Forecast
+    let new_sum_forecast_by_month = 0;
+    await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
+        let new_forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        new_forecast_sale_key = await getVowels(new_forecast_sale_key, 0);
+        new_sum_forecast_by_month += Number(new_forecast_sale_key);
+    }));
+    $('.sum_sec_forecast_' + sec).text(numberWithCommas(new_sum_forecast_by_month.toFixed(0)));
+}
 
 //sum sec by month
 const sumSecByMonth = async (sec, month) => {
@@ -366,14 +376,7 @@ const sumSecByMonth = async (sec, month) => {
     }));
     $('.sum_sec_forecastm_' + sec).text(numberWithCommas(sum_forecast_by_month.toFixed(0)));
 
-    //sum sec New Forecast
-    let new_sum_forecast_by_month = 0;
-    await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
-        let new_forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
-        new_forecast_sale_key = await getVowels(new_forecast_sale_key, 0);
-        new_sum_forecast_by_month += Number(new_forecast_sale_key);
-    }));
-    $('.sum_sec_forecast_' + sec).text(numberWithCommas(new_sum_forecast_by_month.toFixed(0)));
+
 
     //sum sec budget
     let sum_budget_by_month = 0;
@@ -523,8 +526,9 @@ const sumRemainBycaption = async () => {
     //    $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
     //})
 }
-async function calculateForecastAllRemain(month) {
-    await sumSecAll();
+async function calculateForecastAllRemain(month, sec) {
+    //await sumSecAll();
+    await sumSecByMonthNewForecast(sec, month)
     await sumSaleForecastByCaption("sale_actual");
     await sumSaleForecastByCaption("sale_forecast");
     await sumSaleForecastByCaption("sale_forecastm");
