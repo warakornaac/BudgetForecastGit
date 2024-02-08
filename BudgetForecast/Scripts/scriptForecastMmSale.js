@@ -524,6 +524,7 @@ const sumRemainBycaption = async () => {
     //})
 }
 async function calculateForecastAllRemain(month) {
+    await sumSecAll();
     await sumSaleForecastByCaption("sale_actual");
     await sumSaleForecastByCaption("sale_forecast");
     await sumSaleForecastByCaption("sale_forecastm");
