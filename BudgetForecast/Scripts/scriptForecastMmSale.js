@@ -499,6 +499,7 @@ const sumRemainBycaption = async () => {
             remain_res = sum_new_forecast - sum_actual;
         else
             remain_res = sum_forecast - sum_actual;
+
         $("#sum_sale_remain_" + month).text(numberWithCommas(remain_res.toFixed(0)));
     }
 
