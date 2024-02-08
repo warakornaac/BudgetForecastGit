@@ -363,6 +363,7 @@ const sumSecByMonthNewForecast = async (sec, month) => {
         new_sum_forecast_by_month += Number(new_forecast_sale_key);
     }));
     $('.sum_sec_forecast_' + sec).text(numberWithCommas(new_sum_forecast_by_month.toFixed(0)));
+
 }
 
 //sum sec by month
@@ -395,15 +396,7 @@ const sumSecByMonth = async (sec, month) => {
     }));
     $('.sum_sec_actual_' + sec).text(numberWithCommas(sum_actual_by_month.toFixed(0)));
 
-    //Remain
-    let remain = 0;
-    if (new_sum_forecast_by_month > 0) {
-        remain = new_sum_forecast_by_month - sum_actual_by_month;
-    }
-    else {
-        remain = sum_forecast_by_month - sum_actual_by_month;
-    }
-    $('.sum_sec_remain' + sec).text(numberWithCommas(remain))
+
 
     //Budget, Actual, Forecast เป็น 0 ไม่แสดง
     //console.log("sum_forecast_by_month = " + sum_forecast_by_month + " sum_budget_by_month = " + sum_budget_by_month + " sum_actual_by_month = " + sum_actual_by_month);
