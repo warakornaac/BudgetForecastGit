@@ -29,40 +29,8 @@ namespace BudgetForecast.Data
 
             p.AddParams("@outGenstatus", "Y");
 
-            //var storeProcedureName = "";
-
-            //if (dev.Count() > 0)
-            //{
-            //    storeProcedureName = "P_Update_Note_Sale_" + dev;
-            //}
-            //else
-            //{
-            //    storeProcedureName = "P_Update_Note_Sale";
-
-            //}
-
             var table = GetData(CmdStore("P_Update_Note_Sale", p));
             return ConvertExtension.ConvertDataTable<StoreUpdateNoteSaleModel>(GetData(CmdStore("P_Update_Note_Sale", p)));
-        }
-        private string GetDevFromUrl()
-        {
-            string[] segments = HttpContext.Current.Request.Url.Segments;
-            for (int i = 0; i < segments.Length; i++)
-            {
-                if (segments[i].Trim('/').Equals("NB2023_Test", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (i + 2 < segments.Length && segments[i + 1].Trim('/').Contains("Controller") && segments[i + 2].Trim('/').Contains("Index"))
-                    {
-                        return "Dev";
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

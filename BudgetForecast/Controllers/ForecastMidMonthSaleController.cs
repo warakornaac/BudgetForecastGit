@@ -504,7 +504,7 @@ namespace BudgetForecast.Controllers
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                var cmd = new SqlCommand("P_Get_Note_Sale_Dev", conn);
+                var cmd = new SqlCommand("P_Get_Note_Sale", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Slmcode", SLMCOD);
                 cmd.Parameters.AddWithValue("@Month", MONTH_INPUT);
@@ -552,7 +552,7 @@ namespace BudgetForecast.Controllers
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("P_Update_NewForecast_Sale_Dev", conn);
+                    var cmd = new SqlCommand("P_Update_NewForecast_Sale", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT.ToTrim());
                     cmd.Parameters.AddWithValue("@User", USER.ToTrim());

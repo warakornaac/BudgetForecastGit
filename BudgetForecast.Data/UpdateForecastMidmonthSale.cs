@@ -28,7 +28,7 @@ namespace BudgetForecast.Data
 
 
             //int ex = ExecuteNoneQuery(CmdStore("P_Update_NewForecast_Sale_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateForecastMidmonthSaleModel>(GetData(CmdStore("P_Update_NewForecast_Sale_Dev", p)));
+            return ConvertExtension.ConvertDataTable<StoreUpdateForecastMidmonthSaleModel>(GetData(CmdStore("P_Update_NewForecast_Sale", p)));
         }
     }
 }

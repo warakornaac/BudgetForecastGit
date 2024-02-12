@@ -26,8 +26,8 @@ namespace BudgetForecast.Data
             p.AddParams("@Year", "");
             p.AddParams("@outGenstatus", 'Y');
 
-            var table = GetData(CmdStore("P_Update_Budget_Sale_Dev", p));
-            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetSaleModel>(GetData(CmdStore("P_Update_Budget_Sale_Dev", p)));
+            var table = GetData(CmdStore("P_Update_Budget_Sale", p));
+            return ConvertExtension.ConvertDataTable<StoreUpdateBudgetSaleModel>(GetData(CmdStore("P_Update_Budget_Sale", p)));
         }
     }
 }

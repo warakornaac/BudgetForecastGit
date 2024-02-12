@@ -1310,7 +1310,7 @@ else
             });
         }
     }
-    //Add The Star Empty
+    //Add The Star Empty Add UPDATE BY USER
     function ThestarEmp(cuskey){
         console.log("Create is called for cuskey: " + cuskey);
         let year = $("#year option:selected").val();
@@ -1658,6 +1658,7 @@ else
                 });
             });
         }
+        //Delete Note
         else {
             $.ajax({
                         type: 'POST',
@@ -1718,10 +1719,6 @@ else
         }
                     })();
     }//text != null
-
-
-
-
                     else {
                                 (async () => {
                             const { value: text } = await Swal.fire({

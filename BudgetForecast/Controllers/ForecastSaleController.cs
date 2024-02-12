@@ -458,7 +458,7 @@ namespace BudgetForecast.Controllers
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("P_Update_Forecast_Sale_Dev", conn);
+                    var cmd = new SqlCommand("P_Update_Forecast_Sale", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@MONTH_INPUT", MONTH_INPUT);
                     cmd.Parameters.AddWithValue("@User", USER.ToTrim());
