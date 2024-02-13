@@ -1279,7 +1279,8 @@ else
                                 var flagReloadBySec = $("#flagReloadBySec").val();
                                 if (flagReloadBySec == 'Y') {
                                     $("#flagAfterSaveSec").val('N');
-                                    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                                    let _month = $("#month_sec option:selected").val();
+                                    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, _month)
                                 }
                                 toastMixin.fire({
                                     animation: true,
@@ -1370,7 +1371,8 @@ else
             //ถ้าไม่เคยโหลดให้โหลด&&
             if (flagReloadBySec == 'N') { //flagAfterSaveSec == 'Y'
                 $("#flagAfterSaveSec").val('N');
-                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, monthSelect)
+                let _month = $("#month_sec option:selected").val();
+                getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, _month)
             }
         }
     });

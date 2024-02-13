@@ -264,16 +264,28 @@ function getStkgrpByProd(_prodCode) {
 //for sum by sec
 const sumSecAll = async (month) => {
     var flagTabBySecAll = $("#flagTabBySecAll").val();
-    // $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
+    $(".iconLoading").html('<i class="fa fa-spinner fa-spin f-center"></i>');
     var sec;
     var monthSelect;
     var monthSelect = $("#month_sec option:selected").val();
+    var monthCurrent = new Date().getMonth() + 1;
     if (month === undefined) {
         month = monthSelect;
     }
-    //if (flagTabBySecAll == 'Y') {
-    //    getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, month)
-    //}
+    if (flagTabBySecAll == 'Y') {
+        getDataForecastByMonth(slmCode, cusCodeAll, stkSec, prodMgr, year, 3, month)
+        /*
+        console.log("month_all : " + month);
+        console.log("month_cur : " + monthCurrent);
+
+        if (month != monthCurrent) {
+            $('[id^="btn_note_all_"]').hide();
+        }
+        else {
+            $('[id^="btn_note_all_"]').show();
+        }
+        */
+    }
 
     $('.stkSecList_header').each(function () {
         sec = $(this).val();
@@ -284,9 +296,9 @@ const sumSecAll = async (month) => {
     });
 
     //hide icon
-    //setTimeout(() => {
-    //    $(".iconLoading").html('');
-    //}, "1000");
+    setTimeout(() => {
+        $(".iconLoading").html('');
+    }, "1000");
 
 }
 //func Get Note
