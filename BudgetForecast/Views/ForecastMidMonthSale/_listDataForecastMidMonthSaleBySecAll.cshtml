@@ -32,7 +32,7 @@
                             <div class="card-body pb-0" style="margin-top: -10px;">
                                 <div class="row mr-0 container pr-0">
                                     <div class="col-3 col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xxl-5 p-0">
-                                        <button class="btn btn-warning" id="btn_note_all_@dataItemBySec.Sec" onclick="addsecNote('@dataItemBySec.Sec');" style="font-size: medium; display: inline-block; margin-bottom: 8px; height: 30px; width: 30px; padding: 0px;"> <i class="fa fa-plus" aria-hidden="true" id="@btn_note"></i></button>
+                                        <button class="btn btn-warning" id="btn_note_all_@dataItemBySec.Sec" onclick="addsecNoteAll('@dataItemBySec.Sec');" style="font-size: medium; display: inline-block; margin-bottom: 8px; height: 30px; width: 30px; padding: 0px;"> <i class="fa fa-plus" aria-hidden="true" id="@btn_note"></i></button>
                                         <h4 class="" style="font-weight: 700; display: inline-block;">SEC @dataItemBySec.Sec <span class="iconLoading"></span> </h4>
                                     </div>
                                     <div class="col-9 col-sm-6 col-md-7 col-lg-7 col-xl-7 col-xxl-7 p-0 text-left">
@@ -74,7 +74,7 @@
 </div>
 
 <script>
-    function addsecNote(seccode) {
+    function addsecNoteAll(seccode) {
     var NoteText = $('.note_show_' + seccode).html().trim();
     var monthSelect = $("#month_sec option:selected").val();
     console.log("Month Note : " + monthSelect);
@@ -122,8 +122,15 @@
                              if (result.status == "success") {
                                  $('.note_show_' + seccode).text(text);
                                  $('.note_show_all_' + seccode).text(text);
+
                                  console.log("Success");
                                  console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
+
+                                 $('#note_btn_pic_' + seccode).removeClass("fa-plus");
+                                 $('#note_btn_pic_' + seccode).addClass("fa-pencil");
+
+                                 $('#note_all_btn_pic_' + seccode).removeClass("fa-plus");
+                                 $('#note_all_btn_pic_' + seccode).addClass("fa-pencil");
 
                              } else {
                                  LoadingHide();
@@ -185,10 +192,12 @@
                             $('.note_show_all_' + seccode).text(" ");
                             console.log("Success");
                             console.log("Sec : " + seccode + "Year : " + year + " M : " + monthSelect);
-                            $('#note_btn_pic_' + seccode).addClass("fa-plus");
-                            $('#note_all_btn_pic_' + seccode).addClass("fa-plus");
+
+
                             $('#note_btn_pic_' + seccode).removeClass("fa-pencil");
+                            $('#note_btn_pic_' + seccode).addClass("fa-plus");
                             $('#note_all_btn_pic_' + seccode).removeClass("fa-pencil");
+                            $('#note_all_btn_pic_' + seccode).addClass("fa-plus");
 
                         } else {
                             LoadingHide();
@@ -268,9 +277,13 @@
                      success: function (result) {
                          if (result.status == "success") {
                              $('.note_show_' + seccode).text(text);
+                             $('.note_show_all_' + seccode).text(text);
                              //Change Icon
                              $('#note_btn_pic_' + seccode).removeClass("fa-plus");
                              $('#note_btn_pic_' + seccode).addClass("fa-pencil");
+
+                             $('#note_all_btn_pic_' + seccode).removeClass("fa-plus");
+                             $('#note_all_btn_pic_' + seccode).addClass("fa-pencil");
 
                          } else {
                              LoadingHide();
