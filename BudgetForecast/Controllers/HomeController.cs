@@ -138,8 +138,10 @@ namespace BudgetForecast.Controllers
                 txtSql = "SELECT Usr.UsrTyp, Ad.Department, ISNULL(Usr.SLMCOD ,Ad.SLMCOD) as SLMCOD " +
                     "FROM UsrTbl_Budget Usr " +
                     "LEFT JOIN v_ADUser Ad ON Ad.LogInName = Usr.UsrID " +
-                    "WHERE UsrID =N'" + User.ToTrim() + "'and [dbo].F_decrypt([Password])='" + Password + "'";
+                    "WHERE UsrID = @inUser and [dbo].F_decrypt([Password])= @inPassword ";
                 SqlCommand cmdcus = new SqlCommand(txtSql, Connection);
+                cmdcus.Parameters.AddWithValue("@inUser", User.ToTrim());
+                cmdcus.Parameters.AddWithValue("@inPassword", User.ToTrim());
                 SqlDataReader revcus = cmdcus.ExecuteReader();
                 while (revcus.Read())
                 {
