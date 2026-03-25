@@ -1,11 +1,13 @@
 ﻿@using BudgetForecast.Model;
-@{
-    ViewBag.Title = "Budget by product";
+@{ ViewBag.Title = "Budget by product";
     // Layout = "~/Views/Shared/.cshtml";
     var dataSlmlis = ViewBag.SlmModel;
     List<SelectListItem> getStkGrp = ViewBag.StkGrp;
     List<SelectListItem> getPRODList = ViewBag.PRODList;
     var usre = ViewBag.usre;
+    var currentYear = DateTime.Now.Year;
+    var startYear = DateTime.Now.Year - 1;
+    var endYear = DateTime.Now.Year + 1; 
 }
 <input type="hidden" id="prodMgr_header" value="@ViewBag.prodMgr" />
 <input type="hidden" id="year_header" value="@ViewBag.year" />
@@ -43,8 +45,16 @@
                         <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
                         <span>
                             <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
-                                <option value="2024" selected>2024</option>
-                                <option value="2023">2023</option>
+                                @{ 
+                                    for (int i = startYear; i <= endYear; i++)
+                                    {
+                                        var setSelected = "";
+                                        if (i == currentYear) {
+                                            setSelected = "selected";
+                                        }
+                                        <option value="@i" @setSelected>@i</option>
+                                    }
+                                }
                             </select>
                         </span>
                     </div>
@@ -57,8 +67,8 @@
                                 @*<option value="ALL">STOCK GROUP ทั้งหมด</option>*@
                                 @for (var i = 0; i < getStkGrp.Count; i++)
                                 {
-                                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
-                                }
+                    <option value="@getStkGrp[i].Value">@getStkGrp[i].Text</option>
+}
                             </select>
                         </span>
                     </div>
@@ -70,8 +80,7 @@
                 <div class="col-xs-12 col-md-12 text-right">
                     @if (ViewBag.stkGroup != "[]")
                     {
-                        <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>
-                    }
+        <button type="button" class="btn btn-success btn-lg" id="btnmol" style="font-size: medium; float: left; position: relative; " onclick="saveBudgetPm();"><i class="fa fa-save"></i> Save</button>}
 
                     <button type="reset" class="btn btn-default btn-lg" onclick="resetSearch();" id="btnmol" style="font-size: medium;"><i class="fa fa-refresh"></i> Reset</button> &nbsp;
                     <button type="button" class="btn btn-primary btn-lg" onclick="searchBudget();" id="btnmol" style="font-size: medium;"><i class="fa fa-search"></i> Search</button>
@@ -84,12 +93,9 @@
 @*input*@
 <div class="pt-2">
 
-    @{
-        if (@ViewBag.flagInput == "NO" && ((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count() != 0)
+    @{ if (@ViewBag.flagInput == "NO" && ((List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList).Count() != 0)
         {
-            <div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Budget กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div>
-        }
-    }
+<div class="col-xs-12 col-md-12 col-lg-6 alert alert-danger alert-dismissible fade show text-left" style="font-size: 18px; font-weight: bold;"> <button type="button" class="close" data-dismiss="alert">&times;</button> <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Budget กรอกข้อมูลได้ช่วงวันที่ @ViewBag.startDate ถึง @ViewBag.endDate เท่านั้น</div> } }
 
     @Html.Partial("_listDataBudgetPM", (List<StoreSearchBudgetPmModel>)ViewBag.stkGroupList)
 </div>

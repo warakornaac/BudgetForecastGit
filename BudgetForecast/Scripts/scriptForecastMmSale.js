@@ -383,7 +383,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec forecast
     let sum_forecast_by_month = 0;
     await Promise.all($(".sale_forecastm_" + sec + "_" + month).each(async function (i, obj) {
-        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let forecast_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         forecast_sale_key = await getVowels(forecast_sale_key, 0);
         sum_forecast_by_month += Number(forecast_sale_key);
     }));
@@ -394,7 +394,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec budget
     let sum_budget_by_month = 0;
     await Promise.all($(".sale_budget_" + sec + "_" + month).each(async function (i, obj) {
-        let budget_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let budget_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         budget_sale_key = await getVowels(budget_sale_key, 0);
         sum_budget_by_month += Number(budget_sale_key);
     }));
@@ -402,7 +402,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec actual
     let sum_actual_by_month = 0;
     await Promise.all($(".sale_actual_" + sec + "_" + month).each(async function (i, obj) {
-        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let actual_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         actual_sale_key = await getVowels(actual_sale_key, 0);
         sum_actual_by_month += Number(actual_sale_key);
     }));
@@ -424,7 +424,7 @@ const sumSaleForecastByCaption = async (inputName) => {
     for (let numMonth = 1; numMonth <= 12; numMonth++) {
         let sum_by_caption = 0;
         await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
-            let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            let val_by_caption = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
             val_by_caption = await getVowels(val_by_caption, 0);
             sum_by_caption += Number(val_by_caption);
             //console.log("sum_by_caption = " + sum_by_caption);

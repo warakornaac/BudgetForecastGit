@@ -11,6 +11,9 @@
     var monthSplits = @ViewBag.MonthYearList[0].Text.Split('-');
     monthInputCurrentIndex = int.Parse(monthSplits[0]);
     string formattedMonthInputCurrentIndex = monthInputCurrentIndex.ToString("00");
+    var currentYear = DateTime.Now.Year;
+    var startYear = DateTime.Now.Year - 1;
+    var endYear = DateTime.Now.Year + 1;
 }
 <input type="hidden" id="slmCode_header" value="@ViewBag.slmCode" />
 <input type="hidden" name="cusCode_header[]" id="cusCode_header" value="@ViewBag.cusCode" />
@@ -94,9 +97,16 @@
                         <span> <i class="fa fa-calendar"></i><b> YEAR:</b></span>
                         <span>
                             <select class="form-control selectpicker" id="year" name="year" style="width: 100%;">
-                                <option value="2024" selected>2024</option>
-                                <option value="2023">2023</option>
-
+                                @{ for (int i = startYear; i <= endYear; i++)
+                                    {
+                                        var setSelected = "";
+                                        if (i == currentYear)
+                                        {
+                                            setSelected = "selected";
+                                        }
+                                        <option value="@i" @setSelected>@i</option>
+                                    } 
+                               }
                             </select>
                         </span>
                     </div>

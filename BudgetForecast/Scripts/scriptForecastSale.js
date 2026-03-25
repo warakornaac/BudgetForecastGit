@@ -150,6 +150,7 @@ function getDataForecastSale(slmCode, cusCode, stkSec, prodMgr, year, flg, flgBu
         success: function (res) {
             LoadingHide();
             $('#' + divShow).html(res);
+            $(".yearSelected").text(year);
         }
     });
 }
@@ -359,7 +360,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec forecast
     let sum_forecast_by_month = 0;
     await Promise.all($(".sale_forecast_" + sec + "_" + month).each(async function (i, obj) {
-        let forecast_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let forecast_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         forecast_sale_key = await getVowels(forecast_sale_key, 0);
         sum_forecast_by_month += Number(forecast_sale_key);
     }));
@@ -367,7 +368,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec budget
     let sum_budget_by_month = 0;
     await Promise.all($(".sale_budget_" + sec + "_" + month).each(async function (i, obj) {
-        let budget_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let budget_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         budget_sale_key = await getVowels(budget_sale_key, 0);
         sum_budget_by_month += Number(budget_sale_key);
     }));
@@ -375,7 +376,7 @@ const sumSecByMonth = async (sec, month) => {
     //sum sec actual
     let sum_actual_by_month = 0;
     await Promise.all($(".sale_actual_" + sec + "_" + month).each(async function (i, obj) {
-        let actual_sale_key = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+        let actual_sale_key = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
         actual_sale_key = await getVowels(actual_sale_key, 0);
         sum_actual_by_month += Number(actual_sale_key);
     }));
@@ -388,19 +389,22 @@ const sumSecByMonth = async (sec, month) => {
         $("#sum_by_sec_" + sec).css("display", "block");
     }
 }
-
+//Summary by month
 const sumSaleForecastByCaption = async (inputName) => {
     console.log("inputName = " + inputName);
     for (let numMonth = 1; numMonth <= 12; numMonth++) {
         let sum_by_caption = 0;
         await Promise.all($('.' + inputName + '_' + numMonth).each(async function (i, obj) {
-            let val_by_caption = obj.value.toString().replace(/([-[\]{}()*+?\\^$|%,])/g, '');
+            //console.log("before = " + obj.value.toString());
+            let val_by_caption = obj.value.toString().replace(/([\]{}()*+?\\^$|%,])/g, '');
+            //console.log("after = " + val_by_caption);
+            //let val_by_caption = obj.value.toString();
             val_by_caption = await getVowels(val_by_caption, 0);
             sum_by_caption += Number(val_by_caption);
             //console.log("sum_by_caption = " + sum_by_caption);
         }));
         if (sum_by_caption != 0 && sum_by_caption != null) {
-            $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(sum_by_caption.toFixed(0)));
+            $('#sum_' + inputName + '_' + numMonth).text(numberWithCommas(Math.ceil(sum_by_caption.toFixed(0))));
         }
     }
 }
