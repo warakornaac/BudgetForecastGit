@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Web;
 
 
 namespace BudgetForecast.Models
@@ -302,4 +303,20 @@ namespace BudgetForecast.Models
         public bool IsStar { get; set; }
     }
 
+    public class UsrGrp
+    {
+        [Key]
+        public int ID { get; set; }
+        public string UsrID { get; set; }
+        public string UsrName { get; set; }
+        public string Password { get; set; }
+        public int UsrTyp { get; set; }
+        public string Company { get; set; }
+        public string Email { get; set; }
+        public string Slmcod { get; set; }
+        public DateTime InsertedDate { get; set; }
+        public string InsertedBy { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public string UpdatedBy { get; set; }
+    }
 }
