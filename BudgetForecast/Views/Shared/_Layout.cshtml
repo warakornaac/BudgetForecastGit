@@ -73,7 +73,7 @@
                     </li>
                 }
                 @*Admin*@
-                @if (this.Session["UserType"].ToString() == "1")
+                @if (this.Session["Department"].ToString() == "MIS")
                 {
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "ManageUser")">Manage User</a>
